@@ -49,7 +49,7 @@
     </button>
 
     <p class="sidebar-section-label">Store</p>
-    <a href="/products.html" class="sidebar-item">
+    <a href="/products.html" class="sigdebar-item">
       <span>👁</span> View Store
     </a>
     <button class="sidebar-item" onclick="document.getElementById('logout-btn').click()">
@@ -525,12 +525,20 @@
 
       let data;
       if (editingId) {
-        data = await apiFetch(`/products/${editingId}`, { method: 'PUT', body: fd });
-        showToast('Product updated successfully ✓', 'success');
-      } else {
-        data = await apiFetch('/products', { method: 'POST', body: fd });
-        showToast('Product added successfully ✓', 'success');
-      }
+  data = await apiFetch(`/products/${editingId}`, {
+    method: 'PUT',
+    body: fd,
+    auth: true   // 🔥 ADD THIS
+  });
+  showToast('Product updated successfully ✓', 'success');
+} else {
+  data = await apiFetch('/products', {
+    method: 'POST',
+    body: fd,
+    auth: true   // 🔥 ADD THIS
+  });
+  showToast('Product added successfully ✓', 'success');
+}
 
       closeModal();
       await loadProducts();
