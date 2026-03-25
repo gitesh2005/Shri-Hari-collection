@@ -159,6 +159,25 @@
     }
   }
 
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    // remove active from all
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+
+    // add active to clicked
+    btn.classList.add('active');
+
+    // set category
+    currentCategory = btn.dataset.cat;
+
+    // reset page
+    currentPage = 1;
+
+    // reload products
+    loadProducts();
+  });
+});
+
   function renderPagination(totalPages, page) {
     const pag = document.getElementById('pagination');
     if (totalPages <= 1) { pag.innerHTML = ''; return; }
