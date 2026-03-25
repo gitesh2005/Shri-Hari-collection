@@ -11,34 +11,34 @@ const productRoutes = require('./routes/productRoutes');
 const app  = express();
 const PORT = process.env.PORT || 5001;
 
-// ── Connect DB ────────────────────────────────────────────────────────────────
+// ── Connect DB ───────────────────────────────────────────
 connectDB().then(() => seedAdmin());
 
-// ── Middleware ────────────────────────────────────────────────────────────────
+// ── Middleware ───────────────────────────────────────────
 app.use(cors({
-  origin: '*',          // tighten in production
-  methods: ['GET','POST','PUT','DELETE'],
-  allowedHeaders: ['Content-Type','Authorization']
+  origin: true,
+  credentials: true
 }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ── Serve frontend static files ───────────────────────────────────────────────
+// ── Serve frontend static files ──────────────────────────
 app.use(express.static(path.join(__dirname, '../frontend')));
 
-// ── API Routes ────────────────────────────────────────────────────────────────
+// ── API Routes ───────────────────────────────────────────
 app.use('/api/auth',     authRoutes);
 app.use('/api/products', productRoutes);
 
-// ── Health check ──────────────────────────────────────────────────────────────
+// ── Health check ─────────────────────────────────────────
 app.get('/api/health', (_req, res) => res.json({ status: 'OK', time: new Date() }));
 
-// ── Catch-all: send frontend for any unknown route ────────────────────────────
+// ── Catch-all ────────────────────────────────────────────
 app.get('*', (_req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
-// ── Global error handler ──────────────────────────────────────────────────────
+// ── Global error handler ─────────────────────────────────
 app.use((err, _req, res, _next) => {
   console.error('Global error:', err);
   res.status(err.status || 500).json({
