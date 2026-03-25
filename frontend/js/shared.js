@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════
-   shared.js  –  Utilities used across all pages
+   shared.js  –  FINAL WORKING VERSION
    ═══════════════════════════════════════════════════════ */
 
 const API_BASE = 'https://shri-hari-collection.onrender.com/api';
@@ -32,17 +32,26 @@ function showToast(message, type = 'success', duration = 3000) {
   }, duration);
 }
 
-/* ── Fetch wrapper ─────────────────────────────────────── */
+/* ── Format price (🔥 FIX ADDED BACK) ─────────────────── */
+function formatPrice(n) {
+  return '₹' + Number(n).toLocaleString('en-IN');
+}
+
+/* ── Fetch wrapper (CLEAN VERSION) ─────────────────────── */
 async function apiFetch(endpoint, options = {}) {
   try {
-    const token = getToken();
     const headers = { ...options.headers };
 
+    // JSON header
     if (!(options.body instanceof FormData)) {
       headers['Content-Type'] = 'application/json';
     }
 
-    if (token) headers['Authorization'] = `Bearer ${token}`;
+    // ✅ Only send token when needed
+    if (options.auth) {
+      const token = getToken();
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+    }
 
     const res = await fetch(`${API_BASE}${endpoint}`, {
       ...options,
@@ -68,7 +77,7 @@ async function apiFetch(endpoint, options = {}) {
   }
 }
 
-/* ── NAV + UI stuff ───────────────────────────────────── */
+/* ── NAV + UI helpers ─────────────────────────────────── */
 function setActiveNav() {
   const path = window.location.pathname.replace(/\/$/, '') || '/';
   document.querySelectorAll('.nav-links a').forEach(a => {
@@ -112,18 +121,19 @@ function initLogout() {
   });
 }
 
-/* ── 🚀 SIGNUP HANDLER (MAIN FIX) ─────────────────────── */
+/* ── SIGNUP HANDLER ───────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
+
   setActiveNav();
   initHamburger();
   buildNavAuth();
   initLogout();
 
-  const form = document.getElementById("signup-form");
+  const signupForm = document.getElementById("signup-form");
 
-  if (form) {
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault(); // 🚨 STOP page reload
+  if (signupForm) {
+    signupForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
       const name = document.getElementById("name").value.trim();
       const email = document.getElementById("email").value.trim();
@@ -142,7 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         showToast("Signup successful ✅");
 
-        // Save user + token
         setAuth(data.token, data.user);
 
         setTimeout(() => {
@@ -150,8 +159,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
 
       } catch (err) {
-        showToast(err.message || "Signup failed ❌", "error");
+        showToast(err.message, "error");
       }
     });
   }
+
 });
