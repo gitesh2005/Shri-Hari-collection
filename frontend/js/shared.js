@@ -37,6 +37,19 @@ function formatPrice(n) {
   return '₹' + Number(n).toLocaleString('en-IN');
 }
 
+// ✅ ADD THIS BELOW
+function skeletonCards(n = 4) {
+  return Array.from({ length: n }, () => `
+    <div class="skeleton-card">
+      <div class="skeleton skeleton-img"></div>
+      <div class="skeleton-body">
+        <div class="skeleton skeleton-line short"></div>
+        <div class="skeleton skeleton-line"></div>
+        <div class="skeleton skeleton-line shorter"></div>
+      </div>
+    </div>
+  `).join('');
+}
 /* ── Fetch wrapper (CLEAN VERSION) ─────────────────────── */
 async function apiFetch(endpoint, options = {}) {
   try {

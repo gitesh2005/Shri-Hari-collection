@@ -559,23 +559,26 @@
   }
 
   document.getElementById('confirm-del-btn').addEventListener('click', async () => {
-    if (!pendingDeleteId) return;
-    const btn = document.getElementById('confirm-del-btn');
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner"></span>';
+  if (!pendingDeleteId) return;
 
-    try {
-      await apiFetch(`/products/${pendingDeleteId}`, { method: 'DELETE' });
-      showToast('Product deleted', 'success');
-      closeConfirm();
-      await loadProducts();
-    } catch (err) {
-      showToast(err.message, 'error');
-    } finally {
-      btn.disabled    = false;
-      btn.textContent = 'Delete';
-    }
-  });
+  const btn = document.getElementById('confirm-del-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>';
+
+  try {
+    await apiFetch(`/products/${pendingDeleteId}`, { method: 'DELETE', auth: true });
+
+    showToast('Product deleted', 'success');
+    closeConfirm();
+    await loadProducts();
+
+  } catch (err) {
+    showToast(err.message, 'error');
+  } finally {
+    btn.disabled    = false;
+    btn.textContent = 'Delete';
+  }
+});
 
   /* ── Close modals on backdrop click ────────────────── */
   document.getElementById('product-modal').addEventListener('click', (e) => {
