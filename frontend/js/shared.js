@@ -28,33 +28,36 @@ function showToast(message, type = 'success', duration = 3500) {
 
 /* ── Fetch wrapper ─────────────────────────────────────── */
 async function apiFetch(endpoint, options = {}) {
-  const token = getToken();
-  const headers = { ...options.headers };
+  try {
+    const token = getToken();
+    const headers = { ...options.headers };
 
-  // Only set Content-Type to JSON if not FormData
-  if (!(options.body instanceof FormData)) {
-    headers['Content-Type'] = 'application/json';
-  }
-  if (token) headers['Authorization'] = `Bearer ${token}`;
+    if (!(options.body instanceof FormData)) {
+      headers['Content-Type'] = 'application/json';
+    }
+    if (token) headers['Authorization'] = `Bearer ${token}`;
 
-  const res = await fetch(`${API_BASE}${endpoint}`, {
-    ...options,
-    headers,
-    body: options.body instanceof FormData
-      ? options.body
-      : options.body
-        ? JSON.stringify(options.body)
-        : undefined,
-  });
+    const res = await fetch(`${API_BASE}${endpoint}`, {
+      ...options,
+      headers,
+      body: options.body instanceof FormData
+        ? options.body
+        : options.body
+          ? JSON.stringify(options.body)
+          : undefined,
+    });
 
-  const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(text || 'API error');
+    }
 
-  if (!res.ok) {
-    const err = new Error(data.message || 'Something went wrong');
-    err.status = res.status;
+    return await res.json();
+
+  } catch (err) {
+    console.error("FETCH ERROR:", err);
     throw err;
   }
-  return data;
 }
 
 /* ── Nav active link ───────────────────────────────────── */
