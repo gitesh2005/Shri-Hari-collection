@@ -11,43 +11,42 @@ A production-ready e-commerce web app for ethnic wear (Kurtis & Suits), featurin
 
 ## 📁 Project Structure
 
-
+```
 ecommerce-app/
 ├── backend/
-│ ├── config/
-│ │ ├── cloudinary.js
-│ │ ├── db.js
-│ │ └── seedAdmin.js
-│ ├── controllers/
-│ │ ├── authController.js
-│ │ └── productController.js
-│ ├── middleware/
-│ │ ├── authMiddleware.js
-│ │ ├── roleMiddleware.js
-│ │ └── uploadMiddleware.js
-│ ├── models/
-│ │ ├── User.js
-│ │ └── Product.js
-│ ├── routes/
-│ │ ├── authRoutes.js
-│ │ └── productRoutes.js
-│ ├── server.js
-│ ├── package.json
-│ │ └── .env.example
+│   ├── config/
+│   │   ├── cloudinary.js       # Cloudinary setup + upload/delete helpers
+│   │   ├── db.js               # MongoDB connection
+│   │   └── seedAdmin.js        # Auto-seeds admin on first run
+│   ├── controllers/
+│   │   ├── authController.js   # signup, login, getMe
+│   │   └── productController.js# getAllProducts, getProduct, createProduct, updateProduct, deleteProduct
+│   ├── middleware/
+│   │   ├── authMiddleware.js   # JWT verification
+│   │   ├── roleMiddleware.js   # Role-based access (admin check)
+│   │   └── uploadMiddleware.js # Multer (memory storage, 2MB limit)
+│   ├── models/
+│   │   ├── User.js             # User schema (name, email, password, role)
+│   │   └── Product.js          # Product schema (name, price, category, description, imageUrl, imagePublicId)
+│   ├── routes/
+│   │   ├── authRoutes.js       # POST /api/auth/signup, /login | GET /api/auth/me
+│   │   └── productRoutes.js    # GET/POST /api/products | GET/PUT/DELETE /api/products/:id
+│   ├── server.js               # Express entry point
+│   ├── package.json
+│   └── .env.example            # Environment variable template
 │
 └── frontend/
-├── css/
-│ └── style.css
-├── js/
-│ └── shared.js
-├── index.html
-├── login.html
-├── signup.html
-├── products.html
-└── admin.html
+    ├── css/
+    │   └── style.css           # Complete responsive stylesheet
+    ├── js/
+    │   └── shared.js           # API helpers, toast, auth utilities
+    ├── index.html              # Home page
+    ├── login.html              # Login page
+    ├── signup.html             # Sign up page
+    ├── products.html           # Product listing with filter/search
+    └── admin.html              # Admin dashboard (CRUD + image upload)
+```
 
-
----
 
 ## ⚙️ Prerequisites
 
