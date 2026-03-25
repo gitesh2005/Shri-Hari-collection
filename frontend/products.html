@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Products – Hari</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+<!-- ── Navbar ─────────────────────────────────────────────────── -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">Hari</a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/products.html" class="active">Products</a></li>
+      <li id="nav-admin" style="display:none"><a href="/admin.html">Dashboard</a></li>
+      <li id="nav-login"><a href="/login.html">Login</a></li>
+      <li id="nav-signup"><a href="/signup.html" class="btn-primary">Sign Up</a></li>
+      <li id="nav-logout" style="display:none">
+        <a href="#" id="logout-btn">Logout</a>
+      </li>
+    </ul>
+    <button class="nav-hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ── Page Banner ────────────────────────────────────────────── -->
+<div class="page-banner">
+  <div class="container">
+    <h1>Our <em style="color:var(--copper);font-style:italic;">Collection</em></h1>
+    <p>Handpicked ethnic wear for every occasion</p>
+  </div>
+</div>
+
+<!-- ── Products Section ───────────────────────────────────────── -->
+<section class="section">
+  <div class="container">
+
+    <!-- Filter + Search bar -->
+    <div class="filter-bar">
+      <button class="filter-btn active" data-cat="">All</button>
+      <button class="filter-btn" data-cat="Kurti">Kurtis</button>
+      <button class="filter-btn" data-cat="Suits">Suits</button>
+      <div class="search-bar">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
+        </svg>
+        <input type="search" id="search-input" placeholder="Search products…" />
+      </div>
+      <!-- Sort -->
+      <select id="sort-select"
+        style="padding:10px 14px;border:1.5px solid var(--sand);border-radius:30px;
+               background:var(--white);font-size:.87rem;color:var(--charcoal);outline:none;cursor:pointer;">
+        <option value="newest">Newest First</option>
+        <option value="price-asc">Price: Low → High</option>
+        <option value="price-desc">Price: High → Low</option>
+      </select>
+    </div>
+
+    <!-- Result count -->
+    <p id="result-count" style="font-size:.87rem;color:var(--midtone);margin-bottom:24px;"></p>
+
+    <!-- Grid -->
+    <div id="products-grid" class="products-grid">
+      <!-- Filled by JS -->
+    </div>
+
+    <!-- Pagination -->
+    <div id="pagination" style="display:flex;justify-content:center;gap:10px;margin-top:48px;flex-wrap:wrap;"></div>
+  </div>
+</section>
+
+<!-- ── Footer ─────────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Hari</div>
+    <ul class="footer-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/products.html">Products</a></li>
+      <li><a href="/login.html">Login</a></li>
+    </ul>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Hari. All rights reserved.</p>
+  </div>
+</footer>
+
+<div id="toast"></div>
+
+<script src="/js/shared.js"></script>
+<script>
+  let currentPage     = 1;
+  let currentCategory = '';
+  let currentSearch   = '';
+  let currentSort     = 'newest';
+  const LIMIT         = 12;
+
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('category')) {
+    currentCategory = urlParams.get('category');
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.cat === currentCategory);
+    });
+  }
+
+  async function loadProducts() {
+    const grid = document.getElementById('products-grid');
+    grid.innerHTML = skeletonCards(LIMIT);
+
+    try {
+      let url = `/products?page=${currentPage}&limit=${LIMIT}`;
+      if (currentCategory) url += `&category=${encodeURIComponent(currentCategory)}`;
+      if (currentSearch)   url += `&search=${encodeURIComponent(currentSearch)}`;
+
+      const data = await apiFetch(url);
+      let products = data.data || [];
+
+      if (currentSort === 'price-asc')  products = products.sort((a,b) => a.price - b.price);
+      if (currentSort === 'price-desc') products = products.sort((a,b) => b.price - a.price);
+
+      const count = document.getElementById('result-count');
+      count.textContent = `Showing ${products.length} of ${data.total} product${data.total !== 1 ? 's' : ''}`;
+
+      if (products.length === 0) {
+        grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><h3>No products found</h3></div>`;
+        renderPagination(0, 0);
+        return;
+      }
+
+      grid.innerHTML = products.map(p => `
+        <div class="product-card fade-in-up">
+          <div class="product-card-img">
+            <img src="${p.imageUrl}" alt="${p.name}" loading="lazy" />
+            <span class="product-badge">${p.category}</span>
+          </div>
+          <div class="product-card-body">
+            <p class="product-card-category">${p.category}</p>
+            <h3 class="product-card-name">${p.name}</h3>
+            <p class="product-card-desc">${p.description}</p>
+            <div class="product-card-footer">
+              <span class="product-price">${formatPrice(p.price)}</span>
+              <button class="btn btn-primary btn-sm">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      renderPagination(data.pages, data.page);
+
+    } catch (err) {
+      grid.innerHTML = `<div class="empty-state"><h3>Error loading products</h3></div>`;
+    }
+  }
+
+  function renderPagination(totalPages, page) {
+    const pag = document.getElementById('pagination');
+    if (totalPages <= 1) { pag.innerHTML = ''; return; }
+
+    let html = '';
+    for (let i = 1; i <= totalPages; i++) {
+      html += `<button class="filter-btn ${i === page ? 'active' : ''}" onclick="goPage(${i})">${i}</button>`;
+    }
+    pag.innerHTML = html;
+  }
+
+  function goPage(n) {
+    currentPage = n;
+    loadProducts();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  loadProducts();
+</script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hari Collection – Ethnic Wear</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+<!-- ── Navbar ─────────────────────────────────────────────────── -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">Hari</a>
+    <ul class="nav-links">
+      <li><a href="/" class="active">Home</a></li>
+      <li><a href="/products.html">Products</a></li>
+      <li id="nav-admin" style="display:none"><a href="/admin.html">Dashboard</a></li>
+      <li id="nav-login"><a href="/login.html">Login</a></li>
+      <li id="nav-signup"><a href="/signup.html" class="btn-primary">Sign Up</a></li>
+      <li id="nav-logout" style="display:none">
+        <a href="#" id="logout-btn">Logout</a>
+      </li>
+    </ul>
+    <button class="nav-hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ── Hero ───────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-content">
+    <span class="hero-eyebrow">New Collection 2025</span>
+    <h1>Elegance Woven in <em>Every Thread</em></h1>
+    <p>Discover handcrafted Kurtis and Suits that blend tradition with contemporary grace.</p>
+    <div class="hero-actions">
+      <a href="/products.html" class="btn btn-primary">Shop Now</a>
+      <a href="/products.html?category=Kurti" class="btn btn-outline">View Kurtis</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Stats strip ────────────────────────────────────────────── -->
+<div style="background:var(--warm-off); border-bottom:1px solid var(--sand);">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+                text-align:center;padding:24px 0;gap:20px;">
+      <div>
+        <p style="font-family:var(--font-display);font-size:1.8rem;font-weight:600;color:var(--charcoal)">500+</p>
+        <p style="font-size:.82rem;color:var(--midtone)">Products</p>
+      </div>
+      <div>
+        <p style="font-family:var(--font-display);font-size:1.8rem;font-weight:600;color:var(--charcoal)">10K+</p>
+        <p style="font-size:.82rem;color:var(--midtone)">Happy Customers</p>
+      </div>
+      <div>
+        <p style="font-family:var(--font-display);font-size:1.8rem;font-weight:600;color:var(--charcoal)">100%</p>
+        <p style="font-size:.82rem;color:var(--midtone)">Authentic Fabric</p>
+      </div>
+      <div>
+        <p style="font-family:var(--font-display);font-size:1.8rem;font-weight:600;color:var(--charcoal)">Free</p>
+        <p style="font-size:.82rem;color:var(--midtone)">Shipping above ₹999</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Categories ─────────────────────────────────────────────── -->
+<section class="section" style="background:var(--cream);">
+  <div class="container">
+    <div class="section-header fade-in-up">
+      <span class="section-label">Shop by Category</span>
+      <h2 class="section-title">Our <em>Collections</em></h2>
+      <p class="section-sub">Curated styles for every occasion</p>
+    </div>
+    <div class="categories-grid fade-in-up-2">
+      <a href="/products.html?category=Kurti" class="category-card">
+        <img src="https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=600&q=80" alt="Kurti Collection" loading="lazy"/>
+        <div class="category-card-overlay">
+          <h3>Kurtis</h3>
+          <span>Casual · Festive · Everyday</span>
+        </div>
+      </a>
+      <a href="/products.html?category=Suits" class="category-card">
+        <img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600&q=80" alt="Suits Collection" loading="lazy"/>
+        <div class="category-card-overlay">
+          <h3>Suits</h3>
+          <span>Salwar · Anarkali · Designer</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Featured Products ───────────────────────────────────────── -->
+<section class="section" style="background:var(--warm-off);">
+  <div class="container">
+    <div class="section-header fade-in-up" style="display:flex;align-items:center;justify-content:space-between;text-align:left;margin-bottom:36px;">
+      <div>
+        <span class="section-label">Hand Picked</span>
+        <h2 class="section-title">Latest <em>Arrivals</em></h2>
+      </div>
+      <a href="/products.html" class="btn btn-dark btn-sm" style="flex-shrink:0">View All</a>
+    </div>
+    <div id="featured-grid" class="products-grid">
+      <!-- Filled by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ── USP Strip (UPDATED) ────────────────────────────────────── -->
+<section class="section" style="background:var(--charcoal);color:var(--cream);padding:56px 0;">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px;text-align:center;">
+      
+      <div>
+        <div style="font-size:2rem;margin-bottom:10px;">🧵</div>
+        <h4 style="font-family:var(--font-display);font-size:1.15rem;margin-bottom:6px;">Premium Fabric</h4>
+        <p style="font-size:.85rem;color:rgba(250,246,241,.6)">Sourced from finest mills across India</p>
+      </div>
+
+      <div>
+        <div style="font-size:2rem;margin-bottom:10px;">🎨</div>
+        <h4 style="font-family:var(--font-display);font-size:1.15rem;margin-bottom:6px;">Artisan Crafted</h4>
+        <p style="font-size:.85rem;color:rgba(250,246,241,.6)">Every piece give  with care</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ─────────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Hari</div>
+    <ul class="footer-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/products.html">Products</a></li>
+      <li><a href="/login.html">Login</a></li>
+    </ul>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Hari. All rights reserved. Made with ❤️ in India.</p>
+  </div>
+</footer>
+
+<div id="toast"></div>
+
+<script src="/js/shared.js"></script>
+<script>
+(async () => {
+  const grid = document.getElementById('featured-grid');
+  grid.innerHTML = skeletonCards(4);
+
+  try {
+    const data = await apiFetch('/products?limit=8');
+    if (!data.data || data.data.length === 0) {
+      grid.innerHTML = `
+        <div class="empty-state" style="grid-column:1/-1">
+          <h3>No products yet</h3>
+        </div>`;
+      return;
+    }
+    grid.innerHTML = data.data.map(p => `
+      <div class="product-card fade-in-up">
+        <img src="${p.imageUrl}" alt="${p.name}" />
+        <h3>${p.name}</h3>
+        <p>${p.description}</p>
+        <span>${formatPrice(p.price)}</span>
+      </div>`).join('');
+  } catch (e) {
+    grid.innerHTML = `<p>Failed to load products.</p>`;
+  }
+})();
+</script>
+</body>
+</html>

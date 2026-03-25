@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up – Hari</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+<div class="auth-page">
+  <!-- ── Decorative Left Panel ────────────────────────────────── -->
+  <div class="auth-art">
+    <div class="auth-art-content">
+      <div class="auth-art-logo">Hari</div>
+      <h2>Join Our <em>World</em> of Craft</h2>
+      <p>Create your account and discover a curated universe of ethnic fashion crafted just for you.</p>
+      <div style="margin-top:48px;">
+        <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+                    border-radius:16px;padding:24px;">
+          <p style="font-family:var(--font-display);font-size:1.1rem;color:var(--cream);
+                    font-style:italic;line-height:1.5;margin-bottom:12px;">
+            "The elegance of Indian ethnic wear is timeless — and Hari brings it to your doorstep."
+          </p>
+          <p style="font-size:.82rem;color:rgba(250,246,241,.5);">— Hari Team</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Form Panel ─────────────────────────────────────────────── -->
+  <div class="auth-form-wrap">
+    <div class="auth-form-box fade-in-up">
+      <h2>Create Account</h2>
+      <p class="auth-sub">
+        Already have an account? <a href="/login.html">Sign in</a>
+      </p>
+
+      <form id="signup-form" novalidate>
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input
+            type="text" id="name" name="name"
+            placeholder="Your full name"
+            autocomplete="name"
+          />
+          <p class="field-error" id="name-error"></p>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input
+            type="email" id="email" name="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+          />
+          <p class="field-error" id="email-error"></p>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div style="position:relative;">
+            <input
+              type="password" id="password" name="password"
+              placeholder="Min. 6 characters"
+              autocomplete="new-password"
+              style="padding-right:46px;"
+            />
+            <button type="button" id="toggle-pass"
+              style="position:absolute;right:14px;top:50%;transform:translateY(-50%);
+                     background:none;border:none;color:var(--light-txt);font-size:.9rem;cursor:pointer;"
+              aria-label="Toggle password visibility">👁</button>
+          </div>
+          <!-- Password strength bar -->
+          <div id="strength-bar" style="display:none;margin-top:8px;">
+            <div style="height:3px;background:var(--sand);border-radius:2px;overflow:hidden;">
+              <div id="strength-fill" style="height:100%;width:0;transition:width .3s,background .3s;border-radius:2px;"></div>
+            </div>
+            <p id="strength-text" style="font-size:.74rem;margin-top:4px;color:var(--midtone);"></p>
+          </div>
+          <p class="field-error" id="password-error"></p>
+        </div>
+
+        <div class="form-group">
+          <label for="confirm">Confirm Password</label>
+          <input
+            type="password" id="confirm" name="confirm"
+            placeholder="Re-enter your password"
+            autocomplete="new-password"
+          />
+          <p class="field-error" id="confirm-error"></p>
+        </div>
+
+        <div style="margin-bottom:24px;">
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+            <input type="checkbox" id="agree" style="width:16px;height:16px;margin-top:2px;accent-color:var(--copper);" />
+            <span style="font-size:.83rem;color:var(--midtone);">
+              I agree to the <a href="#" style="color:var(--copper);">Terms of Service</a>
+              and <a href="#" style="color:var(--copper);">Privacy Policy</a>
+            </span>
+          </label>
+          <p class="field-error" id="agree-error"></p>
+        </div>
+
+        <button type="submit" id="submit-btn" class="btn btn-primary btn-full">
+          Create Account
+        </button>
+      </form>
+
+      <div style="margin-top:24px;text-align:center;">
+        <a href="/" style="font-size:.85rem;color:var(--midtone);">← Back to Home</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="/js/shared.js"></script>
+<!-- JS unchanged -->
+</body>
+</html>
