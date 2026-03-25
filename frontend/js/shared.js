@@ -2,7 +2,7 @@
    shared.js  –  Utilities used across all pages
    ═══════════════════════════════════════════════════════ */
 
-const API_BASE = '/api';
+const API_BASE = 'https://shri-hari-collection.onrender.com/api';
 
 /* ── Token helpers ─────────────────────────────────────── */
 const getToken = ()         => localStorage.getItem('zafran_token');
