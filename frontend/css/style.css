@@ -307,8 +307,10 @@ input, select, textarea { font-family: var(--font-body); }
   display: flex; align-items: center; justify-content: space-between;
 }
 .product-price {
-  font-size: 1.2rem; font-weight: 700;
-  color: var(--charcoal);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #b76e2b; /* copper tone */
+  margin-top: 8px;
 }
 .product-price span { font-size: .82rem; font-weight: 400; color: var(--midtone); }
 
