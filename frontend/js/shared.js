@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════
-   shared.js  –  FINAL WORKING VERSION
+   shared.js  –  FINAL WORKING VERSION (FIXED AUTH)
    ═══════════════════════════════════════════════════════ */
 
 const API_BASE = 'https://shri-hari-collection.onrender.com/api';
@@ -32,12 +32,12 @@ function showToast(message, type = 'success', duration = 3000) {
   }, duration);
 }
 
-/* ── Format price (🔥 FIX ADDED BACK) ─────────────────── */
+/* ── Format price ─────────────────────────────────────── */
 function formatPrice(n) {
   return '₹' + Number(n).toLocaleString('en-IN');
 }
 
-// ✅ ADD THIS BELOW
+/* ── Skeleton Cards ───────────────────────────────────── */
 function skeletonCards(n = 4) {
   return Array.from({ length: n }, () => `
     <div class="skeleton-card">
@@ -50,7 +50,8 @@ function skeletonCards(n = 4) {
     </div>
   `).join('');
 }
-/* ── Fetch wrapper (CLEAN VERSION) ─────────────────────── */
+
+/* ── Fetch wrapper (FIXED AUTH CHECK) ─────────────────── */
 async function apiFetch(endpoint, options = {}) {
   try {
     const headers = { ...options.headers };
@@ -60,10 +61,13 @@ async function apiFetch(endpoint, options = {}) {
       headers['Content-Type'] = 'application/json';
     }
 
-    // ✅ Only send token when needed
+    // 🔥 FIX: enforce token when auth is required
     if (options.auth) {
       const token = getToken();
-      if (token) headers['Authorization'] = `Bearer ${token}`;
+      if (!token) {
+        throw new Error("Not authenticated. Please log in.");
+      }
+      headers['Authorization'] = `Bearer ${token}`;
     }
 
     const res = await fetch(`${API_BASE}${endpoint}`, {
