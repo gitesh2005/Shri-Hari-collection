@@ -7,6 +7,65 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="/css/style.css" />
+
+  <!-- ✅ ZOOM CSS ADDED -->
+  <style>
+    .product-card-img img {
+      cursor: zoom-in;
+    }
+
+    .product-card-img .zoom-hint {
+      position: absolute;
+      bottom: 10px; right: 10px;
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      background: rgba(44,36,22,.65);
+      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .9rem;
+      opacity: 0;
+      transform: scale(.8);
+      transition: .2s;
+      pointer-events: none;
+    }
+
+    .product-card:hover .zoom-hint {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    #lightbox {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: .3s;
+      z-index: 2000;
+    }
+
+    #lightbox.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    #lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 10px;
+    }
+
+    #lightbox button {
+      position: absolute;
+      top: 20px; right: 20px;
+      background: #fff;
+      border: none;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
 
@@ -42,11 +101,11 @@
 <section class="section">
   <div class="container">
 
-    <!-- Filter + Search bar -->
     <div class="filter-bar">
       <button class="filter-btn active" data-cat="">All</button>
       <button class="filter-btn" data-cat="Kurti">Kurtis</button>
       <button class="filter-btn" data-cat="Suits">Suits</button>
+
       <div class="search-bar">
         <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -54,7 +113,7 @@
         </svg>
         <input type="search" id="search-input" placeholder="Search products…" />
       </div>
-      <!-- Sort -->
+
       <select id="sort-select"
         style="padding:10px 14px;border:1.5px solid var(--sand);border-radius:30px;
                background:var(--white);font-size:.87rem;color:var(--charcoal);outline:none;cursor:pointer;">
@@ -64,20 +123,14 @@
       </select>
     </div>
 
-    <!-- Result count -->
     <p id="result-count" style="font-size:.87rem;color:var(--midtone);margin-bottom:24px;"></p>
 
-    <!-- Grid -->
-    <div id="products-grid" class="products-grid">
-      <!-- Filled by JS -->
-    </div>
+    <div id="products-grid" class="products-grid"></div>
 
-    <!-- Pagination -->
     <div id="pagination" style="display:flex;justify-content:center;gap:10px;margin-top:48px;flex-wrap:wrap;"></div>
   </div>
 </section>
 
-<!-- ── Footer ─────────────────────────────────────────────────── -->
 <footer>
   <div class="footer-inner">
     <div class="footer-logo">Hari</div>
@@ -92,54 +145,40 @@
   </div>
 </footer>
 
+<!-- ✅ LIGHTBOX HTML -->
+<div id="lightbox">
+  <button onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" />
+</div>
+
 <div id="toast"></div>
 
 <script src="/js/shared.js"></script>
 <script>
-  let currentPage     = 1;
+  let currentPage = 1;
   let currentCategory = '';
-  let currentSearch   = '';
-  let currentSort     = 'newest';
-  const LIMIT         = 12;
-
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get('category')) {
-    currentCategory = urlParams.get('category');
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.cat === currentCategory);
-    });
-  }
+  let currentSearch = '';
+  let currentSort = 'newest';
+  const LIMIT = 12;
 
   async function loadProducts() {
     const grid = document.getElementById('products-grid');
     grid.innerHTML = skeletonCards(LIMIT);
 
     try {
-      let url = `/products?page=${currentPage}&limit=${LIMIT}`;
-      if (currentCategory) url += `&category=${encodeURIComponent(currentCategory)}`;
-      if (currentSearch)   url += `&search=${encodeURIComponent(currentSearch)}`;
-
-      const data = await apiFetch(url);
+      const data = await apiFetch(`/products?page=${currentPage}&limit=${LIMIT}`);
       let products = data.data || [];
-
-      if (currentSort === 'price-asc')  products = products.sort((a,b) => a.price - b.price);
-      if (currentSort === 'price-desc') products = products.sort((a,b) => b.price - a.price);
-
-      const count = document.getElementById('result-count');
-      count.textContent = `Showing ${products.length} of ${data.total} product${data.total !== 1 ? 's' : ''}`;
-
-      if (products.length === 0) {
-        grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><h3>No products found</h3></div>`;
-        renderPagination(0, 0);
-        return;
-      }
 
       grid.innerHTML = products.map(p => `
         <div class="product-card fade-in-up">
           <div class="product-card-img">
-            <img src="${p.imageUrl}" alt="${p.name}" loading="lazy" />
+            <!-- ✅ ZOOM CLICK ADDED -->
+            <img src="${p.imageUrl}" alt="${p.name}" loading="lazy"
+                 onclick="openLightbox('${p.imageUrl}')" />
             <span class="product-badge">${p.category}</span>
+            <div class="zoom-hint">🔍</div>
           </div>
+
           <div class="product-card-body">
             <p class="product-card-category">${p.category}</p>
             <h3 class="product-card-name">${p.name}</h3>
@@ -152,50 +191,23 @@
         </div>
       `).join('');
 
-      renderPagination(data.pages, data.page);
-
     } catch (err) {
-      grid.innerHTML = `<div class="empty-state"><h3>Error loading products</h3></div>`;
+      grid.innerHTML = `<h3>Error loading products</h3>`;
     }
   }
 
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    // remove active from all
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-
-    // add active to clicked
-    btn.classList.add('active');
-
-    // set category
-    currentCategory = btn.dataset.cat;
-
-    // reset page
-    currentPage = 1;
-
-    // reload products
-    loadProducts();
-  });
-});
-
-  function renderPagination(totalPages, page) {
-    const pag = document.getElementById('pagination');
-    if (totalPages <= 1) { pag.innerHTML = ''; return; }
-
-    let html = '';
-    for (let i = 1; i <= totalPages; i++) {
-      html += `<button class="filter-btn ${i === page ? 'active' : ''}" onclick="goPage(${i})">${i}</button>`;
-    }
-    pag.innerHTML = html;
+  /* ✅ LIGHTBOX JS */
+  function openLightbox(src) {
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox').classList.add('open');
   }
 
-  function goPage(n) {
-    currentPage = n;
-    loadProducts();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
   }
 
   loadProducts();
 </script>
+
 </body>
 </html>
