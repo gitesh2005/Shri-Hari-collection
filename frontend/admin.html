@@ -201,32 +201,17 @@
       <li><a href="/admin.html" class="active">Dashboard</a></li>
       <li id="nav-login" style="display:none"><a href="/login.html">Login</a></li>
       <li id="nav-signup" style="display:none"><a href="/signup.html" class="btn-primary">Sign Up</a></li>
-<<<<<<< HEAD
       <li id="nav-logout"><a href="#" id="logout-btn">Logout</a></li>
     </ul>
-    <button class="nav-hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme" style="
+        width:38px;height:38px;border-radius:50%;background:var(--warm-off);border:none;
+        font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;
+      ">🌙</button>
+      <button class="nav-hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
   </div>
 </nav>
-=======
-      <li id="nav-logout">
-        <a href="#" id="logout-btn">Logout</a>
-      </li>
-     </ul>
-
-     <!-- Theme toggle -->
-     <div style="display:flex;align-items:center;gap:12px;">
-       <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme" style="
-         width:38px;height:38px;border-radius:50%;background:var(--warm-off);border:none;
-         font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;
-       ">🌙</button>
-
-       <button class="nav-hamburger" aria-label="Menu">
-         <span></span><span></span><span></span>
-       </button>
-     </div>
-   </div>
- </nav>
->>>>>>> b66ac6d (update the ui)
 
 <div class="admin-layout">
   <!-- Sidebar -->
@@ -768,8 +753,8 @@ document.getElementById('confirm-del-btn').addEventListener('click', async () =>
   finally { btn.disabled = false; btn.textContent = 'Delete'; }
 });
 
-/* ── Helpers ────────────────────────────────────────────────── */
-function showModalErr(id, msg) {
+  /* ── Helpers ────────────────────────────────────────── */
+  function showModalErr(id, msg) {
   const el = document.getElementById(id);
   const err = document.getElementById(`${id}-error`);
   el.classList.add('error');
@@ -812,15 +797,7 @@ document.querySelectorAll('.sidebar-item').forEach(item => {
     if (window.innerWidth <= 768) {
       document.getElementById('sidebar').classList.remove('open');
     }
-  });
-<<<<<<< HEAD
 });
-</script>
-
-<!-- ── Mobile Bottom Navigation ────────────────────────────────── (Hidden in admin) -->
-<style>@media (max-width:768px){.mobile-bottom-nav{display:none!important;}}</style>
-
-=======
 
   /* ── Helpers ────────────────────────────────────────── */
   function showModalErr(id, msg) {
@@ -839,10 +816,12 @@ document.querySelectorAll('.sidebar-item').forEach(item => {
     return str.replace(/['"&<>]/g, c => ({'\'':'&#39;','"':'&quot;','&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
   }
 
-   // Init
-   loadProducts();
-   initTheme();
- </script>
->>>>>>> b66ac6d (update the ui)
+  // Init
+  loadProducts();
+  initTheme();
+</script>
+
+<!-- ── Mobile Bottom Navigation ────────────────────────────────── (Hidden in admin) -->
+<style>@media (max-width:768px){.mobile-bottom-nav{display:none!important;}}</style>
 </body>
 </html>

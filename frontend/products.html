@@ -26,45 +26,32 @@
         <a href="#" id="logout-btn">Logout</a>
       </li>
 <<<<<<< HEAD
-    </ul>
+</ul>
 
-    <div class="nav-icons">
-      <button class="nav-icon-btn" onclick="openCartDrawer()" data-tooltip="Cart">🛒
-        <span class="icon-badge" id="cart-badge" style="display:none">0</span>
-      </button>
-      <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">🌙</button>
-      <button class="nav-hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+      <!-- Icons -->
+      <div style="display:flex;align-items:center;gap:16px;">
+        <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme" style="
+          width:40px;height:40px;border-radius:50%;background:var(--warm-off);border:none;
+          font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;
+          transition:all .3s ease;
+        ">🌙</button>
+
+        <button onclick="openCartDrawer()" aria-label="Cart" style="
+          position:relative;background:none;border:none;font-size:1.3rem;cursor:pointer;
+        ">🛒
+          <span class="icon-badge" id="cart-badge" style="
+            position:absolute;top:-4px;right:-6px;background:var(--rust);color:white;
+            font-size:.65rem;padding:2px 6px;border-radius:10px;min-width:16px;text-align:center;
+            display:none;
+          ">0</span>
+        </button>
+
+        <button class="nav-hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
     </div>
-  </div>
-</nav>
-=======
-     </ul>
-
-     <!-- Icons -->
-     <div style="display:flex;align-items:center;gap:16px;">
-       <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme" style="
-         width:40px;height:40px;border-radius:50%;background:var(--warm-off);border:none;
-         font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;
-         transition:all .3s ease;
-       ">🌙</button>
-
-       <button onclick="openCartDrawer()" aria-label="Cart" style="
-         position:relative;background:none;border:none;font-size:1.3rem;cursor:pointer;
-       ">🛒
-         <span class="icon-badge" id="cart-badge" style="
-           position:absolute;top:-4px;right:-6px;background:var(--rust);color:white;
-           font-size:.65rem;padding:2px 6px;border-radius:10px;min-width:16px;text-align:center;
-           display:none;
-         ">0</span>
-       </button>
-
-       <button class="nav-hamburger" aria-label="Menu">
-         <span></span><span></span><span></span>
-       </button>
-     </div>
-   </div>
- </nav>
->>>>>>> b66ac6d (update the ui)
+  </nav>
 
 <!-- ── Page Banner ────────────────────────────────────────────── -->
 <div class="page-banner">
@@ -607,142 +594,9 @@ function adjustQty(delta) {
 }
 
 // Everything else (apiFetch, showToast, formatPrice, initScrollAnimations, etc.) comes from shared.js
-=======
-  if (mobileBadge) {
-    const count = getCartCount();
-    mobileBadge.textContent = count;
-    mobileBadge.style.display = count > 0 ? 'block' : 'none';
-  }
-}
-
-// Load and render products
-let allProducts = [];
-let currentPage = 1;
-let currentCategory = '';
-let currentSearch = '';
-let currentSort = 'newest';
-const LIMIT = 12;
-
-async function loadProducts(reset = true) {
-  const grid = document.getElementById('products-grid');
-  if (reset) grid.innerHTML = skeletonCards(LIMIT);
-
-  try {
-    const params = new URLSearchParams({
-      page: currentPage,
-      limit: 200, // Load more for client-side filtering
-      category: currentCategory || undefined,
-      search: currentSearch || undefined,
-      sort: currentSort
-    });
-
-    const data = await apiFetch(`/products?${params}`);
-    allProducts = data.data || [];
-    renderProducts();
-    updateResultCount();
-  } catch (err) {
-    grid.innerHTML = `<p style="text-align:center;padding:40px;color:var(--midtone)">Failed to load products.</p>`;
-  }
-}
-
-function renderProducts() {
-  const grid = document.getElementById('products-grid');
-  grid.innerHTML = allProducts.map(p => `
-    <div class="product-card fade-in-up">
-      <div class="product-card-img">
-        <img src="${p.imageUrl}" alt="${p.name}" loading="lazy"
-             onclick="openLightbox('${p.imageUrl}')" />
-        <span class="product-badge">${p.category}</span>
-        <div class="zoom-hint" style="position:absolute;bottom:10px;right:10px;width:34px;height:34px;border-radius:50%;background:rgba(44,36,22,.65);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.9rem;opacity:0;transform:scale(.8);transition:.2s;pointer-events:none;">🔍</div>
-
-        <!-- Wishlist Button -->
-        <button class="wishlist-btn ${isInWishlist(p._id) ? 'active' : ''}"
-                data-id="${p._id}"
-                onclick="toggleWishlistCard(this, ${JSON.stringify(p).replace(/"/g, '&quot;')})"
-                style="position:absolute;top:14px;right:14px;width:36px;height:36px;background:rgba(255,255,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:var(--charcoal);cursor:pointer;z-index:2;box-shadow:0 2px 10px rgba(0,0,0,.15);transition:all .3s ease;">
-          ${isInWishlist(p._id) ? '❤️' : '🤍'}
-        </button>
-      </div>
-
-      <div class="product-card-body">
-        <p class="product-card-category">${p.category}</p>
-        <h3 class="product-card-name">${p.name}</h3>
-        <p class="product-card-desc">${p.description}</p>
-        <div class="product-card-footer">
-          <span class="product-price">${formatPrice(p.price)}</span>
-          <button class="btn btn-primary btn-sm" onclick="addToCart(${JSON.stringify(p).replace(/"/g, '&quot;')}, 1)">Add to Cart</button>
-        </div>
-      </div>
-    </div>
-  `).join('');
-
-  updateBadge();
-}
-
-function toggleWishlistCard(btn, product) {
-  const added = toggleWishlist(product);
-  btn.textContent = added ? '❤️' : '🤍';
-  btn.classList.toggle('active', added);
-}
-
-function updateResultCount() {
-  const shown = allProducts.length;
-  const el = document.getElementById('result-count');
-  el.textContent = `Showing ${shown} product${shown !== 1 ? 's' : ''}`;
-}
-
-/* Filter buttons */
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', function() {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    this.classList.add('active');
-    currentCategory = this.getAttribute('data-cat');
-    currentPage = 1;
-    loadProducts(true);
-  });
-});
-
-/* Search */
-document.getElementById('search-input').addEventListener('input', debounce((e) => {
-  currentSearch = e.target.value.trim();
-  currentPage = 1;
-  loadProducts(true);
-}, 500));
-
-/* Sort */
-document.getElementById('sort-select').addEventListener('change', (e) => {
-  currentSort = e.target.value;
-  currentPage = 1;
-  loadProducts(true);
-});
-
-/* Lightbox (already defined) */
-function openLightbox(src) {
-  document.getElementById('lightbox-img').src = src;
-  document.getElementById('lightbox').classList.add('open');
-}
-function closeLightbox() {
-  document.getElementById('lightbox').classList.remove('open');
-}
-
-/* Mobile nav toggle */
-const hamburger = document.querySelector('.nav-hamburger');
-if (hamburger) {
-  hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    document.querySelector('.nav-links').classList.toggle('open');
-  });
-}
-
-// Show mobile nav on small screens
-if (window.innerWidth <= 768) {
-  const mobileNav = document.querySelector('.mobile-bottom-nav');
-  if (mobileNav) mobileNav.style.display = 'flex';
-}
 
 // Initial load
 loadProducts();
->>>>>>> b66ac6d (update the ui)
 </script>
 
 </body>
