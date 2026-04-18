@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shopping Cart – Hari Collection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .cart-page { padding: 48px 0 100px; }
+    .page-header { margin-bottom: 40px; }
+    .page-header h1 {
+      font-family: var(--font-display);
+      font-size: 2.2rem; font-weight: 500; color: var(--charcoal);
+    }
+
+    /* Empty cart */
+    .cart-empty-page {
+      text-align: center; padding: 120px 20px;
+      background: var(--white); border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+    }
+    .cart-empty-page h2 {
+      font-family: var(--font-display); font-size: 1.8rem;
+      margin-bottom: 12px; color: var(--charcoal);
+    }
+    .cart-empty-page p { color: var(--midtone); margin-bottom: 24px; }
+
+    /* Cart layout */
+    .cart-layout {
+      display: grid; grid-template-columns: 1fr 360px; gap: 32px;
+    }
+    .cart-items { background: var(--white); border-radius: var(--radius-lg); overflow: hidden; }
+
+    .cart-item {
+      display: flex; gap: 20px;
+      padding: 24px;
+      border-bottom: 1px solid var(--warm-off);
+      align-items: center;
+    }
+    .cart-item:last-child { border-bottom: none; }
+
+    .cart-item-img {
+      width: 100px; height: 120px; flex-shrink: 0;
+      border-radius: var(--radius-sm); overflow: hidden;
+      background: var(--warm-off);
+    }
+    .cart-item-img img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .cart-item-details { flex: 1; }
+    .cart-item-name {
+      font-size: 1.05rem; font-weight: 600;
+      color: var(--charcoal); margin-bottom: 6px;
+    }
+    .cart-item-cat {
+      font-size: .8rem; color: var(--copper);
+      text-transform: uppercase; letter-spacing: .08em;
+      margin-bottom: 8px;
+    }
+    .cart-item-price {
+      font-size: 1.15rem; font-weight: 700;
+      color: var(--copper); margin-bottom: 12px;
+    }
+    .cart-item-actions {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .qty-control {
+      display: flex; align-items: center;
+      gap: 8px; background: var(--warm-off);
+      border-radius: var(--radius-sm); padding: 4px;
+    }
+    .qty-btn {
+      width: 32px; height: 32px;
+      border: none; background: var(--white);
+      border-radius: 6px; cursor: pointer;
+      font-size: 1rem; display: flex;
+      align-items: center; justify-content: center;
+      transition: all .2s ease;
+    }
+    .qty-btn:hover { background: var(--sand); }
+    .qty-value { min-width: 32px; text-align: center; font-weight: 600; }
+
+    .remove-btn {
+      background: none; border: none;
+      color: var(--light-txt); font-size: .85rem;
+      cursor: pointer; text-decoration: underline;
+      margin-left: 12px;
+    }
+    .remove-btn:hover { color: var(--rust); }
+
+    /* Cart Summary */
+    .cart-summary {
+      background: var(--white); border-radius: var(--radius-lg);
+      padding: 28px; height: fit-content;
+      box-shadow: var(--shadow-sm);
+      position: sticky; top: 100px;
+    }
+    .cart-summary h3 {
+      font-family: var(--font-display);
+      font-size: 1.3rem; margin-bottom: 20px;
+      padding-bottom: 16px; border-bottom: 1px solid var(--warm-off);
+    }
+    .summary-row {
+      display: flex; justify-content: space-between;
+      margin-bottom: 14px; font-size: .93rem;
+    }
+    .summary-row.total {
+      font-size: 1.25rem; font-weight: 700;
+      margin-top: 20px; padding-top: 16px;
+      border-top: 1px solid var(--sand);
+      color: var(--charcoal);
+    }
+    .promo-input {
+      display: flex; gap: 8px; margin: 20px 0;
+    }
+    .promo-input input {
+      flex: 1; padding: 10px 14px;
+      border: 1.5px solid var(--sand);
+      border-radius: var(--radius-sm);
+    }
+    .promo-input button {
+      padding: 10px 16px;
+      background: var(--warm-off); color: var(--charcoal);
+      border: none; border-radius: var(--radius-sm);
+      cursor: pointer; font-weight: 500;
+    }
+    .checkout-btn {
+      width: 100%; padding: 16px;
+      background: var(--charcoal); color: var(--cream);
+      border: none; border-radius: var(--radius-sm);
+      font-size: 1rem; font-weight: 600;
+      cursor: pointer; transition: all .3s ease;
+    }
+    .checkout-btn:hover { background: var(--copper); transform: translateY(-2px); }
+    .checkout-btn:disabled {
+      background: var(--sand); cursor: not-allowed; transform: none;
+    }
+    .secure-note {
+      text-align: center; font-size: .78rem;
+      color: var(--light-txt); margin-top: 12px;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+
+    @media (max-width: 768px) {
+      .cart-layout { grid-template-columns: 1fr; }
+      .cart-item { flex-direction: column; text-align: center; }
+      .cart-item-img { width: 140px; height: 160px; }
+      .cart-item-actions { justify-content: center; flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body class="cart-page">
+
+<!-- ── Navbar ─────────────────────────────────────────────────── -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">Hari</a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/products.html">Products</a></li>
+      <li id="nav-login"><a href="/login.html">Login</a></li>
+      <li id="nav-signup"><a href="/signup.html" class="btn-primary">Sign Up</a></li>
+      <li id="nav-logout" style="display:none"><a href="#" id="logout-btn">Logout</a></li>
+    </ul>
+    <div class="nav-icons">
+      <button class="nav-icon-btn" onclick="openCartDrawer()">🛒
+        <span class="icon-badge" id="cart-badge" style="display:none">0</span>
+      </button>
+      <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">🌙</button>
+      <button class="nav-hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="page-header fade-in-up">
+    <h1>Shopping Cart</h1>
+    <p class="wishlist-count" id="cart-count-badge">0 items</p>
+  </div>
+
+  <!-- Cart content -->
+  <div id="cart-content">
+    <div class="cart-layout">
+      <div class="cart-items" id="cart-items-page">
+        <!-- Filled by JS -->
+      </div>
+
+      <aside class="cart-summary">
+        <h3>Order Summary</h3>
+        <div class="summary-row"><span>Subtotal</span><span id="subtotal">₹0</span></div>
+        <div class="summary-row"><span>Shipping</span><span id="shipping">Calculated at checkout</span></div>
+        <div class="summary-row total"><span>Total</span><span id="total">₹0</span></div>
+
+        <div class="promo-input">
+          <input type="text" placeholder="Promo code (coming soon)" disabled>
+          <button onclick="showToast('Promo codes coming soon!', 'info')">Apply</button>
+        </div>
+
+        <button class="checkout-btn" id="checkout-btn" onclick="proceedToCheckout()">
+          Proceed to Checkout
+        </button>
+        <p class="secure-note">
+          🔒 Secure checkout powered by Stripe (coming soon)
+        </p>
+        <p style="text-align:center;margin-top:16px;font-size:.85rem;">
+          <a href="/products.html" style="color:var(--copper)">← Continue Shopping</a>
+        </p>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div id="cart-empty-page" class="cart-empty-page" style="display:none">
+    <div style="font-size:4rem;margin-bottom:16px;">🛒</div>
+    <h2>Your cart is empty</h2>
+    <p>Looks like you haven't added anything yet.</p>
+    <a href="/products.html" class="btn btn-primary">Start Shopping</a>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="/js/shared.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  renderCartPage();
+});
+
+function renderCartPage() {
+  const items = getCart();
+  const container = document.getElementById('cart-items-page');
+  const empty = document.getElementById('cart-empty-page');
+  const content = document.getElementById('cart-content');
+  const countEl = document.getElementById('cart-count-badge');
+
+  countEl.textContent = `${items.length} item${items.length !== 1 ? 's' : ''}`;
+
+  if (items.length === 0) {
+    content.style.display = 'none';
+    empty.style.display = 'block';
+    return;
+  }
+
+  content.style.display = 'block';
+  empty.style.display = 'none';
+
+  container.innerHTML = items.map(item => `
+    <div class="cart-item">
+      <div class="cart-item-img">
+        <img src="${item.image}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/100x120?text=N/A'">
+      </div>
+      <div class="cart-item-details">
+        <div class="cart-item-cat">${item.category}</div>
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-price">${formatPrice(item.price)}</div>
+        <div class="cart-item-actions">
+          <div class="qty-control">
+            <button class="qty-btn" onclick="updateCartQty('${item.id}', -1)">−</button>
+            <span class="qty-value">${item.qty}</span>
+            <button class="qty-btn" onclick="updateCartQty('${item.id}', 1)">+</button>
+          </div>
+          <button class="remove-btn" onclick="removeFromCart('${item.id}')">Remove</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  updateCartTotals();
+}
+
+function updateCartTotals() {
+  const subtotal = getCartTotal();
+  document.getElementById('subtotal').textContent = formatPrice(subtotal);
+  document.getElementById('total').textContent = formatPrice(subtotal);
+  document.getElementById('checkout-btn').disabled = subtotal === 0;
+}
+
+function proceedToCheckout() {
+  showToast('Checkout coming soon! Stay tuned 🛒', 'info');
+}
+</script>
+
+</body>
+</html>

@@ -3,10 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hari Collection – Ethnic Wear</title>
+  <title>Hari Collection – Elegance Woven in Every Thread</title>
+  <meta name="description" content="Discover handcrafted Kurtis and Suits that blend tradition with contemporary grace." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="/css/style.css" />
+
+  <!-- Theme Toggle & Cart Drawer Styles -->
+  <style>
+    .theme-toggle {
+      position: relative; width: 44px; height: 44px;
+      border-radius: 50%; background: var(--warm-off);
+      border: none; font-size: 1.2rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .3s ease;
+    }
+    .theme-toggle:hover {
+      background: var(--sand); transform: rotate(15deg);
+    }
+
+    .wishlist-btn { font-size: 1.2rem; }
+
+    .product-quick-actions {
+      display: flex; gap: 8px; margin-top: 12px;
+    }
+    .add-btn { flex: 1; padding: 10px; border-radius: 8px; border: 1.5px solid var(--sand); background: var(--white); cursor: pointer; }
+    .add-btn:hover { border-color: var(--copper); color: var(--copper); }
+  </style>
 </head>
 <body>
 
@@ -14,9 +37,12 @@
 <nav class="navbar">
   <div class="nav-inner">
     <a href="/" class="nav-logo">Hari</a>
+
     <ul class="nav-links">
-      <li><a href="/" class="active">Home</a></li>
-      <li><a href="/products.html">Products</a></li>
+      <li><a href="/">Home</a></li>
+      <li><a href="/products.html">Shop</a></li>
+      <li><a href="/products.html?category=Kurti">Kurtis</a></li>
+      <li><a href="/products.html?category=Suits">Suits</a></li>
       <li id="nav-admin" style="display:none"><a href="/admin.html">Dashboard</a></li>
       <li id="nav-login"><a href="/login.html">Login</a></li>
       <li id="nav-signup"><a href="/signup.html" class="btn-primary">Sign Up</a></li>
@@ -24,68 +50,148 @@
         <a href="#" id="logout-btn">Logout</a>
       </li>
     </ul>
-    <button class="nav-hamburger" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
+
+    <div class="nav-icons">
+      <!-- Search -->
+      <button class="nav-icon-btn" data-tooltip="Search"
+              onclick="document.getElementById('global-search').focus()">🔍</button>
+
+      <!-- Wishlist -->
+      <a href="/wishlist.html" class="nav-icon-btn" data-tooltip="Wishlist">🤍</a>
+
+      <!-- Cart -->
+      <button class="nav-icon-btn" onclick="openCartDrawer()" data-tooltip="Cart">
+        🛒
+        <span class="icon-badge" id="cart-badge" style="display:none">0</span>
+      </button>
+
+      <!-- Theme Toggle -->
+      <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
+
+      <!-- Mobile Hamburger -->
+      <button class="nav-hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
 </nav>
 
-<!-- ── Hero ───────────────────────────────────────────────────── -->
-<section class="hero">
-  <div class="hero-content">
-    <span class="hero-eyebrow">New Collection 2025</span>
-    <h1>Elegance Woven in <em>Every Thread</em></h1>
-    <p>Discover handcrafted Kurtis and Suits that blend tradition with contemporary grace.</p>
-    <div class="hero-actions">
-      <a href="/products.html" class="btn btn-primary">Shop Now</a>
-      <a href="/products.html?category=Kurti" class="btn btn-outline">View Kurtis</a>
+<!-- ── Global Search Overlay ──────────────────────────────────── -->
+<div id="search-overlay" style="
+  position:fixed;inset:0;z-index:1999;background:rgba(44,36,22,.8);
+  display:none;align-items:flex-start;justify-content:center;padding-top:120px;
+  backdrop-filter:blur(8px)
+">
+  <div style="width:100%;max-width:600px;padding:0 20px;">
+    <input type="search" id="global-search"
+           placeholder="Search products, categories..."
+           style="
+             width:100%;padding:16px 24px;border-radius:12px;
+             border:none;background:var(--white);font-size:1.1rem;
+           ">
+    <div id="search-results" style="
+      margin-top:16px;max-height:60vh;overflow-y:auto;
+      background:var(--white);border-radius:12px;
+    "></div>
+  </div>
+</div>
+
+<!-- ── Hero Carousel ─────────────────────────────────────────── -->
+<section class="hero-carousel">
+  <!-- Slide 1 -->
+  <div class="hero-slide active">
+    <div class="hero-bg" style="background-image: url('https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=1600&q=80');"></div>
+    <div class="hero-content">
+      <span class="hero-eyebrow">New Collection 2025</span>
+      <h1 class="hero-title">Elegance Woven in <em>Every Thread</em></h1>
+      <p class="hero-desc">Discover handcrafted Kurtis and Suits that blend tradition with contemporary grace.</p>
+      <div class="hero-actions">
+        <a href="/products.html" class="btn btn-primary btn-lg">Shop Collection</a>
+        <a href="/products.html?category=Kurti" class="btn btn-outline">Explore Kurtis</a>
+      </div>
     </div>
   </div>
+
+  <!-- Slide 2 -->
+  <div class="hero-slide">
+    <div class="hero-bg" style="background-image: url('https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=1600&q=80');"></div>
+    <div class="hero-content">
+      <span class="hero-eyebrow">Handcrafted Luxury</span>
+      <h1 class="hero-title">Festive <em>Refined</em></h1>
+      <p class="hero-desc">Celebrate moments with our exclusive festive wear – where artistry meets tradition.</p>
+      <div class="hero-actions">
+        <a href="/products.html?category=Suits" class="btn btn-primary btn-lg">View Suits</a>
+        <a href="/products.html?tag=new" class="btn btn-outline">New Arrivals</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 3 -->
+  <div class="hero-slide">
+    <div class="hero-bg" style="background-image: url('https://images.unsplash.com/photo-1590736969955-71cc94901144?w=1600&q=80');"></div>
+    <div class="hero-content">
+      <span class="hero-eyebrow">Ethnic Redefined</span>
+      <h1 class="hero-title">Modern <em>Classic</em></h1>
+      <p class="hero-desc">Timeless designs for the contemporary woman. Experience the art of slow fashion.</p>
+      <div class="hero-actions">
+        <a href="/products.html" class="btn btn-primary btn-lg">Explore All</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <button class="hero-arrow hero-prev" onclick="prevSlide()">‹</button>
+  <button class="hero-arrow hero-next" onclick="nextSlide()">›</button>
+
+  <div class="hero-controls" id="hero-dots"></div>
 </section>
 
-<!-- ── Stats strip ────────────────────────────────────────────── -->
-<div style="background:var(--warm-off); border-bottom:1px solid var(--sand);">
+<!-- ── Stats Strip ─────────────────────────────────────────────── -->
+<div class="stats-strip">
   <div class="container">
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-                text-align:center;padding:24px 0;gap:20px;">
-      <div>
-        <p style="font-family:var(--font-display);font-size:1.8rem;font-weight:600;color:var(--charcoal)">500+</p>
-        <p style="font-size:.82rem;color:var(--midtone)">Products</p>
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-value" data-target="500">0</div>
+        <div class="stat-label">Products</div>
       </div>
-      <div>
-        <p style="font-family:var(--font-display);font-size:1.8rem;font-weight:600;color:var(--charcoal)">10K+</p>
-        <p style="font-size:.82rem;color:var(--midtone)">Happy Customers</p>
+      <div class="stat-item">
+        <div class="stat-value" data-target="10000">0</div>
+        <div class="stat-label">Happy Customers</div>
       </div>
-      <div>
-        <p style="font-family:var(--font-display);font-size:1.8rem;font-weight:600;color:var(--charcoal)">100%</p>
-        <p style="font-size:.82rem;color:var(--midtone)">Authentic Fabric</p>
+      <div class="stat-item">
+        <div class="stat-value" data-target="100">0</div>
+        <div class="stat-label">% Authentic</div>
       </div>
-      <div>
-        <p style="font-family:var(--font-display);font-size:1.8rem;font-weight:600;color:var(--charcoal)">Free</p>
-        <p style="font-size:.82rem;color:var(--midtone)">Shipping above ₹999</p>
+      <div class="stat-item">
+        <div class="stat-value">Free</div>
+        <div class="stat-label">Shipping above ₹999</div>
       </div>
     </div>
   </div>
 </div>
 
 <!-- ── Categories ─────────────────────────────────────────────── -->
-<section class="section" style="background:var(--cream);">
+<section class="section" style="background: var(--cream);">
   <div class="container">
     <div class="section-header fade-in-up">
-      <span class="section-label">Shop by Category</span>
-      <h2 class="section-title">Our <em>Collections</em></h2>
-      <p class="section-sub">Curated styles for every occasion</p>
+      <span class="section-label">Curated Collections</span>
+      <h2 class="section-title">Shop by <em>Category</em></h2>
+      <p class="section-sub">Handpicked styles for every occasion</p>
     </div>
-    <div class="categories-grid fade-in-up-2">
-      <a href="/products.html?category=Kurti" class="category-card">
-        <img src="https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=600&q=80" alt="Kurti Collection" loading="lazy"/>
+
+    <div class="categories-grid">
+      <a href="/products.html?category=Kurti" class="category-card fade-in-up">
+        <img src="https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=800&q=80"
+             alt="Kurti Collection" loading="lazy" />
         <div class="category-card-overlay">
           <h3>Kurtis</h3>
           <span>Casual · Festive · Everyday</span>
         </div>
       </a>
-      <a href="/products.html?category=Suits" class="category-card">
-        <img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600&q=80" alt="Suits Collection" loading="lazy"/>
+
+      <a href="/products.html?category=Suits" class="category-card fade-in-up-2">
+        <img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=800&q=80"
+             alt="Suits Collection" loading="lazy" />
         <div class="category-card-overlay">
           <h3>Suits</h3>
           <span>Salwar · Anarkali · Designer</span>
@@ -96,85 +202,504 @@
 </section>
 
 <!-- ── Featured Products ───────────────────────────────────────── -->
-<section class="section" style="background:var(--warm-off);">
+<section class="section" style="background: var(--warm-off);">
   <div class="container">
-    <div class="section-header fade-in-up" style="display:flex;align-items:center;justify-content:space-between;text-align:left;margin-bottom:36px;">
+    <div class="section-header fade-in-up"
+         style="display:flex;align-items:center;justify-content:space-between;text-align:left;margin-bottom:36px;">
       <div>
         <span class="section-label">Hand Picked</span>
         <h2 class="section-title">Latest <em>Arrivals</em></h2>
       </div>
-      <a href="/products.html" class="btn btn-dark btn-sm" style="flex-shrink:0">View All</a>
+      <a href="/products.html" class="btn btn-dark btn-sm">View All →</a>
     </div>
+
     <div id="featured-grid" class="products-grid">
       <!-- Filled by JS -->
     </div>
   </div>
 </section>
 
-<!-- ── USP Strip (UPDATED) ────────────────────────────────────── -->
-<section class="section" style="background:var(--charcoal);color:var(--cream);padding:56px 0;">
+<!-- ── Testimonials ────────────────────────────────────────────── -->
+<section class="section testimonials">
   <div class="container">
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px;text-align:center;">
-      
-      <div>
-        <div style="font-size:2rem;margin-bottom:10px;">🧵</div>
-        <h4 style="font-family:var(--font-display);font-size:1.15rem;margin-bottom:6px;">Premium Fabric</h4>
-        <p style="font-size:.85rem;color:rgba(250,246,241,.6)">Sourced from finest mills across India</p>
-      </div>
-
-      <div>
-        <div style="font-size:2rem;margin-bottom:10px;">🎨</div>
-        <h4 style="font-family:var(--font-display);font-size:1.15rem;margin-bottom:6px;">Artisan Crafted</h4>
-        <p style="font-size:.85rem;color:rgba(250,246,241,.6)">Every piece give  with care</p>
-      </div>
-
+    <div class="section-header fade-in-up">
+      <span class="section-label">Love from Customers</span>
+      <h2 class="section-title">What They <em>Say</em></h2>
     </div>
+
+    <div class="testimonial-slider">
+      <div class="testimonial-card">
+        <p class="testimonial-text">"Absolutely love the quality! The Kurti fits perfectly and the fabric is so soft. Will definitely order again."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">P</div>
+          <div>
+            <div class="testimonial-name">Priya Sharma</div>
+            <div class="testimonial-role">Bangalore</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <p class="testimonial-text">"Beautiful designs and fast delivery. The blocking print is stunning. This has become my go-to store for ethnic wear."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">A</div>
+          <div>
+            <div class="testimonial-name">Ananya Patel</div>
+            <div class="testimonial-role">Mumbai</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <p class="testimonial-text">"The attention to detail is incredible. Each piece feels handcrafted with love. Highly recommend!"</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">S</div>
+          <div>
+            <div class="testimonial-name">Sneha Reddy</div>
+            <div class="testimonial-role">Hyderabad</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Newsletter ──────────────────────────────────────────────── -->
+<section class="newsletter">
+  <div class="container">
+    <h2>Join the <em>Family</em></h2>
+    <p>Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.</p>
+    <form class="newsletter-form" onsubmit="handleNewsletter(event)">
+      <input type="email" placeholder="Enter your email" required>
+      <button type="submit" class="btn btn-primary btn-lg">Subscribe</button>
+    </form>
   </div>
 </section>
 
 <!-- ── Footer ─────────────────────────────────────────────────── -->
 <footer>
-  <div class="footer-inner">
+  <div class="container footer-inner">
     <div class="footer-logo">Hari</div>
+
     <ul class="footer-links">
       <li><a href="/">Home</a></li>
-      <li><a href="/products.html">Products</a></li>
-      <li><a href="/login.html">Login</a></li>
+      <li><a href="/products.html">Shop</a></li>
+      <li><a href="/products.html?category=Kurti">Kurtis</a></li>
+      <li><a href="/products.html?category=Suits">Suits</a></li>
+      <li><a href="/login.html">Account</a></li>
     </ul>
+
+    <div class="footer-social" style="display:flex;gap:16px;margin-top:12px;">
+      <a href="#" aria-label="Instagram" style="font-size:1.2rem">📷</a>
+      <a href="#" aria-label="Facebook" style="font-size:1.2rem">👤</a>
+      <a href="#" aria-label="Pinterest" style="font-size:1.2rem">📌</a>
+    </div>
   </div>
+
   <div class="footer-bottom">
-    <p>© 2026 Hari. All rights reserved. Made with ❤️ in India.</p>
+    <p>© 2026 Hari Collection. Crafted with ❤️ in India.</p>
   </div>
 </footer>
 
-<div id="toast"></div>
+<!-- ═══════════════════════════════════════════════════════════════════
+     CART DRAWER
+     ═══════════════════════════════════════════════════════════════════ -->
+<div class="cart-overlay" id="cart-overlay" onclick="closeCartDrawer()"></div>
+<div class="cart-drawer" id="cart-drawer">
+  <div class="cart-header">
+    <h3>Your Cart <span class="cart-count" id="cart-count">(0)</span></h3>
+    <button class="cart-close" onclick="closeCartDrawer()">✕</button>
+  </div>
+  <div class="cart-body" id="cart-items">
+    <!-- Filled by JS -->
+  </div>
+  <div class="cart-footer">
+    <div class="cart-subtotal">
+      <span>Subtotal</span>
+      <span id="cart-total">₹0</span>
+    </div>
+    <div class="cart-total">
+      <span>Total</span>
+      <span id="cart-total-bold">₹0</span>
+    </div>
+    <button id="checkout-btn" class="checkout-btn" onclick="alert('Checkout coming soon!')">
+      Proceed to Checkout
+    </button>
+    <p style="font-size:.75rem;color:var(--light-txt);text-align:center;margin-top:10px;">
+      Free shipping on orders above ₹999
+    </p>
+  </div>
+</div>
 
+<!-- ═══════════════════════════════════════════════════════════════════
+     QUICK VIEW MODAL
+     ═══════════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="quick-view-modal" onclick="if(event.target===this)closeQuickView()">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="qv-title">Product Name</h2>
+      <button class="modal-close" onclick="closeQuickView()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="quick-view-gallery">
+        <div class="gallery-main" id="qv-main-img" onclick="openLightbox(document.getElementById('qv-image').src)">
+          <img id="qv-image" src="" alt="Product" />
+        </div>
+      </div>
+      <div class="quick-view-details">
+        <span class="quick-category" id="qv-category">Category</span>
+        <div class="quick-rating">
+          <span class="stars">★★★★★</span>
+          <span class="rating-count">(4.8)</span>
+        </div>
+        <div class="quick-price" id="qv-price">₹0</div>
+        <p class="quick-desc" id="qv-desc">Description...</p>
+
+        <div>
+          <label style="font-size:.82rem;font-weight:600;color:var(--charcoal);margin-bottom:8px;display:block">
+            Select Size
+          </label>
+          <div class="size-selector">
+            <button class="size-option active" onclick="this.parentElement.querySelectorAll('.size-option').forEach(b=>b.classList.remove('active'));this.classList.add('active')">XS</button>
+            <button class="size-option" onclick="this.parentElement.querySelectorAll('.size-option').forEach(b=>b.classList.remove('active'));this.classList.add('active')">S</button>
+            <button class="size-option" onclick="this.parentElement.querySelectorAll('.size-option').forEach(b=>b.classList.remove('active'));this.classList.add('active')">M</button>
+            <button class="size-option" onclick="this.parentElement.querySelectorAll('.size-option').forEach(b=>b.classList.remove('active'));this.classList.add('active')">L</button>
+            <button class="size-option" onclick="this.parentElement.querySelectorAll('.size-option').forEach(b=>b.classList.remove('active'));this.classList.add('active')">XL</button>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;">
+          <div class="quantity-selector">
+            <button class="qty-btn" onclick="adjustQty(-1)">−</button>
+            <input type="number" id="qv-qty" class="qty-input" value="1" min="1" readonly>
+            <button class="qty-btn" onclick="adjustQty(1)">+</button>
+          </div>
+          <button class="btn btn-primary btn-lg" onclick="addFromQuickView()" style="flex:1;margin-left:20px;">
+            Add to Cart
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     LIGHTBOX
+     ═══════════════════════════════════════════════════════════════════ -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt="Full size" />
+</div>
+
+<!-- ── Mobile Bottom Navigation ────────────────────────────────── -->
+<div class="mobile-bottom-nav">
+  <a href="/" class="bottom-nav-item active">
+    <span>🏠</span> Home
+  </a>
+  <a href="/products.html" class="bottom-nav-item">
+    <span>🛍️</span> Shop
+  </a>
+  <a href="javascript:void(0)" onclick="openCartDrawer()" class="bottom-nav-item">
+    <span>🛒</span> Cart
+    <span class="icon-badge" id="mobile-cart-badge" style="display:none;position:absolute;top:-4px;right:8px;font-size:.65rem;">0</span>
+  </a>
+  <a href="javascript:void(0)" onclick="openWishlistDrawer()" class="bottom-nav-item">
+    <span>❤️</span> Wishlist
+  </a>
+  <a href="javascript:void(0)" onclick="openAccountMenu()" class="bottom-nav-item">
+    <span>👤</span> Account
+  </a>
+</div>
+
+<script>
+// Update mobile nav badge on page load
+updateMobileCartBadge();
+function updateMobileCartBadge() {
+  const badge = document.getElementById('mobile-cart-badge');
+  if (!badge) return;
+  const count = getCartCount();
+  badge.textContent = count;
+  badge.style.display = count > 0 ? 'block' : 'none';
+}
+
+// Watch cart changes
+const originalSetCart = setCart;
+setCart = function(items) {
+  originalSetCart(items);
+  updateMobileCartBadge();
+};
+
+// Active nav item highlighting
+document.addEventListener('DOMContentLoaded', () => {
+  const path = window.location.pathname.replace(/\/$/, '') || '/';
+  document.querySelectorAll('.bottom-nav-item').forEach(item => {
+    const href = item.getAttribute('href');
+    if (href && new URL(href, window.location.origin).pathname.replace(/\/$/, '') === path) {
+      item.classList.add('active');
+    }
+  });
+});
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     SCRIPTS
+     ═══════════════════════════════════════════════════════════════════ -->
 <script src="/js/shared.js"></script>
 <script>
-(async () => {
+/* ═══════════════════════════════════════════════════════════════════
+   HERO CAROUSEL
+   ═══════════════════════════════════════════════════════════════════ */
+const slides = document.querySelectorAll('.hero-slide');
+const dotsContainer = document.getElementById('hero-dots');
+let currentSlide = 0;
+let slideInterval;
+
+// Create dots
+slides.forEach((_, i) => {
+  const dot = document.createElement('button');
+  dot.className = `hero-dot ${i === 0 ? 'active' : ''}`;
+  dot.onclick = () => goToSlide(i);
+  dotsContainer.appendChild(dot);
+});
+
+function showSlide(n) {
+  slides[currentSlide].classList.remove('active');
+  document.querySelectorAll('.hero-dot')[currentSlide].classList.remove('active');
+
+  currentSlide = (n + slides.length) % slides.length;
+
+  slides[currentSlide].classList.add('active');
+  document.querySelectorAll('.hero-dot')[currentSlide].classList.add('active');
+}
+
+function nextSlide() { showSlide(currentSlide + 1); resetInterval(); }
+function prevSlide() { showSlide(currentSlide - 1); resetInterval(); }
+function goToSlide(n) { showSlide(n); resetInterval(); }
+
+function startAutoSlide() {
+  slideInterval = setInterval(nextSlide, 6000);
+}
+function resetInterval() {
+  clearInterval(slideInterval);
+  startAutoSlide();
+}
+startAutoSlide();
+
+/* ═══════════════════════════════════════════════════════════════════
+   ANIMATED COUNTER
+   ═══════════════════════════════════════════════════════════════════ */
+function animateCounter(el) {
+  const target = +el.getAttribute('data-target');
+  const duration = 2000;
+  const step = target / (duration / 16);
+  let current = 0;
+
+  const timer = setInterval(() => {
+    current += step;
+    if (current >= target) {
+      el.textContent = target.toLocaleString();
+      clearInterval(timer);
+    } else {
+      el.textContent = Math.floor(current).toLocaleString();
+    }
+  }, 16);
+}
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      animateCounter(entry.target);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.stat-value[data-target]').forEach(el => observer.observe(el));
+
+/* ═══════════════════════════════════════════════════════════════════
+   FEATURED PRODUCTS
+   ═══════════════════════════════════════════════════════════════════ */
+async function loadFeaturedProducts() {
   const grid = document.getElementById('featured-grid');
-  grid.innerHTML = skeletonCards(4);
+  if (!grid) return;
+
+  grid.innerHTML = skeletonCards(8);
 
   try {
-    const data = await apiFetch('/products?limit=8');
-    if (!data.data || data.data.length === 0) {
-      grid.innerHTML = `
-        <div class="empty-state" style="grid-column:1/-1">
-          <h3>No products yet</h3>
-        </div>`;
+    const data = await apiFetch('/products?limit=8&sort=newest');
+    const products = data.data || [];
+
+    if (products.length === 0) {
+      grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><h3>No products yet</h3></div>';
       return;
     }
-    grid.innerHTML = data.data.map(p => `
-      <div class="product-card fade-in-up">
-        <img src="${p.imageUrl}" alt="${p.name}" />
-        <h3>${p.name}</h3>
-        <p>${p.description}</p>
-        <span>${formatPrice(p.price)}</span>
-      </div>`).join('');
-  } catch (e) {
-    grid.innerHTML = `<p>Failed to load products.</p>`;
+
+    grid.innerHTML = products.map(p => createProductCard(p)).join('');
+    initProductCards();
+  } catch (err) {
+    grid.innerHTML = '<p class="empty-state">Failed to load products.</p>';
   }
-})();
+}
+
+function createProductCard(p) {
+  const inWishlist = isInWishlist(p._id);
+  return `
+    <div class="product-card fade-in-up" data-id="${p._id}">
+      <div class="product-card-img">
+        <img src="${p.imageUrl}" alt="${p.name}" loading="lazy"
+             onclick="openLightbox('${p.imageUrl}')" />
+        <span class="product-badge ${p.new ? 'new' : ''}">${p.category}</span>
+
+        <button class="wishlist-btn ${inWishlist ? 'active' : ''}"
+                onclick="toggleWishlistBtn(this, '${p._id}')"
+                data-id="${p._id}">
+          ${inWishlist ? '❤️' : '🤍'}
+        </button>
+
+        <button class="quick-view-btn" onclick='openQuickView(${JSON.stringify(p)})'>
+          Quick View
+        </button>
+      </div>
+
+      <div class="product-card-body">
+        <p class="product-card-category">${p.category}</p>
+        <h3 class="product-card-name">${p.name}</h3>
+        <div class="product-rating">
+          <span class="stars">★★★★★</span>
+          <span class="rating-count">(4.8)</span>
+        </div>
+        <div class="product-card-footer">
+          <span class="product-price">${formatPrice(p.price)}</span>
+          <button class="add-cart-btn"
+                  onclick="addToCart(${JSON.stringify(p).replace(/"/g, '&quot;')}, 1)"
+                  aria-label="Add to cart">
+            +
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function initProductCards() {
+  document.querySelectorAll('.wishlist-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      this.classList.toggle('active');
+      this.style.animation = 'heartBeat .6s ease-in-out';
+      setTimeout(() => this.style.animation = '', 600);
+    });
+  });
+}
+
+function toggleWishlistBtn(btn, id) {
+  const product = {
+    _id: id,
+    name: btn.closest('.product-card').querySelector('.product-card-name').textContent,
+    price: parseInt(btn.closest('.product-card').querySelector('.product-price').textContent.replace(/[₹,\s]/g, '')),
+    imageUrl: btn.closest('.product-card').querySelector('img').src,
+    category: btn.closest('.product-card').querySelector('.product-card-category').textContent
+  };
+  const added = toggleWishlist(product);
+  btn.textContent = added ? '❤️' : '🤍';
+  btn.classList.toggle('active', added);
+}
+
+function addFromQuickView() {
+  const modal = document.getElementById('quick-view-modal');
+  const product = modal._product;
+  const qty = parseInt(document.getElementById('qv-qty').value);
+  const activeSize = document.querySelector('.size-option.active');
+  const size = activeSize ? activeSize.textContent.trim() : 'M';
+
+  if (product) {
+    addToCart({ ...product, _id: product._id || product.id }, qty, size);
+    closeQuickView();
+  }
+}
+
+function adjustQty(delta) {
+  const input = document.getElementById('qv-qty');
+  let val = parseInt(input.value) + delta;
+  if (val < 1) val = 1;
+  input.value = val;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   NEWS LETTER
+   ═══════════════════════════════════════════════════════════════════ */
+function handleNewsletter(e) {
+  e.preventDefault();
+  const email = e.target.querySelector('input').value;
+  showToast('Thanks for subscribing! 🎉', 'success');
+  e.target.reset();
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   GLOBAL SEARCH (Simple)
+   ═══════════════════════════════════════════════════════════════════ */
+const searchOverlay = document.getElementById('search-overlay');
+const searchInput = document.getElementById('global-search');
+const searchResults = document.getElementById('search-results');
+
+if (searchOverlay && searchInput) {
+  // Open search on icon click
+  document.querySelector('[data-tooltip="Search"]')?.addEventListener('click', () => {
+    searchOverlay.style.display = 'flex';
+    setTimeout(() => searchInput.focus(), 100);
+  });
+
+  // Close on ESC
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && searchOverlay.style.display === 'flex') {
+      searchOverlay.style.display = 'none';
+      searchResults.innerHTML = '';
+    }
+  });
+
+  // Close on overlay click
+  searchOverlay.addEventListener('click', (e) => {
+    if (e.target === searchOverlay) {
+      searchOverlay.style.display = 'none';
+      searchResults.innerHTML = '';
+    }
+  });
+
+  // Debounced search
+  searchInput.addEventListener('input', debounce(async (e) => {
+    const q = e.target.value.trim();
+    if (q.length < 2) {
+      searchResults.innerHTML = '';
+      return;
+    }
+
+    try {
+      const data = await apiFetch(`/products?search=${encodeURIComponent(q)}&limit=5`);
+      const products = data.data || [];
+
+      if (products.length === 0) {
+        searchResults.innerHTML = '<p style="padding:16px;color:var(--midtone)">No results found</p>';
+      } else {
+        searchResults.innerHTML = products.map(p => `
+          <div style="padding:12px 16px;border-bottom:1px solid var(--warm-off);display:flex;gap:12px;cursor:pointer"
+               onclick="searchOverlay.style.display='none';window.location.href='/products.html'">
+            <img src="${p.imageUrl}" style="width:50px;height:60px;object-fit:cover;border-radius:6px;background:var(--warm-off)">
+            <div>
+              <div style="font-weight:600;font-size:.9rem;color:var(--charcoal)">${p.name}</div>
+              <div style="color:var(--copper);font-size:.9rem">${formatPrice(p.price)}</div>
+            </div>
+          </div>
+        `).join('');
+      }
+    } catch (err) {
+      searchResults.innerHTML = '';
+    }
+  }, 400));
+}
+
+// Load products
+loadFeaturedProducts();
 </script>
+
 </body>
 </html>

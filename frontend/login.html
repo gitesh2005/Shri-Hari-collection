@@ -3,61 +3,147 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login – Hari</title>
+  <title>Sign In – Hari Collection</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .auth-page {
+      min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr;
+    }
+    .auth-art {
+      background: linear-gradient(135deg, var(--charcoal) 0%, var(--copper-dk) 100%);
+      position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;
+      padding: 60px;
+    }
+    .auth-art::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 40% 70%, rgba(184,115,51,.3) 0%, transparent 70%);
+    }
+    .auth-art-content { position: relative; z-index: 1; color: var(--cream); text-align: center; }
+    .auth-art-logo {
+      font-family: var(--font-display); font-size: 2.4rem; font-weight: 600;
+      margin-bottom: 24px;
+    }
+    .auth-art-logo span { color: var(--copper); }
+    .auth-art h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 400; line-height: 1.2; margin-bottom: 16px;
+    }
+    .auth-art h2 em { color: var(--copper); font-style: italic; }
+    .auth-art p {
+      font-size: .95rem; color: rgba(250,246,241,.6); max-width: 340px; margin: 0 auto;
+    }
+    .auth-features {
+      display: flex; gap: 20px; justify-content: center; margin-top: 32px; flex-wrap: wrap;
+    }
+    .feature {
+      display: flex; align-items: center; gap: 8px;
+      font-size: .85rem; color: rgba(250,246,241,.7);
+    }
+
+    .auth-form-wrap {
+      display: flex; align-items: center; justify-content: center;
+      padding: 60px 40px; background: var(--cream);
+    }
+    .auth-form-box { width: 100%; max-width: 440px; }
+    .auth-form-box h2 {
+      font-family: var(--font-display); font-size: 2.2rem; font-weight: 500;
+      color: var(--charcoal); margin-bottom: 8px;
+    }
+    .auth-sub {
+      font-size: .9rem; color: var(--midtone); margin-bottom: 36px;
+    }
+    .auth-sub a { color: var(--copper); font-weight: 500; }
+
+    .divider {
+      display: flex; align-items: center; gap: 16px; margin: 24px 0;
+      color: var(--midtone); font-size: .85rem;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--sand);
+    }
+
+    .social-btns { display: grid; gap: 12px; margin-bottom: 24px; }
+    .social-btn {
+      display: flex; align-items: center; justify-content: center;
+      gap: 10px; padding: 12px 20px; border-radius: var(--radius);
+      font-size: .9rem; font-weight: 500; cursor: pointer;
+      border: 1.5px solid var(--sand); background: var(--white);
+      transition: all .3s ease;
+    }
+    .social-btn:hover { border-color: var(--copper); transform: translateY(-1px); }
+    .social-btn.google:hover { background: #fff; border-color: #DB4437; color: #DB4437; }
+    .social-btn.facebook:hover { background: #1877F2; color: white; border-color: #1877F2; }
+
+    .forgot-pass {
+      text-align: right; font-size: .83rem; margin-bottom: 20px;
+    }
+    .forgot-pass a { color: var(--copper); }
+
+    .login-redirect {
+      text-align: center; margin-top: 28px; font-size: .9rem; color: var(--midtone);
+    }
+    .login-redirect a { color: var(--copper); font-weight: 600; }
+
+    @media (max-width: 768px) {
+      .auth-page { grid-template-columns: 1fr; }
+      .auth-art { display: none; }
+      .auth-form-wrap { padding: 32px 20px; }
+    }
+  </style>
 </head>
 <body>
 
 <div class="auth-page">
-  <!-- ── Decorative Left Panel ────────────────────────────────── -->
   <div class="auth-art">
     <div class="auth-art-content">
       <div class="auth-art-logo">Hari</div>
-      <h2>Welcome <em>Back</em> to Elegance</h2>
-      <p>Sign in to explore our latest collection of  Kurtis and Suits.</p>
+      <h2>Welcome <em>Back</em></h2>
+      <p>Sign in to access your account and explore exclusive collections.</p>
+      <div class="auth-features">
+        <div class="feature">✓ Free shipping above ₹999</div>
+        <div class="feature">✓ Easy returns</div>
+        <div class="feature">✓ Exclusive offers</div>
+      </div>
     </div>
   </div>
 
-  <!-- ── Form Panel ─────────────────────────────────────────────── -->
   <div class="auth-form-wrap">
     <div class="auth-form-box fade-in-up">
       <h2>Sign In</h2>
-      <p class="auth-sub">
-        Don't have an account? <a href="/signup.html">Create one</a>
-      </p>
+      <p class="auth-sub">Don't have an account? <a href="/signup.html">Create one</a></p>
+
+      <div class="social-btns">
+        <button class="social-btn google" onclick="showToast('Google login coming soon!', 'info')">
+          <span>🔍</span> Continue with Google
+        </button>
+        <button class="social-btn facebook" onclick="showToast('Facebook login coming soon!', 'info')">
+          <span>👤</span> Continue with Facebook
+        </button>
+      </div>
+
+      <div class="divider">or use email</div>
 
       <form id="login-form" novalidate>
         <div class="form-group">
           <label for="email">Email Address</label>
-          <input
-            type="email" id="email" name="email"
-            placeholder="you@example.com"
-            autocomplete="email"
-          />
+          <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" />
           <p class="field-error" id="email-error"></p>
         </div>
 
         <div class="form-group">
           <label for="password">Password</label>
           <div style="position:relative;">
-            <input
-              type="password" id="password" name="password"
-              placeholder="Enter your password"
-              autocomplete="current-password"
-              style="padding-right:46px;"
-            />
-            <button type="button" id="toggle-pass"
-              style="position:absolute;right:14px;top:50%;transform:translateY(-50%);
-                     background:none;border:none;color:var(--light-txt);font-size:.9rem;cursor:pointer;"
-              aria-label="Toggle password visibility">👁</button>
+            <input type="password" id="password" name="password" placeholder="Enter your password" autocomplete="current-password" />
+            <button type="button" class="password-toggle" onclick="togglePass()" aria-label="Toggle password">👁</button>
           </div>
           <p class="field-error" id="password-error"></p>
         </div>
 
-        <div style="display:flex;justify-content:flex-end;margin-bottom:24px;">
-          <a href="#" style="font-size:.83rem;color:var(--copper);">Forgot password?</a>
+        <div class="forgot-pass">
+          <a href="#" onclick="showToast('Password reset coming soon!', 'info')">Forgot password?</a>
         </div>
 
         <button type="submit" id="submit-btn" class="btn btn-primary btn-full">
@@ -65,8 +151,8 @@
         </button>
       </form>
 
-      <div style="margin-top:24px;text-align:center;">
-        <a href="/" style="font-size:.85rem;color:var(--midtone);">← Back to Home</a>
+      <div class="login-redirect">
+        New to Hari? <a href="/signup.html">Create an account</a>
       </div>
     </div>
   </div>
@@ -76,67 +162,104 @@
 
 <script src="/js/shared.js"></script>
 <script>
-  if (getToken() && getUser()) {
-    window.location.href = '/';
-  }
+if (getToken() && getUser()) { window.location.href = '/'; }
 
-  document.getElementById('toggle-pass').addEventListener('click', () => {
-    const input = document.getElementById('password');
-    input.type = input.type === 'password' ? 'text' : 'password';
-  });
+function togglePass() {
+  const input = document.getElementById('password');
+  input.type = input.type === 'password' ? 'text' : 'password';
+}
 
-  document.getElementById('login-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    clearErrors();
+document.getElementById('login-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  clearErrors();
 
-    const email    = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value;
-    let valid = true;
+  const email    = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  let valid = true;
 
-    if (!email) {
-      showFieldError('email', 'Email is required'); valid = false;
-    } else if (!/^\S+@\S+\.\S+$/.test(email)) {
-      showFieldError('email', 'Enter a valid email'); valid = false;
-    }
-    if (!password) {
-      showFieldError('password', 'Password is required'); valid = false;
-    }
-    if (!valid) return;
+  if (!email) { showError('email', 'Email is required'); valid = false; }
+  else if (!/^\S+@\S+\.\S+$/.test(email)) { showError('email', 'Enter a valid email'); valid = false; }
+  if (!password) { showError('password', 'Password is required'); valid = false; }
 
-    const btn = document.getElementById('submit-btn');
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner"></span> Signing in…';
+  if (!valid) return;
 
-    try {
-      const data = await apiFetch('/auth/login', {
-        method: 'POST',
-        body:   { email, password },
-      });
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Signing in…';
 
-      setAuth(data.token, data.user);
-      showToast('Welcome back! 👋', 'success');
-
-      setTimeout(() => {
-        window.location.href = data.user.role === 'admin' ? '/admin.html' : '/';
-      }, 800);
-
-    } catch (err) {
-      showToast(err.message, 'error');
-      btn.disabled = false;
-      btn.textContent = 'Sign In';
-    }
-  });
-
-  function showFieldError(field, msg) {
-    document.getElementById(field).classList.add('error');
-    document.getElementById(`${field}-error`).textContent = msg;
-  }
-  function clearErrors() {
-    ['email','password'].forEach(f => {
-      document.getElementById(f).classList.remove('error');
-      document.getElementById(`${f}-error`).textContent = '';
+  try {
+    const data = await apiFetch('/auth/login', {
+      method: 'POST',
+      body: { email, password },
     });
+
+    setAuth(data.token, data.user);
+    showToast('Welcome back! 👋', 'success');
+
+    setTimeout(() => {
+      window.location.href = data.user.role === 'admin' ? '/admin.html' : '/';
+    }, 800);
+
+  } catch (err) {
+    showToast(err.message, 'error');
+    btn.disabled = false;
+    btn.textContent = 'Sign In';
   }
+});
+
+function showError(field, msg) {
+  const el = document.getElementById(field);
+  const err = document.getElementById(`${field}-error`);
+  el.classList.add('error');
+  if (err) err.textContent = msg;
+}
+function clearErrors() {
+  ['email','password'].forEach(f => {
+    const el = document.getElementById(f);
+    if (el) el.classList.remove('error');
+    const err = document.getElementById(`${f}-error`);
+    if (err) err.textContent = '';
+  });
+}
+
+// Mobile nav helper
+function openAccountMenu() {
+  const user = getUser();
+  if (user) {
+    if (user.role === 'admin') window.location.href = '/admin.html';
+    else window.location.href = '/';
+  } else {
+    window.location.href = '/login.html';
+  }
+}
 </script>
+
+<!-- ── Mobile Bottom Navigation ────────────────────────────────── -->
+<div class="mobile-bottom-nav" id="mobile-nav" style="display:none">
+  <a href="/" class="bottom-nav-item">
+    <span>🏠</span> Home
+  </a>
+  <a href="/products.html" class="bottom-nav-item">
+    <span>🛍️</span> Shop
+  </a>
+  <a href="javascript:void(0)" onclick="openCartDrawer()" class="bottom-nav-item">
+    <span>🛒</span> Cart
+    <span class="icon-badge" id="mobile-cart-badge" style="display:none;position:absolute;top:-4px;right:8px;font-size:.65rem;">0</span>
+  </a>
+  <a href="/wishlist.html" class="bottom-nav-item">
+    <span>❤️</span> Wishlist
+  </a>
+  <a href="javascript:void(0)" onclick="openAccountMenu()" class="bottom-nav-item">
+    <span>👤</span> Account
+  </a>
+</div>
+
+<script>
+// Show mobile nav only on small screens
+if (window.innerWidth <= 768) {
+  document.getElementById('mobile-nav').style.display = 'flex';
+}
+</script>
+
 </body>
 </html>

@@ -3,69 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Products – Hari</title>
+  <title>Products – Hari Collection</title>
+  <meta name="description" content="Browse our collection of handcrafted Kurtis and Suits." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="/css/style.css" />
-
-  <!-- ✅ ZOOM CSS ADDED -->
-  <style>
-    .product-card-img img {
-      cursor: zoom-in;
-    }
-
-    .product-card-img .zoom-hint {
-      position: absolute;
-      bottom: 10px; right: 10px;
-      width: 34px; height: 34px;
-      border-radius: 50%;
-      background: rgba(44,36,22,.65);
-      color: #fff;
-      display: flex; align-items: center; justify-content: center;
-      font-size: .9rem;
-      opacity: 0;
-      transform: scale(.8);
-      transition: .2s;
-      pointer-events: none;
-    }
-
-    .product-card:hover .zoom-hint {
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    #lightbox {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,.9);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: .3s;
-      z-index: 2000;
-    }
-
-    #lightbox.open {
-      opacity: 1;
-      pointer-events: all;
-    }
-
-    #lightbox img {
-      max-width: 90%;
-      max-height: 90%;
-      border-radius: 10px;
-    }
-
-    #lightbox button {
-      position: absolute;
-      top: 20px; right: 20px;
-      background: #fff;
-      border: none;
-      padding: 8px 12px;
-      cursor: pointer;
-    }
-  </style>
 </head>
 <body>
 
@@ -73,6 +15,7 @@
 <nav class="navbar">
   <div class="nav-inner">
     <a href="/" class="nav-logo">Hari</a>
+
     <ul class="nav-links">
       <li><a href="/">Home</a></li>
       <li><a href="/products.html" class="active">Products</a></li>
@@ -83,9 +26,14 @@
         <a href="#" id="logout-btn">Logout</a>
       </li>
     </ul>
-    <button class="nav-hamburger" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
+
+    <div class="nav-icons">
+      <button class="nav-icon-btn" onclick="openCartDrawer()" data-tooltip="Cart">🛒
+        <span class="icon-badge" id="cart-badge" style="display:none">0</span>
+      </button>
+      <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">🌙</button>
+      <button class="nav-hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
   </div>
 </nav>
 
@@ -101,112 +49,448 @@
 <section class="section">
   <div class="container">
 
+    <!-- Enhanced Filter Bar -->
     <div class="filter-bar">
-      <button class="filter-btn active" data-cat="">All</button>
-      <button class="filter-btn" data-cat="Kurti">Kurtis</button>
-      <button class="filter-btn" data-cat="Suits">Suits</button>
+      <!-- Category Filters -->
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="filter-btn active" data-cat="">All</button>
+        <button class="filter-btn" data-cat="Kurti">Kurtis</button>
+        <button class="filter-btn" data-cat="Suits">Suits</button>
+      </div>
 
+      <!-- Search -->
       <div class="search-bar">
-        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
-        </svg>
+        <span class="search-icon">🔍</span>
         <input type="search" id="search-input" placeholder="Search products…" />
       </div>
 
-      <select id="sort-select"
-        style="padding:10px 14px;border:1.5px solid var(--sand);border-radius:30px;
-               background:var(--white);font-size:.87rem;color:var(--charcoal);outline:none;cursor:pointer;">
+      <!-- Sort -->
+      <select id="sort-select" class="sort-select">
         <option value="newest">Newest First</option>
         <option value="price-asc">Price: Low → High</option>
         <option value="price-desc">Price: High → Low</option>
+        <option value="name">Name A–Z</option>
       </select>
+
+      <!-- View Toggle -->
+      <div style="display:flex;gap:8px;">
+        <button class="view-btn active" onclick="setView('grid')" style="
+          padding:10px;border:1.5px solid var(--sand);border-radius:8px;background:var(--white);cursor:pointer;
+        " data-view="grid" title="Grid View">⊞</button>
+        <button class="view-btn" onclick="setView('list')" style="
+          padding:10px;border:1.5px solid var(--sand);border-radius:8px;background:var(--white);cursor:pointer;
+        " data-view="list" title="List View">☰</button>
+      </div>
     </div>
 
     <p id="result-count" style="font-size:.87rem;color:var(--midtone);margin-bottom:24px;"></p>
 
+    <!-- Products Grid -->
     <div id="products-grid" class="products-grid"></div>
 
-    <div id="pagination" style="display:flex;justify-content:center;gap:10px;margin-top:48px;flex-wrap:wrap;"></div>
+    <!-- Load More / Infinite Scroll -->
+    <div id="load-more-container" style="text-align:center;margin-top:48px;display:none;">
+      <button id="load-more-btn" class="btn btn-outline btn-lg" onclick="loadMore()">
+        Load More Products
+      </button>
+      <div id="loading-more" class="spinner" style="display:none;margin:24px auto;"></div>
+    </div>
+
+    <!-- Pagination -->
+    <div id="pagination" class="pagination" style="display:none;"></div>
   </div>
 </section>
 
-<footer>
-  <div class="footer-inner">
-    <div class="footer-logo">Hari</div>
-    <ul class="footer-links">
-      <li><a href="/">Home</a></li>
-      <li><a href="/products.html">Products</a></li>
-      <li><a href="/login.html">Login</a></li>
-    </ul>
-  </div>
-  <div class="footer-bottom">
-    <p>© 2026 Hari. All rights reserved.</p>
-  </div>
-</footer>
-
-<!-- ✅ LIGHTBOX HTML -->
-<div id="lightbox">
-  <button onclick="closeLightbox()">✕</button>
-  <img id="lightbox-img" src="" />
+<!-- ── Mobile Bottom Navigation ────────────────────────────────── -->
+<div class="mobile-bottom-nav" id="mobile-nav">
+  <a href="/" class="bottom-nav-item" onclick="this.classList.add('active')">
+    <span>🏠</span> Home
+  </a>
+  <a href="/products.html" class="bottom-nav-item active">
+    <span>🛍️</span> Shop
+  </a>
+  <a href="javascript:void(0)" onclick="openCartDrawer()" class="bottom-nav-item">
+    <span>🛒</span> Cart
+    <span class="icon-badge" id="mobile-cart-badge" style="display:none;position:absolute;top:-4px;right:8px;font-size:.65rem;">0</span>
+  </a>
+  <a href="/wishlist.html" class="bottom-nav-item">
+    <span>❤️</span> Wishlist
+  </a>
+  <a href="javascript:void(0)" onclick="openAccountMenu()" class="bottom-nav-item">
+    <span>👤</span> Account
+  </a>
 </div>
 
-<div id="toast"></div>
-
-<script src="/js/shared.js"></script>
 <script>
-  let currentPage = 1;
-  let currentCategory = '';
-  let currentSearch = '';
-  let currentSort = 'newest';
-  const LIMIT = 12;
+// Mobile nav active state
+document.addEventListener('DOMContentLoaded', () => {
+  const path = window.location.pathname.replace(/\/$/, '') || '/';
+  document.querySelectorAll('.bottom-nav-item').forEach(item => {
+    const href = item.getAttribute('href');
+    if (href && new URL(href, window.location.origin).pathname.replace(/\/$/, '') === path) {
+      item.classList.add('active');
+    }
+  });
+});
 
-  async function loadProducts() {
-    const grid = document.getElementById('products-grid');
-    grid.innerHTML = skeletonCards(LIMIT);
+// Watch cart changes
+const originalSetCart = setCart;
+setCart = function(items) {
+  originalSetCart(items);
+  const badge = document.getElementById('mobile-cart-badge');
+  if (badge) {
+    const count = getCartCount();
+    badge.textContent = count;
+    badge.style.display = count > 0 ? 'block' : 'none';
+  }
+};
+</script>
 
-    try {
-      const data = await apiFetch(`/products?page=${currentPage}&limit=${LIMIT}`);
-      let products = data.data || [];
+<!-- ── Cart Drawer (reuse) ────────────────────────────────────── -->
+<div class="cart-overlay" id="cart-overlay" onclick="closeCartDrawer()"></div>
+<div class="cart-drawer" id="cart-drawer">
+  <div class="cart-header">
+    <h3>Your Cart <span class="cart-count" id="cart-count">(0)</span></h3>
+    <button class="cart-close" onclick="closeCartDrawer()">✕</button>
+  </div>
+  <div class="cart-body" id="cart-items"></div>
+  <div class="cart-footer">
+    <div class="cart-subtotal"><span>Subtotal</span><span id="cart-total">₹0</span></div>
+    <div class="cart-total"><span>Total</span><span id="cart-total-bold">₹0</span></div>
+    <button id="checkout-btn" class="checkout-btn" onclick="alert('Checkout coming soon!')">
+      Proceed to Checkout
+    </button>
+  </div>
+</div>
 
-      grid.innerHTML = products.map(p => `
-        <div class="product-card fade-in-up">
-          <div class="product-card-img">
-            <!-- ✅ ZOOM CLICK ADDED -->
-            <img src="${p.imageUrl}" alt="${p.name}" loading="lazy"
-                 onclick="openLightbox('${p.imageUrl}')" />
-            <span class="product-badge">${p.category}</span>
-            <div class="zoom-hint">🔍</div>
-          </div>
+<!-- ── Quick View Modal (reuse) ────────────────────────────────── -->
+<div class="modal-overlay" id="quick-view-modal" onclick="if(event.target===this)closeQuickView()">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="qv-title">Product Name</h2>
+      <button class="modal-close" onclick="closeQuickView()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="quick-view-gallery">
+        <div class="gallery-main" onclick="openLightbox(document.getElementById('qv-image').src)">
+          <img id="qv-image" src="" alt="Product" />
+        </div>
+      </div>
+      <div class="quick-view-details">
+        <span class="quick-category" id="qv-category"></span>
+        <div class="quick-rating"><span class="stars">★★★★★</span><span class="rating-count">(4.8)</span></div>
+        <div class="quick-price" id="qv-price"></div>
+        <p class="quick-desc" id="qv-desc"></p>
 
-          <div class="product-card-body">
-            <p class="product-card-category">${p.category}</p>
-            <h3 class="product-card-name">${p.name}</h3>
-            <p class="product-card-desc">${p.description}</p>
-            <div class="product-card-footer">
-              <span class="product-price">${formatPrice(p.price)}</span>
-              <button class="btn btn-primary btn-sm">Add to Cart</button>
-            </div>
+        <div>
+          <label style="font-size:.82rem;font-weight:600;color:var(--charcoal);margin-bottom:8px;display:block">
+            Select Size
+          </label>
+          <div class="size-selector">
+            <button class="size-option active" onclick="setSize(this)">XS</button>
+            <button class="size-option" onclick="setSize(this)">S</button>
+            <button class="size-option" onclick="setSize(this)">M</button>
+            <button class="size-option" onclick="setSize(this)">L</button>
+            <button class="size-option" onclick="setSize(this)">XL</button>
           </div>
         </div>
-      `).join('');
 
-    } catch (err) {
-      grid.innerHTML = `<h3>Error loading products</h3>`;
-    }
-  }
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;">
+          <div class="quantity-selector">
+            <button class="qty-btn" onclick="adjustQty(-1)">−</button>
+            <input type="number" id="qv-qty" class="qty-input" value="1" min="1" readonly>
+            <button class="qty-btn" onclick="adjustQty(1)">+</button>
+          </div>
+          <button class="btn btn-primary btn-lg" onclick="addFromQuickView()" style="flex:1;margin-left:20px;">
+            Add to Cart
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-  /* ✅ LIGHTBOX JS */
-  function openLightbox(src) {
-    document.getElementById('lightbox-img').src = src;
-    document.getElementById('lightbox').classList.add('open');
-  }
+<!-- ── Lightbox ────────────────────────────────────────────────── -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt="Full size" />
+</div>
 
-  function closeLightbox() {
-    document.getElementById('lightbox').classList.remove('open');
-  }
+<!-- ── Toast ──────────────────────────────────────────────────── -->
+<div id="toast"></div>
 
+<!-- ═══════════════════════════════════════════════════════════════════
+     SCRIPTS
+     ═══════════════════════════════════════════════════════════════════ -->
+<script src="/js/shared.js"></script>
+<script>
+let allProducts = [];
+let filteredProducts = [];
+let currentPage = 1;
+let currentCategory = '';
+let currentSearch = '';
+let currentSort = 'newest';
+let currentView = 'grid';
+let displayedCount = 0;
+const PAGE_SIZE = 12;
+
+/* ═══════════════════════════════════════════════════════════════════
+   INITIAL LOAD
+   ═══════════════════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
   loadProducts();
+  setupFilters();
+  setupSearch();
+  setupSort();
+  setupViewToggle();
+
+  // Intersection Observer for infinite scroll
+  const observer = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting && displayedCount < filteredProducts.length) {
+      loadMore();
+    }
+  }, { rootMargin: '200px' });
+
+  observer.observe(document.getElementById('load-more-container'));
+});
+
+/* ═══════════════════════════════════════════════════════════════════
+   FETCH PRODUCTS
+   ═══════════════════════════════════════════════════════════════════ */
+async function loadProducts(reset = true) {
+  const grid = document.getElementById('products-grid');
+  if (reset) {
+    grid.innerHTML = skeletonCards(PAGE_SIZE);
+    displayedCount = 0;
+  }
+
+  try {
+    const params = new URLSearchParams({
+      page: 1,
+      limit: 200,
+      category: currentCategory || undefined,
+      search: currentSearch || undefined,
+      sort: currentSort
+    });
+
+    const data = await apiFetch(`/products?${params}`);
+    allProducts = data.data || [];
+
+    applyFilters();
+  } catch (err) {
+    showToast('Failed to load products', 'error');
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   RENDER PRODUCTS
+   ═══════════════════════════════════════════════════════════════════ */
+function applyFilters() {
+  // Filter
+  filteredProducts = allProducts.filter(p => {
+    const matchCat = !currentCategory || p.category === currentCategory;
+    const matchSearch = !currentSearch ||
+      p.name.toLowerCase().includes(currentSearch.toLowerCase()) ||
+      p.description.toLowerCase().includes(currentSearch.toLowerCase());
+    return matchCat && matchSearch;
+  });
+
+  // Sort
+  filteredProducts.sort((a, b) => {
+    switch (currentSort) {
+      case 'price-asc': return a.price - b.price;
+      case 'price-desc': return b.price - a.price;
+      case 'name': return a.name.localeCompare(b.name);
+      default: return new Date(b.createdAt) - new Date(a.createdAt);
+    }
+  });
+
+  displayedCount = 0;
+  renderProducts();
+  updateResultCount();
+  updateLoadMoreButton();
+  updatePagination();
+}
+
+function renderProducts() {
+  const grid = document.getElementById('products-grid');
+  const toShow = filteredProducts.slice(0, displayedCount);
+  const remainder = filteredProducts.slice(displayedCount);
+
+  if (displayedCount === 0) {
+    grid.innerHTML = '';
+  }
+
+  const newHTML = remainder.map(p => createProductCard(p)).join('');
+  grid.insertAdjacentHTML('beforeend', newHTML);
+
+  displayedCount = filteredProducts.length;
+  initProductCards();
+  updateCartCount();
+}
+
+function createProductCard(p) {
+  const inWishlist = isInWishlist(p._id);
+  const cardClass = currentView === 'grid' ? 'product-card' : 'product-card-list';
+
+  return `
+    <div class="${cardClass} fade-in-up" data-id="${p._id}">
+      <div class="product-card-img">
+        <img src="${p.imageUrl}" alt="${p.name}" loading="lazy"
+             onclick="openLightbox('${p.imageUrl}')" />
+        <span class="product-badge ${p.new ? 'new' : ''}">${p.category}</span>
+
+        <button class="wishlist-btn ${inWishlist ? 'active' : ''}"
+                onclick="toggleWishlistBtn(this, '${p._id}')"
+                data-id="${p._id}">${inWishlist ? '❤️' : '🤍'}</button>
+
+        <button class="quick-view-btn" onclick='openQuickView(${JSON.stringify(p).replace(/"/g, '&quot;')})'>
+          Quick View
+        </button>
+      </div>
+
+      <div class="product-card-body">
+        <p class="product-card-category">${p.category}</p>
+        <h3 class="product-card-name">${p.name}</h3>
+        <div class="product-card-desc">${p.description || ''}</div>
+        <div class="product-card-footer">
+          <span class="product-price">${formatPrice(p.price)}</span>
+          <button class="add-cart-btn"
+                  onclick="addToCart(${JSON.stringify(p).replace(/"/g, '&quot;')}, 1)"
+                  aria-label="Add to cart">+</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   INFINITE SCROLL / LOAD MORE
+   ═══════════════════════════════════════════════════════════════════ */
+function loadMore() {
+  const btn = document.getElementById('load-more-btn');
+  const loader = document.getElementById('loading-more');
+
+  if (!btn || displayedCount >= filteredProducts.length) return;
+
+  btn.style.display = 'none';
+  loader.style.display = 'inline-block';
+
+  setTimeout(() => {
+    renderProducts();
+    loader.style.display = 'none';
+    btn.style.display = 'inline-flex';
+    updateLoadMoreButton();
+  }, 600);
+}
+
+function updateLoadMoreButton() {
+  const container = document.getElementById('load-more-container');
+  const btn = document.getElementById('load-more-btn');
+
+  if (filteredProducts.length > PAGE_SIZE) {
+    container.style.display = 'block';
+    btn.style.display = displayedCount >= filteredProducts.length ? 'none' : 'inline-flex';
+    btn.textContent = displayedCount >= filteredProducts.length ? 'All Products Loaded' : 'Load More Products';
+  } else {
+    container.style.display = 'none';
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PAGINATION (optional, hide if using infinite scroll)
+   ═══════════════════════════════════════════════════════════════════ */
+function updatePagination() {
+  const totalPages = Math.ceil(filteredProducts.length / PAGE_SIZE);
+  const container = document.getElementById('pagination');
+
+  if (totalPages <= 1) {
+    container.style.display = 'none';
+    return;
+  }
+
+  container.style.display = 'flex';
+  container.innerHTML = '';
+
+  for (let i = 1; i <= totalPages; i++) {
+    const btn = document.createElement('button');
+    btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+    btn.textContent = i;
+    btn.onclick = () => {
+      currentPage = i;
+      displayedCount = PAGE_SIZE * i;
+      renderProducts();
+      updatePagination();
+    };
+    container.appendChild(btn);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   FILTER & SEARCH HANDLERS
+   ═══════════════════════════════════════════════════════════════════ */
+function setupFilters() {
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentCategory = btn.getAttribute('data-cat');
+      loadProducts(true);
+    });
+  });
+}
+
+function setupSearch() {
+  const input = document.getElementById('search-input');
+  input.addEventListener('input', debounce((e) => {
+    currentSearch = e.target.value.trim();
+    loadProducts(true);
+  }, 500));
+}
+
+function setupSort() {
+  document.getElementById('sort-select').addEventListener('change', (e) => {
+    currentSort = e.target.value;
+    loadProducts(true);
+  });
+}
+
+function setupViewToggle() {
+  document.querySelectorAll('.view-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentView = btn.getAttribute('data-view');
+      document.getElementById('products-grid').className =
+        currentView === 'grid' ? 'products-grid' : 'products-list';
+    });
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   UI UPDATES
+   ═══════════════════════════════════════════════════════════════════ */
+function updateResultCount() {
+  const el = document.getElementById('result-count');
+  el.textContent = `Showing ${displayedCount} of ${filteredProducts.length} products`;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SHARED FUNCTIONS (from shared.js)
+   ═══════════════════════════════════════════════════════════════════ */
+function setSize(btn) {
+  btn.parentElement.querySelectorAll('.size-option').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function adjustQty(delta) {
+  const input = document.getElementById('qv-qty');
+  let val = parseInt(input.value) + delta;
+  if (val < 1) val = 1;
+  input.value = val;
+}
+
+// Everything else (apiFetch, showToast, formatPrice, initScrollAnimations, etc.) comes from shared.js
 </script>
 
 </body>

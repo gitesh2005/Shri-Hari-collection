@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product – Hari Collection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .product-page { padding-bottom: 80px; }
+
+    .product-main {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 48px;
+      margin-bottom: 80px;
+    }
+
+    /* Gallery */
+    .product-gallery {
+      position: sticky; top: 100px; height: fit-content;
+    }
+    .gallery-main {
+      aspect-ratio: 1; border-radius: var(--radius-lg);
+      overflow: hidden; background: var(--warm-off);
+      margin-bottom: 16px; position: relative; cursor: zoom-in;
+    }
+    .gallery-main img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+    .gallery-main:hover img { transform: scale(1.05); }
+    .gallery-thumbs {
+      display: flex; gap: 12px; overflow-x: auto;
+      padding: 4px;
+    }
+    .gallery-thumb {
+      width: 80px; height: 80px; flex-shrink: 0;
+      border-radius: var(--radius-sm); overflow: hidden;
+      cursor: pointer; opacity: .6; border: 2px solid transparent;
+      transition: all .3s ease; background: var(--sand);
+    }
+    .gallery-thumb.active { opacity: 1; border-color: var(--copper); }
+    .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* Details */
+    .product-details h1 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 500; color: var(--charcoal);
+      margin-bottom: 12px; line-height: 1.2;
+    }
+    .product-meta { display: flex; gap: 16px; margin-bottom: 20px; font-size: .9rem; }
+    .product-meta span { color: var(--midtone); }
+    .product-price-lg {
+      font-size: 2.2rem; font-weight: 700;
+      color: var(--copper); margin-bottom: 24px;
+    }
+    .product-price-lg del {
+      font-size: 1.2rem; color: var(--light-txt);
+      margin-left: 12px; font-weight: 400;
+    }
+
+    /* Rating */
+    .product-rating-lg {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 24px; padding-bottom: 20px;
+      border-bottom: 1px solid var(--sand);
+    }
+    .stars-lg { font-size: 1.2rem; letter-spacing: 2px; color: #FFC107; }
+    .rating-text { font-size: .9rem; color: var(--midtone); }
+
+    /* Size Selector */
+    .size-selector-lg {
+      display: flex; gap: 10px; margin-bottom: 24px;
+    }
+    .size-option-lg {
+      min-width: 56px; padding: 14px;
+      border: 2px solid var(--sand); border-radius: var(--radius-sm);
+      background: var(--white); color: var(--charcoal);
+      font-size: .95rem; font-weight: 600; cursor: pointer;
+      text-align: center; transition: all .3s ease;
+    }
+    .size-option-lg:hover { border-color: var(--copper); }
+    .size-option-lg.active {
+      background: var(--charcoal); border-color: var(--charcoal);
+      color: var(--white);
+    }
+
+    /* Actions */
+    .product-actions {
+      display: flex; gap: 12px; margin-bottom: 32px;
+    }
+    .product-actions .btn { flex: 1; }
+    .wishlist-btn-lg {
+      width: 60px; border-radius: var(--radius-sm);
+      font-size: 1.4rem; display: flex; align-items: center; justify-content: center;
+    }
+
+    /* Description Tabs */
+    .tabs { margin-top: 48px; }
+    .tab-headers {
+      display: flex; gap: 8px; border-bottom: 1px solid var(--sand);
+      margin-bottom: 24px;
+    }
+    .tab-btn {
+      padding: 12px 24px; border: none; background: none;
+      font-size: .95rem; font-weight: 500; color: var(--midtone);
+      cursor: pointer; border-bottom: 2px solid transparent;
+      transition: all .3s ease; margin-bottom: -1px;
+    }
+    .tab-btn.active {
+      color: var(--copper); border-bottom-color: var(--copper);
+    }
+    .tab-content { display: none; animation: fadeIn .3s ease; }
+    .tab-content.active { display: block; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .tab-content p { color: var(--midtone); line-height: 1.8; margin-bottom: 16px; }
+    .tab-content ul { list-style: disc; padding-left: 24px; color: var(--midtone); }
+    .tab-content li { margin-bottom: 8px; }
+
+    /* Related Products */
+    .related-section { margin-top: 80px; }
+    .products-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; }
+
+    /* Empty state */
+    .product-not-found {
+      text-align: center; padding: 120px 20px;
+    }
+    .product-not-found h2 {
+      font-family: var(--font-display); font-size: 2.5rem;
+      margin-bottom: 16px; color: var(--charcoal);
+    }
+    .product-not-found .btn { margin-top: 24px; }
+
+    @media (max-width: 768px) {
+      .product-main { grid-template-columns: 1fr; gap: 32px; margin-bottom: 48px; }
+      .product-gallery { position: static; }
+      .product-actions { flex-direction: column; }
+      .product-actions .btn { width: 100%; }
+      .wishlist-btn-lg { width: 100%; }
+    }
+  </style>
+</head>
+<body class="product-page">
+
+<!-- ── Navbar ─────────────────────────────────────────────────── -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">Hari</a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/products.html">Products</a></li>
+      <li id="nav-login"><a href="/login.html">Login</a></li>
+      <li id="nav-signup"><a href="/signup.html" class="btn-primary">Sign Up</a></li>
+      <li id="nav-logout" style="display:none"><a href="#" id="logout-btn">Logout</a></li>
+    </ul>
+    <div class="nav-icons">
+      <button class="nav-icon-btn" onclick="openCartDrawer()">🛒
+        <span class="icon-badge" id="cart-badge" style="display:none">0</span>
+      </button>
+      <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">🌙</button>
+      <button class="nav-hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<!-- ── Product Page ───────────────────────────────────────────── -->
+<main class="container" style="padding-top:48px;">
+
+  <!-- Loading -->
+  <div id="product-loading" style="text-align:center;padding:100px 20px;">
+    <div class="spinner" style="width:40px;height:40px;margin:0 auto 20px;"></div>
+    <p style="color:var(--midtone)">Loading product…</p>
+  </div>
+
+  <!-- Not Found -->
+  <div id="product-not-found" class="product-not-found" style="display:none;">
+    <h2>Product Not Found</h2>
+    <p style="color:var(--midtone)">This product may have been removed or the link is incorrect.</p>
+    <a href="/products.html" class="btn btn-primary">Browse Products</a>
+  </div>
+
+  <!-- Product Content -->
+  <div id="product-content" style="display:none;">
+
+    <div class="product-main">
+      <!-- Gallery -->
+      <div class="product-gallery">
+        <div class="gallery-main" onclick="openLightbox(document.getElementById('gallery-img').src)">
+          <img id="gallery-img" src="" alt="Product" />
+        </div>
+        <div class="gallery-thumbs" id="gallery-thumbs">
+          <!-- Thumbnails -->
+        </div>
+      </div>
+
+      <!-- Details -->
+      <div class="product-details">
+        <p class="product-card-category" id="p-category">Category</p>
+        <h1 id="p-name">Product Name</h1>
+
+        <div class="product-meta">
+          <span>SKU: <strong id="p-sku">HARI-001</strong></span>
+          <span>•</span>
+          <span>In Stock</span>
+          <span>•</span>
+          <span id="p-date">Added today</span>
+        </div>
+
+        <div class="product-rating-lg">
+          <span class="stars-lg">★★★★★</span>
+          <span class="rating-text">4.8 (128 reviews)</span>
+        </div>
+
+        <div class="product-price-lg" id="p-price">₹0</div>
+
+        <p class="product-desc-lg" id="p-desc" style="color:var(--midtone);line-height:1.8;margin-bottom:32px;">
+          Product description goes here.
+        </p>
+
+        <!-- Size Selection -->
+        <div style="margin-bottom: 24px;">
+          <label style="font-size:.9rem;font-weight:600;color:var(--charcoal);margin-bottom:12px;display:block">
+            Select Size
+          </label>
+          <div class="size-selector-lg">
+            <button class="size-option-lg active" onclick="setSize(this)">XS</button>
+            <button class="size-option-lg" onclick="setSize(this)">S</button>
+            <button class="size-option-lg" onclick="setSize(this)">M</button>
+            <button class="size-option-lg" onclick="setSize(this)">L</button>
+            <button class="size-option-lg" onclick="setSize(this)">XL</button>
+          </div>
+        </div>
+
+        <!-- Quantity -->
+        <div style="margin-bottom: 32px;">
+          <label style="font-size:.9rem;font-weight:600;color:var(--charcoal);margin-bottom:12px;display:block">
+            Quantity
+          </label>
+          <div class="quantity-selector">
+            <button class="qty-btn" onclick="adjustQty(-1)">−</button>
+            <input type="number" id="p-qty" class="qty-input" value="1" min="1" max="10">
+            <button class="qty-btn" onclick="adjustQty(1)">+</button>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="product-actions">
+          <button class="btn btn-primary btn-lg" onclick="addProductToCart()">
+            <span style="font-size:1.2rem">🛒</span> Add to Cart
+          </button>
+          <button class="btn btn-outline wishlist-btn-lg" onclick="toggleProductWishlist()" id="wishlist-btn">
+            🤍
+          </button>
+        </div>
+
+        <!-- Features -->
+        <div style="
+          display:grid;grid-template-columns:repeat(2,1fr);gap:16px;
+          padding:20px;background:var(--warm-off);border-radius:var(--radius);
+        ">
+          <div style="display:flex;align-items:center;gap:10px;font-size:.9rem;">
+            <span>🚚</span> Free shipping above ₹999
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:.9rem;">
+            <span>↩️</span> Easy 7-day returns
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:.9rem;">
+            <span>✅</span> 100% authentic fabric
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:.9rem;">
+            <span>💬</span> 24/7 support
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <div class="tab-headers">
+        <button class="tab-btn active" data-tab="description">Description</button>
+        <button class="tab-btn" data-tab="shipping">Shipping & Returns</button>
+        <button class="tab-btn" data-tab="reviews">Reviews</button>
+      </div>
+
+      <div class="tab-content active" id="tab-description">
+        <p id="p-long-desc">Long description goes here.</p>
+        <h4 style="margin-top:24px;color:var(--charcoal)">Product Details</h4>
+        <ul>
+          <li>Premium cotton or silk fabric</li>
+          <li>Handcrafted with traditional techniques</li>
+          <li>Machine washable</li>
+          <li>Colors may vary slightly due to screen calibration</li>
+        </ul>
+      </div>
+
+      <div class="tab-content" id="tab-shipping">
+        <h4>Shipping Policy</h4>
+        <p>Free shipping on all orders above ₹999. Standard delivery takes 5-7 business days. Express delivery (2-3 days) available at extra cost.</p>
+
+        <h4 style="margin-top:20px;">Return & Exchange</h4>
+        <p>We accept returns within 7 days of delivery. Items must be unused and in original packaging. Refund will be processed within 5-7 business days.</p>
+      </div>
+
+      <div class="tab-content" id="tab-reviews">
+        <h4 style="margin-bottom:20px;">Customer Reviews</h4>
+        <div id="reviews-list">
+          <!-- Reviews will be loaded here -->
+          <p style="color:var(--midtone)">No reviews yet. Be the first to review!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Related Products -->
+    <section class="section related-section" style="padding:0;">
+      <div class="section-header">
+        <span class="section-label">You May Also Like</span>
+        <h2 class="section-title">Similar <em>Products</em></h2>
+      </div>
+      <div id="related-grid" class="products-grid"></div>
+    </section>
+
+  </div>
+</main>
+
+<!-- ── Cart Drawer ────────────────────────────────────────────── -->
+<div class="cart-overlay" id="cart-overlay" onclick="closeCartDrawer()"></div>
+<div class="cart-drawer" id="cart-drawer">
+  <div class="cart-header">
+    <h3>Your Cart <span class="cart-count" id="cart-count">(0)</span></h3>
+    <button class="cart-close" onclick="closeCartDrawer()">✕</button>
+  </div>
+  <div class="cart-body" id="cart-items"></div>
+  <div class="cart-footer">
+    <div class="cart-subtotal"><span>Subtotal</span><span id="cart-total">₹0</span></div>
+    <div class="cart-total"><span>Total</span><span id="cart-total-bold">₹0</span></div>
+    <button id="checkout-btn" class="checkout-btn" onclick="alert('Checkout coming soon!')">
+      Proceed to Checkout
+    </button>
+  </div>
+</div>
+
+<!-- ── Lightbox ────────────────────────────────────────────────── -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt="Full size" />
+</div>
+
+<!-- ── Toast ──────────────────────────────────────────────────── -->
+<div id="toast"></div>
+
+<script src="/js/shared.js"></script>
+<script>
+let currentProduct = null;
+let selectedSize = 'M';
+
+// Parse product ID from URL
+const pathParts = window.location.pathname.split('/');
+const productId = pathParts[pathParts.length - 1].replace('.html', '');
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (productId && productId !== 'product') {
+    loadProduct(productId);
+  } else {
+    showNotFound();
+  }
+
+  initTabs();
+  loadRelatedProducts();
+});
+
+async function loadProduct(id) {
+  const loading = document.getElementById('product-loading');
+  const content = document.getElementById('product-content');
+  const notFound = document.getElementById('product-not-found');
+
+  try {
+    const data = await apiFetch(`/products/${id}`);
+    currentProduct = data.data || data;
+
+    if (!currentProduct || !currentProduct._id) {
+      throw new Error('Not found');
+    }
+
+    // Populate data
+    document.getElementById('gallery-img').src = currentProduct.imageUrl;
+    document.getElementById('p-category').textContent = currentProduct.category;
+    document.getElementById('p-name').textContent = currentProduct.name;
+    document.getElementById('p-price').innerHTML = `${formatPrice(currentProduct.price)}`;
+    document.getElementById('p-desc').textContent = currentProduct.description;
+    document.getElementById('p-long-desc').textContent = currentProduct.description;
+    document.getElementById('p-sku').textContent = 'HARI-' + currentProduct._id.slice(-4).toUpperCase();
+
+    // Update wishlist button
+    updateWishlistBtn();
+
+    // Generate thumbnails (for demo, just duplicate main)
+    const thumbsContainer = document.getElementById('gallery-thumbs');
+    thumbsContainer.innerHTML = `
+      <div class="gallery-thumb active" onclick="switchImage('${currentProduct.imageUrl}')">
+        <img src="${currentProduct.imageUrl}" alt="Thumb">
+      </div>
+      <div class="gallery-thumb" onclick="switchImage('${currentProduct.imageUrl}')">
+        <img src="${currentProduct.imageUrl}" alt="Thumb">
+      </div>
+    `;
+
+    loading.style.display = 'none';
+    content.style.display = 'block';
+
+    // Animate in
+    content.querySelectorAll('.fade-in-up').forEach((el, i) => {
+      el.style.animationDelay = `${i * 0.1}s`;
+      el.classList.add('visible');
+    });
+
+  } catch (err) {
+    loading.style.display = 'none';
+    notFound.style.display = 'block';
+  }
+}
+
+function showNotFound() {
+  document.getElementById('product-loading').style.display = 'none';
+  document.getElementById('product-not-found').style.display = 'block';
+}
+
+function switchImage(src) {
+  document.getElementById('gallery-img').src = src;
+  document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
+  event.target.closest('.gallery-thumb').classList.add('active');
+}
+
+function setSize(btn) {
+  btn.parentElement.querySelectorAll('.size-option-lg').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedSize = btn.textContent.trim();
+}
+
+function adjustQty(delta) {
+  const input = document.getElementById('p-qty');
+  let val = parseInt(input.value) + delta;
+  if (val < 1) val = 1;
+  if (val > 10) val = 10;
+  input.value = val;
+}
+
+function toggleProductWishlist() {
+  if (!currentProduct) return;
+  const added = toggleWishlist(currentProduct);
+  const btn = document.getElementById('wishlist-btn');
+  btn.textContent = added ? '❤️' : '🤍';
+  btn.classList.toggle('active', added);
+  btn.style.animation = 'heartBeat .6s ease-in-out';
+  setTimeout(() => btn.style.animation = '', 600);
+}
+
+function updateWishlistBtn() {
+  const btn = document.getElementById('wishlist-btn');
+  if (!btn || !currentProduct) return;
+  btn.textContent = isInWishlist(currentProduct._id) ? '❤️' : '🤍';
+}
+
+function addProductToCart() {
+  if (!currentProduct) return;
+  const qty = parseInt(document.getElementById('p-qty').value);
+  addToCart(currentProduct, qty, selectedSize);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   TABS
+   ═══════════════════════════════════════════════════════════════════ */
+function initTabs() {
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tabId = btn.getAttribute('data-tab');
+
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+      btn.classList.add('active');
+      document.getElementById(`tab-${tabId}`).classList.add('active');
+    });
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   RELATED PRODUCTS
+   ═══════════════════════════════════════════════════════════════════ */
+async function loadRelatedProducts() {
+  const container = document.getElementById('related-grid');
+  try {
+    const data = await apiFetch('/products?limit=4');
+    const products = data.data || [];
+
+    const related = products
+      .filter(p => p._id !== productId)
+      .slice(0, 4)
+      .map(p => createProductCard(p))
+      .join('');
+
+    container.innerHTML = related || '<p style="color:var(--midtone)">No related products found.</p>';
+    initProductCards();
+  } catch (err) {
+    container.innerHTML = '<p style="color:var(--midtone)">Failed to load related products.</p>';
+  }
+}
+
+// All shared functions leveraged from shared.js:
+// - apiFetch, showToast, formatPrice
+// - getCart, addToCart, openCartDrawer
+// - getWishlist, toggleWishlist, isInWishlist
+// - openLightbox, closeLightbox
+
+// Mobile nav badge update
+const originalSetCart2 = setCart;
+setCart = function(items) {
+  originalSetCart2(items);
+  const badge = document.getElementById('mobile-cart-badge');
+  if (badge) {
+    badge.textContent = getCartCount();
+    badge.style.display = getCartCount() > 0 ? 'block' : 'none';
+  }
+};
+
+// Active bottom nav
+document.addEventListener('DOMContentLoaded', () => {
+  const path = window.location.pathname.replace(/\/$/, '') || '/';
+  document.querySelectorAll('.bottom-nav-item').forEach(item => {
+    const href = item.getAttribute('href');
+    if (href && new URL(href, window.location.origin).pathname.replace(/\/$/, '') === path) {
+      item.classList.add('active');
+    }
+  });
+});
+</script>
+
+<!-- ── Mobile Bottom Navigation ────────────────────────────────── -->
+<div class="mobile-bottom-nav">
+  <a href="/" class="bottom-nav-item">
+    <span>🏠</span> Home
+  </a>
+  <a href="/products.html" class="bottom-nav-item">
+    <span>🛍️</span> Shop
+  </a>
+  <a href="javascript:void(0)" onclick="openCartDrawer()" class="bottom-nav-item">
+    <span>🛒</span> Cart
+    <span class="icon-badge" id="mobile-cart-badge" style="display:none;position:absolute;top:-4px;right:8px;font-size:.65rem;">0</span>
+  </a>
+  <a href="/wishlist.html" class="bottom-nav-item">
+    <span>❤️</span> Wishlist
+  </a>
+  <a href="javascript:void(0)" onclick="openAccountMenu()" class="bottom-nav-item">
+    <span>👤</span> Account
+  </a>
+</div>
+
+</body>
+</html>
