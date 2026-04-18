@@ -113,6 +113,7 @@
     <ul class="nav-links">
       <li id="nav-home" style="display:none"><a href="/">Home</a></li>
       <li id="nav-products" style="display:none"><a href="/products.html" class="active">Products</a></li>
+      <li id="nav-admin" style="display:none"><a href="/admin.html">Dashboard</a></li>
       <li id="nav-login" style="display:none"><a href="/login.html">Login</a></li>
       <li id="nav-signup" style="display:none"><a href="/signup.html" class="btn-primary">Sign Up</a></li>
       <li id="nav-logout" style="display:none">
@@ -315,6 +316,8 @@ const loggedInUser = getUser();
 if (!loggedInUser) {
   window.location.href = '/login.html';
 }
+// Initialize navbar for admin visibility
+initNavbar();
 
 let allProducts = [];
 let filteredProducts = [];
@@ -602,6 +605,9 @@ setCart = function(items) {
 // Initialize logout button
 initLogout();
 initNavbar();
+
+// Re-initialize navbar on page load to ensure admin role is properly detected
+window.addEventListener('pageshow', initNavbar);
 </script>
 
 </body>
