@@ -113,7 +113,6 @@
     <ul class="nav-links">
       <li id="nav-home" style="display:none"><a href="/">Home</a></li>
       <li id="nav-products" style="display:none"><a href="/products.html" class="active">Products</a></li>
-      <li id="nav-admin" style="display:none"><a href="/admin.html">Dashboard</a></li>
       <li id="nav-login" style="display:none"><a href="/login.html">Login</a></li>
       <li id="nav-signup" style="display:none"><a href="/signup.html" class="btn-primary">Sign Up</a></li>
       <li id="nav-logout" style="display:none">
@@ -311,11 +310,10 @@
 
 <script src="/js/shared.js"></script>
 <script>
+const loggedInUser = getUser();
 // Check login immediately - redirect if not authenticated
-if (!getUser()) {
+if (!loggedInUser) {
   window.location.href = '/login.html';
-} else {
-  // User is logged in
 }
 
 let currentSort = 'newest';
@@ -324,11 +322,6 @@ let displayedCount = 0;
 const PAGE_SIZE = 12;
 let quickViewProduct = null;
 let quickViewSize = 'XS';
-
-// Show admin link only for admin user
-if (user && user.role === 'admin') {
-  document.getElementById('nav-admin').style.display = 'list-item';
-}
 
 function updateBadge() {
   const count = getCartCount();
