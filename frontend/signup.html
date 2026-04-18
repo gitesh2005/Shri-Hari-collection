@@ -197,7 +197,7 @@
 <script src="/js/shared.js"></script>
 <script>
 if (getToken() && getUser()) {
-  window.location.href = '/';
+  window.location.href = '/products.html';
 }
 
 initTheme();
@@ -266,7 +266,7 @@ document.getElementById('signup-form').addEventListener('submit', async (e) => {
     showToast('Account created successfully! 🎉', 'success');
 
     setTimeout(() => {
-      window.location.href = '/';
+      window.location.href = '/products.html';
     }, 1000);
 
   } catch (err) {
@@ -300,7 +300,7 @@ function openAccountMenu() {
   const user = getUser();
   if (user) {
     if (user.role === 'admin') window.location.href = '/admin.html';
-    else window.location.href = '/';
+    else window.location.href = '/products.html';
   } else {
     window.location.href = '/login.html';
   }

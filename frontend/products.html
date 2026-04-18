@@ -111,11 +111,11 @@
     <a href="/" class="nav-logo">Hari</a>
 
     <ul class="nav-links">
-      <li><a href="/">Home</a></li>
-      <li><a href="/products.html" class="active">Products</a></li>
+      <li id="nav-home" style="display:none"><a href="/">Home</a></li>
+      <li id="nav-products" style="display:none"><a href="/products.html" class="active">Products</a></li>
       <li id="nav-admin" style="display:none"><a href="/admin.html">Dashboard</a></li>
-      <li id="nav-login"><a href="/login.html">Login</a></li>
-      <li id="nav-signup"><a href="/signup.html" class="btn-primary">Sign Up</a></li>
+      <li id="nav-login" style="display:none"><a href="/login.html">Login</a></li>
+      <li id="nav-signup" style="display:none"><a href="/signup.html" class="btn-primary">Sign Up</a></li>
       <li id="nav-logout" style="display:none">
         <a href="#" id="logout-btn">Logout</a>
       </li>
@@ -603,6 +603,7 @@ setCart = function(items) {
 
 // Initialize logout button
 initLogout();
+initNavbar();
 </script>
 
 </body>

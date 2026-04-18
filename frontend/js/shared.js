@@ -311,6 +311,34 @@ function initLogout() {
   });
 }
 
+function initNavbar() {
+  const user = getUser();
+  const homeLink = document.getElementById('nav-home');
+  const loginLink = document.getElementById('nav-login');
+  const signupLink = document.getElementById('nav-signup');
+  const logoutLink = document.getElementById('nav-logout');
+  const productsLink = document.getElementById('nav-products');
+  const adminLink = document.getElementById('nav-admin');
+
+  if (!user) {
+    if (homeLink) homeLink.style.display = 'list-item';
+    if (loginLink) loginLink.style.display = 'list-item';
+    if (signupLink) signupLink.style.display = 'list-item';
+    if (logoutLink) logoutLink.style.display = 'none';
+    if (productsLink) productsLink.style.display = 'none';
+    if (adminLink) adminLink.style.display = 'none';
+  } else {
+    if (homeLink) homeLink.style.display = 'none';
+    if (loginLink) loginLink.style.display = 'none';
+    if (signupLink) signupLink.style.display = 'none';
+    if (logoutLink) logoutLink.style.display = 'list-item';
+    if (productsLink) productsLink.style.display = 'list-item';
+    if (adminLink) {
+      adminLink.style.display = user.role === 'admin' ? 'list-item' : 'none';
+    }
+  }
+}
+
 /* ═══════════════════════════════════════════════════════════════════
    SCROLL ANIMATION OBSERVER
    ═══════════════════════════════════════════════════════════════════ */

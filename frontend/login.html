@@ -173,8 +173,7 @@
 initTheme();
 const storedUser = getUser();
 if (getToken() && storedUser) {
-  console.log('User logged in, role:', storedUser.role);
-  window.location.href = storedUser.role === 'admin' ? '/admin.html' : '/';
+  window.location.href = '/products.html';
 }
 
 function togglePass() {
