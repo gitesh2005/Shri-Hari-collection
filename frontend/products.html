@@ -316,7 +316,11 @@ if (!loggedInUser) {
   window.location.href = '/login.html';
 }
 
+let allProducts = [];
+let filteredProducts = [];
 let currentSort = 'newest';
+let currentCategory = '';
+let currentSearch = '';
 let currentView = 'grid';
 let displayedCount = 0;
 const PAGE_SIZE = 12;
