@@ -173,6 +173,7 @@
 initTheme();
 const storedUser = getUser();
 if (getToken() && storedUser) {
+  sessionStorage.removeItem('redirectAfterLogin');
   window.location.href = '/products.html';
 }
 
@@ -218,7 +219,13 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
     showToast('Welcome back! 👋', 'success');
 
     setTimeout(() => {
-      window.location.href = data.user.role === 'admin' ? '/admin.html' : '/products.html';
+      const redirectTarget = sessionStorage.getItem('redirectAfterLogin');
+      sessionStorage.removeItem('redirectAfterLogin');
+      if (redirectTarget === 'products') {
+        window.location.href = '/products.html';
+      } else {
+        window.location.href = data.user.role === 'admin' ? '/admin.html' : '/products.html';
+      }
     }, 800);
 
   } catch (err) {

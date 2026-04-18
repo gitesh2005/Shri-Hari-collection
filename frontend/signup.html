@@ -266,7 +266,9 @@ document.getElementById('signup-form').addEventListener('submit', async (e) => {
     showToast('Account created successfully! 🎉', 'success');
 
     setTimeout(() => {
-      window.location.href = '/products.html';
+      const redirectTarget = sessionStorage.getItem('redirectAfterLogin');
+      sessionStorage.removeItem('redirectAfterLogin');
+      window.location.href = redirectTarget === 'products' ? '/products.html' : '/products.html';
     }, 1000);
 
   } catch (err) {

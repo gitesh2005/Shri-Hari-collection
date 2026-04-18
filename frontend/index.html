@@ -110,7 +110,7 @@
       Each piece is meticulously designed with traditional craftsmanship 
       and modern aesthetics to bring you the perfect blend of comfort and style.
     </p>
-    <a href="/products.html" class="home-btn">Explore Collection</a>
+    <a href="/products.html" class="home-btn" onclick="handleExploreClick(event)"></a>
     <div class="home-features">
       <span class="home-feature">✨ Handcrafted</span>
       <span class="home-feature">🎨 Unique Designs</span>
@@ -123,6 +123,16 @@
 
 <script src="/js/shared.js"></script>
 <script>
+function handleExploreClick(e) {
+  e.preventDefault();
+  sessionStorage.setItem('redirectAfterLogin', 'products');
+  if (getUser()) {
+    window.location.href = '/products.html';
+  } else {
+    window.location.href = '/login.html';
+  }
+}
+
 initTheme();
 initHamburger();
 initNavbar();
