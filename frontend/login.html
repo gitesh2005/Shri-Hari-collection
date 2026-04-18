@@ -171,9 +171,10 @@
 <script src="/js/shared.js"></script>
 <script>
 initTheme();
-const user = getUser();
-if (getToken() && user) { 
-  window.location.href = user.role === 'admin' ? '/admin.html' : '/';
+const storedUser = getUser();
+if (getToken() && storedUser) {
+  console.log('User logged in, role:', storedUser.role);
+  window.location.href = storedUser.role === 'admin' ? '/admin.html' : '/';
 }
 
 function togglePass() {
