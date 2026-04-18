@@ -78,6 +78,10 @@
 
 <!-- 🔥 THIS IS IMPORTANT -->
 <script src="/js/shared.js"></script>
+<script>
+if (getToken() && getUser()) { window.location.href = '/'; }
+initTheme();
+</script>
 
 </body>
 </html>

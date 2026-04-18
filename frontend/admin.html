@@ -23,12 +23,21 @@
       <li id="nav-logout">
         <a href="#" id="logout-btn">Logout</a>
       </li>
-    </ul>
-    <button class="nav-hamburger" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</nav>
+     </ul>
+
+     <!-- Theme toggle -->
+     <div style="display:flex;align-items:center;gap:12px;">
+       <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme" style="
+         width:38px;height:38px;border-radius:50%;background:var(--warm-off);border:none;
+         font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;
+       ">🌙</button>
+
+       <button class="nav-hamburger" aria-label="Menu">
+         <span></span><span></span><span></span>
+       </button>
+     </div>
+   </div>
+ </nav>
 
 <!-- ── Admin Layout ───────────────────────────────────────────── -->
 <div class="admin-layout">
@@ -618,8 +627,9 @@
     return str.replace(/['"&<>]/g, c => ({'\'':'&#39;','"':'&quot;','&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
   }
 
-  // Init
-  loadProducts();
-</script>
+   // Init
+   loadProducts();
+   initTheme();
+ </script>
 </body>
 </html>
