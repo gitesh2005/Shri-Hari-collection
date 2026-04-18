@@ -324,6 +324,12 @@ const PAGE_SIZE = 12;
 let quickViewProduct = null;
 let quickViewSize = 'XS';
 
+// Show admin link only for admin user
+const user = getUser();
+if (user && user.role === 'admin') {
+  document.getElementById('nav-admin').style.display = 'list-item';
+}
+
 function updateBadge() {
   const count = getCartCount();
   const badge = document.getElementById('cart-badge');
