@@ -155,29 +155,22 @@
         New to Hari? <a href="/signup.html">Create an account</a>
       </div>
     </div>
-   </div>
- </div>
+  </div>
+</div>
 
- <!-- Theme toggle (simple) -->
- <div style="position:fixed;top:20px;right:20px;z-index:9999;">
-   <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme" style="
-     width:40px;height:40px;border-radius:50%;background:var(--warm-off);border:none;
-     font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;
-   ">🌙</button>
- </div>
+<!-- Theme toggle (simple) -->
+<div style="position:fixed;top:20px;right:20px;z-index:9999;">
+  <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme" style="
+    width:40px;height:40px;border-radius:50%;background:var(--warm-off);border:none;
+    font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  ">🌙</button>
+</div>
 
- <div id="toast"></div>
+<div id="toast"></div>
 
 <script src="/js/shared.js"></script>
 <script>
-<<<<<<< HEAD
 initTheme();
-=======
-<<<<<<< HEAD
-=======
-initTheme();
->>>>>>> b66ac6d (update the ui)
->>>>>>> 84d3d5b
 if (getToken() && getUser()) { window.location.href = '/'; }
 
 function togglePass() {
@@ -189,13 +182,22 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   clearErrors();
 
-  const email    = document.getElementById('email').value.trim();
+  const email = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value;
   let valid = true;
 
-  if (!email) { showError('email', 'Email is required'); valid = false; }
-  else if (!/^\S+@\S+\.\S+$/.test(email)) { showError('email', 'Enter a valid email'); valid = false; }
-  if (!password) { showError('password', 'Password is required'); valid = false; }
+  if (!email) {
+    showError('email', 'Email is required');
+    valid = false;
+  } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+    showError('email', 'Enter a valid email');
+    valid = false;
+  }
+
+  if (!password) {
+    showError('password', 'Password is required');
+    valid = false;
+  }
 
   if (!valid) return;
 
@@ -229,8 +231,9 @@ function showError(field, msg) {
   el.classList.add('error');
   if (err) err.textContent = msg;
 }
+
 function clearErrors() {
-  ['email','password'].forEach(f => {
+  ['email', 'password'].forEach(f => {
     const el = document.getElementById(f);
     if (el) el.classList.remove('error');
     const err = document.getElementById(`${f}-error`);

@@ -19,7 +19,8 @@ const setAuth = (token, user) => {
 const clearAuth = () => {
   localStorage.removeItem('zafran_token');
   localStorage.removeItem('zafran_user');
-  clearCart(); clearWishlist();
+  clearCart();
+  clearWishlist();
 };
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -33,10 +34,12 @@ const THEME_KEY    = 'zafran_theme';
 function getCart() {
   return JSON.parse(localStorage.getItem(CART_KEY) || '[]');
 }
+
 function setCart(items) {
   localStorage.setItem(CART_KEY, JSON.stringify(items));
   updateCartUI();
 }
+
 function addToCart(product, qty = 1, size = 'M') {
   const cart = getCart();
   const existing = cart.find(i => i.id === product._id);
@@ -54,30 +57,37 @@ function addToCart(product, qty = 1, size = 'M') {
       size
     });
   }
+
   setCart(cart);
   showToast('Added to cart 🛒', 'success');
   openCartDrawer();
 }
+
 function updateCartQty(id, delta) {
   const cart = getCart();
   const item = cart.find(i => i.id === id);
+
   if (item) {
     item.qty += delta;
     if (item.qty <= 0) removeFromCart(id);
     else setCart(cart);
   }
 }
+
 function removeFromCart(id) {
   const cart = getCart().filter(i => i.id !== id);
   setCart(cart);
 }
+
 function clearCart() {
   localStorage.removeItem(CART_KEY);
   updateCartUI();
 }
+
 function getCartTotal() {
   return getCart().reduce((sum, i) => sum + (i.price * i.qty), 0);
 }
+
 function getCartCount() {
   return getCart().reduce((sum, i) => sum + i.qty, 0);
 }
@@ -86,10 +96,12 @@ function getCartCount() {
 function getWishlist() {
   return JSON.parse(localStorage.getItem(WISHLIST_KEY) || '[]');
 }
+
 function setWishlist(items) {
   localStorage.setItem(WISHLIST_KEY, JSON.stringify(items));
   updateWishlistUI();
 }
+
 function toggleWishlist(product) {
   const list = getWishlist();
   const idx = list.findIndex(i => i.id === product._id);
@@ -97,6 +109,7 @@ function toggleWishlist(product) {
   if (idx > -1) {
     list.splice(idx, 1);
     showToast('Removed from wishlist ❤️', 'info');
+    setWishlist(list);
     return false;
   } else {
     list.push({
@@ -107,15 +120,18 @@ function toggleWishlist(product) {
       category: product.category
     });
     showToast('Added to wishlist 💖', 'success');
+    setWishlist(list);
     return true;
   }
-  setWishlist(list);
 }
+
 function isInWishlist(id) {
   return getWishlist().some(i => i.id === id);
 }
+
 function clearWishlist() {
   localStorage.removeItem(WISHLIST_KEY);
+  updateWishlistUI();
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -183,8 +199,11 @@ async function apiFetch(endpoint, options = {}) {
     const res = await fetch(`${API_BASE}${endpoint}`, {
       ...options,
       headers,
-      body: options.body instanceof FormData ? options.body
-        : options.body ? JSON.stringify(options.body) : undefined,
+      body: options.body instanceof FormData
+        ? options.body
+        : options.body
+          ? JSON.stringify(options.body)
+          : undefined,
     });
 
     const data = await res.json();
@@ -201,8 +220,9 @@ async function apiFetch(endpoint, options = {}) {
    DARK MODE
    ═══════════════════════════════════════════════════════════════════ */
 function initTheme() {
-  const saved = localStorage.getItem(THEME_KEY) ||
-                (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  const saved =
+    localStorage.getItem(THEME_KEY) ||
+    (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
   setTheme(saved);
 }
 
@@ -221,7 +241,10 @@ function updateThemeToggle(theme) {
   const btn = document.getElementById('theme-toggle');
   if (btn) {
     btn.textContent = theme === 'dark' ? '☀️' : '🌙';
-    btn.setAttribute('title', theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode');
+    btn.setAttribute(
+      'title',
+      theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'
+    );
   }
 }
 
@@ -239,14 +262,13 @@ function setActiveNav() {
 function initHamburger() {
   const btn = document.querySelector('.nav-hamburger');
   const links = document.querySelector('.nav-links');
-  if (!btn) return;
+  if (!btn || !links) return;
 
   btn.addEventListener('click', () => {
     btn.classList.toggle('active');
     links.classList.toggle('open');
   });
 
-  // Close on link click
   links.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
       btn.classList.remove('active');
@@ -279,44 +301,28 @@ function initLogout() {
   const btn = document.getElementById('logout-btn');
   if (!btn) return;
 
-  btn.addEventListener('click', (e) => {
+  btn.addEventListener('click', e => {
     e.preventDefault();
     clearAuth();
     showToast('Logged out successfully', 'info');
-    setTimeout(() => window.location.href = '/login.html', 800);
+    setTimeout(() => (window.location.href = '/login.html'), 800);
   });
 }
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
 /* ═══════════════════════════════════════════════════════════════════
    SCROLL ANIMATION OBSERVER
    ═══════════════════════════════════════════════════════════════════ */
 function initScrollAnimations() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-=======
->>>>>>> 84d3d5b
-/* ── ACCOUNT MENU (Mobile) ───────────────────────────────── */
-function openAccountMenu() {
-  const user = getUser();
-  if (user) {
-    if (user.role === 'admin') window.location.href = '/admin.html';
-    else window.location.href = '/';
-  } else {
-    window.location.href = '/login.html';
-  }
-}
-
-/* ── SIGNUP HANDLER ───────────────────────────────────── */
-document.addEventListener('DOMContentLoaded', () => {
->>>>>>> b66ac6d (update the ui)
+  const observer = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    },
+    { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+  );
 
   document.querySelectorAll('.fade-in-up, .scroll-reveal').forEach(el => {
     observer.observe(el);
@@ -363,7 +369,9 @@ function renderCartItems() {
     return;
   }
 
-  container.innerHTML = cart.map(item => `
+  container.innerHTML = cart
+    .map(
+      item => `
     <div class="cart-item">
       <div class="cart-item-img">
         <img src="${item.image}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/80x100?text=N/A'">
@@ -380,7 +388,9 @@ function renderCartItems() {
         </div>
       </div>
     </div>
-  `).join('');
+  `
+    )
+    .join('');
 }
 
 function updateCartUI() {
@@ -391,8 +401,7 @@ function updateCartUI() {
 }
 
 function updateCartCount() {
-  // Desktop badge
-  let badge = document.querySelector('.nav-icon-btn[onclick*="openCartDrawer"] .icon-badge');
+  const badge = document.querySelector('.nav-icon-btn[onclick*="openCartDrawer"] .icon-badge');
   const count = getCartCount();
 
   if (badge) {
@@ -471,30 +480,12 @@ function openAccountMenu() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   WISHLIST UI
-   ═══════════════════════════════════════════════════════════════════ */
-function updateWishlistUI() {
-  // Update wishlist buttons on product cards
-  document.querySelectorAll('.wishlist-btn').forEach(btn => {
-    const productId = btn.getAttribute('data-id');
-    if (productId && isInWishlist(productId)) {
-      btn.classList.add('active');
-      btn.textContent = '❤️';
-    } else if (productId) {
-      btn.classList.remove('active');
-      btn.textContent = '🤍';
-    }
-  });
-}
-
-/* ═══════════════════════════════════════════════════════════════════
    QUICK VIEW MODAL
    ═══════════════════════════════════════════════════════════════════ */
 function openQuickView(product) {
   const modal = document.getElementById('quick-view-modal');
   if (!modal) return;
 
-  // Populate modal
   document.getElementById('qv-image').src = product.imageUrl;
   document.getElementById('qv-category').textContent = product.category;
   document.getElementById('qv-title').textContent = product.name;
@@ -502,19 +493,19 @@ function openQuickView(product) {
     ${formatPrice(product.price)}
     ${product.oldPrice ? `<del>${formatPrice(product.oldPrice)}</del>` : ''}
   `;
-  document.getElementById('qv-desc').textContent = product.description || 'Premium quality ethnic wear crafted with care.';
+  document.getElementById('qv-desc').textContent =
+    product.description || 'Premium quality ethnic wear crafted with care.';
 
-  // Store product reference
   modal._product = product;
-
-  // Show modal
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';
 
-  // Reset size & qty
   document.querySelectorAll('.size-option').forEach(opt => opt.classList.remove('active'));
-  document.querySelector('.size-option').classList.add('active');
-  document.getElementById('qv-qty').value = 1;
+  const firstSize = document.querySelector('.size-option');
+  if (firstSize) firstSize.classList.add('active');
+
+  const qtyInput = document.getElementById('qv-qty');
+  if (qtyInput) qtyInput.value = 1;
 }
 
 function closeQuickView() {
@@ -537,6 +528,7 @@ function openLightbox(src) {
     lb.classList.add('open');
   }
 }
+
 function closeLightbox() {
   const lb = document.getElementById('lightbox');
   if (lb) lb.classList.remove('open');
@@ -559,25 +551,30 @@ function debounce(func, wait = 300) {
 
 function throttle(func, limit = 200) {
   let inThrottle;
-  return function(...args) {
+  return function (...args) {
     if (!inThrottle) {
       func.apply(this, args);
       inThrottle = true;
-      setTimeout(() => inThrottle = false, limit);
+      setTimeout(() => (inThrottle = false), limit);
     }
   };
 }
 
 function escHtml(str) {
   return str.replace(/['"&<>]/g, c => ({
-    "'": '&#39;', '"': '&quot;',
-    '&': '&amp;', '<': '&lt;', '>': '&gt;'
+    "'": '&#39;',
+    '"': '&quot;',
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;'
   }[c]));
 }
 
 function formatDate(dateStr) {
   return new Date(dateStr).toLocaleDateString('en-IN', {
-    day: '2-digit', month: 'short', year: 'numeric'
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric'
   });
 }
 
@@ -585,7 +582,6 @@ function formatDate(dateStr) {
    INITIALIZE ON EVERY PAGE
    ═══════════════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
-  // Core
   setActiveNav();
   initHamburger();
   buildNavAuth();
@@ -593,31 +589,30 @@ document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   initScrollAnimations();
   initBackToTop();
-
-  // Cart drawer
   updateCartUI();
 
-  // Navbar scroll effect
-  let lastScroll = 0;
-  window.addEventListener('scroll', throttle(() => {
-    const nav = document.querySelector('.navbar');
-    if (!nav) return;
+  window.addEventListener(
+    'scroll',
+    throttle(() => {
+      const nav = document.querySelector('.navbar');
+      if (!nav) return;
 
-    const current = window.scrollY;
-    if (current > 50) nav.classList.add('scrolled');
-    else nav.classList.remove('scrolled');
+      const current = window.scrollY;
+      if (current > 50) nav.classList.add('scrolled');
+      else nav.classList.remove('scrolled');
+    }, 100)
+  );
 
-    lastScroll = current;
-  }, 100));
-
-  // Close cart lightbox on outside click
-  document.addEventListener('click', (e) => {
+  document.addEventListener('click', e => {
     const cartOverlay = document.getElementById('cart-overlay');
     const cartDrawer = document.getElementById('cart-drawer');
-    if (cartOverlay && cartDrawer &&
-        cartDrawer.classList.contains('open') &&
-        !cartDrawer.contains(e.target) &&
-        !e.target.closest('[onclick="openCartDrawer()"]')) {
+    if (
+      cartOverlay &&
+      cartDrawer &&
+      cartDrawer.classList.contains('open') &&
+      !cartDrawer.contains(e.target) &&
+      !e.target.closest('[onclick="openCartDrawer()"]')
+    ) {
       closeCartDrawer();
     }
 
@@ -627,9 +622,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-<<<<<<< HEAD
-  // ESC key handlers
-  document.addEventListener('keydown', (e) => {
+  document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
       closeCartDrawer();
       closeQuickView();
@@ -637,258 +630,3 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
-=======
-        setAuth(data.token, data.user);
-
-        setTimeout(() => {
-          window.location.href = "/";
-        }, 1000);
-
-       } catch (err) {
-         showToast(err.message, "error");
-       }
-     });
-   }
-
- });
-
-/* ═══════════════════════════════════════════════════════════════════
-   ENHANCEMENTS: Cart, Wishlist, Theme, Scroll, Cart Drawer
-   ═══════════════════════════════════════════════════════════════════ */
-
-/* ── Theme (Dark Mode) ─────────────────────────────────── */
-const THEME_KEY = 'zafran_theme';
-function getTheme() {
-  return localStorage.getItem(THEME_KEY) ||
-         (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-}
-function setTheme(theme) {
-  document.documentElement.setAttribute('data-theme', theme);
-  localStorage.setItem(THEME_KEY, theme);
-  updateThemeToggle();
-}
-function toggleTheme() {
-  setTheme(getTheme() === 'dark' ? 'light' : 'dark');
-}
-function initTheme() {
-  setTheme(getTheme());
-}
-function updateThemeToggle() {
-  const btn = document.getElementById('theme-toggle');
-  if (btn) btn.textContent = getTheme() === 'dark' ? '☀️' : '🌙';
-}
-
-/* ── Cart ──────────────────────────────────────────────── */
-const CART_KEY = 'zafran_cart';
-function getCart() {
-  return JSON.parse(localStorage.getItem(CART_KEY) || '[]');
-}
-function setCart(items) {
-  localStorage.setItem(CART_KEY, JSON.stringify(items));
-  updateCartUI();
-}
-function addToCart(product, qty = 1, size = 'M') {
-  const cart = getCart();
-  const existing = cart.find(i => i.id === product._id);
-  if (existing) {
-    existing.qty += qty;
-  } else {
-    cart.push({ id: product._id, name: product.name, price: product.price, image: product.imageUrl, category: product.category, qty, size });
-  }
-  setCart(cart);
-  showToast('Added to cart 🛒', 'success');
-}
-function updateCartQty(id, delta) {
-  const cart = getCart();
-  const item = cart.find(i => i.id === id);
-  if (item) {
-    item.qty += delta;
-    if (item.qty <= 0) removeFromCart(id);
-    else setCart(cart);
-  }
-}
-function removeFromCart(id) {
-  setCart(getCart().filter(i => i.id !== id));
-}
-function clearCart() {
-  localStorage.removeItem(CART_KEY);
-  updateCartUI();
-}
-function getCartTotal() {
-  return getCart().reduce((sum, i) => sum + (i.price * i.qty), 0);
-}
-function getCartCount() {
-  return getCart().reduce((sum, i) => sum + i.qty, 0);
-}
-
-/* ── Wishlist ──────────────────────────────────────────── */
-const WISHLIST_KEY = 'zafran_wishlist';
-function getWishlist() {
-  return JSON.parse(localStorage.getItem(WISHLIST_KEY) || '[]');
-}
-function setWishlist(items) {
-  localStorage.setItem(WISHLIST_KEY, JSON.stringify(items));
-  updateWishlistUI();
-}
-function toggleWishlist(product) {
-  const list = getWishlist();
-  const idx = list.findIndex(i => i.id === product._id);
-  if (idx > -1) {
-    list.splice(idx, 1);
-    showToast('Removed from wishlist ❤️', 'info');
-    setWishlist(list);
-    return false;
-  } else {
-    list.push({ id: product._id, name: product.name, price: product.price, image: product.imageUrl, category: product.category });
-    showToast('Added to wishlist 💖', 'success');
-    setWishlist(list);
-    return true;
-  }
-}
-function isInWishlist(id) {
-  return getWishlist().some(i => i.id === id);
-}
-function clearWishlist() {
-  localStorage.removeItem(WISHLIST_KEY);
-  updateWishlistUI();
-}
-
-/* ── Cart Drawer UI ────────────────────────────────────── */
-function updateCartUI() {
-  renderCartItems();
-  updateCartCount();
-  updateCartTotal();
-}
-function renderCartItems() {
-  const container = document.getElementById('cart-items');
-  if (!container) return;
-  const cart = getCart();
-  if (cart.length === 0) {
-    container.innerHTML = `<div class="cart-empty" style="text-align:center;padding:40px 20px;color:var(--midtone)"><p>Your cart is empty</p></div>`;
-    return;
-  }
-  container.innerHTML = cart.map(item => `
-    <div class="cart-item">
-      <div class="cart-item-img"><img src="${item.image}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/80x100?text=N/A'"></div>
-      <div class="cart-item-details">
-        <div class="cart-item-name">${item.name}</div>
-        <div class="cart-item-price">${formatPrice(item.price)}</div>
-        <div class="cart-item-actions">
-          <button class="cart-qty-btn" onclick="updateCartQty('${item.id}', -1)">−</button>
-          <span>${item.qty}</span>
-          <button class="cart-qty-btn" onclick="updateCartQty('${item.id}', 1)">+</button>
-          <button class="cart-item-remove" onclick="removeFromCart('${item.id}')">Remove</button>
-        </div>
-      </div>
-    </div>
-  `).join('');
-}
-function updateCartCount() {
-  // Desktop badge
-  const badge = document.querySelector('.nav-icon-btn[onclick="openCartDrawer()"] .icon-badge');
-  const mobileBadge = document.getElementById('mobile-cart-badge');
-  const count = getCartCount();
-
-  if (badge) {
-    badge.textContent = count;
-    badge.style.display = count > 0 ? 'block' : 'none';
-  }
-  if (mobileBadge) {
-    mobileBadge.textContent = count;
-    mobileBadge.style.display = count > 0 ? 'block' : 'none';
-  }
-}
-function updateCartTotal() {
-  const total = document.getElementById('cart-total');
-  if (total) total.textContent = formatPrice(getCartTotal());
-}
-function openCartDrawer() {
-  const drawer = document.getElementById('cart-drawer');
-  const overlay = document.getElementById('cart-overlay');
-  if (drawer && overlay) {
-    drawer.classList.add('open');
-    overlay.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-}
-function closeCartDrawer() {
-  const drawer = document.getElementById('cart-drawer');
-  const overlay = document.getElementById('cart-overlay');
-  if (drawer && overlay) {
-    drawer.classList.remove('open');
-    overlay.classList.remove('open');
-    document.body.style.overflow = '';
-  }
-}
-
-/* ── Wishlist UI ───────────────────────────────────────── */
-function updateWishlistUI() {
-  document.querySelectorAll('.wishlist-btn').forEach(btn => {
-    const id = btn.getAttribute('data-id');
-    if (id && isInWishlist(id)) {
-      btn.classList.add('active');
-      btn.textContent = '❤️';
-    } else if (id) {
-      btn.classList.remove('active');
-      btn.textContent = '🤍';
-    }
-  });
-}
-
-/* ── Scroll Animation ──────────────────────────────────── */
-function initScrollAnimations() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.fade-in-up').forEach(el => observer.observe(el));
-}
-
-/* ── Back to Top ───────────────────────────────────────── */
-function initBackToTop() {
-  const btn = document.createElement('button');
-  btn.className = 'back-to-top';
-  btn.innerHTML = '↑';
-  btn.setAttribute('aria-label', 'Back to top');
-  document.body.appendChild(btn);
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 500) btn.classList.add('visible');
-    else btn.classList.remove('visible');
-  });
-  btn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-}
-
-/* ── Extend DOMContentLoaded ───────────────────────────── */
-document.addEventListener('DOMContentLoaded', () => {
-  initTheme();
-  initScrollAnimations();
-  initBackToTop();
-  updateCartUI();
-
-  // Navbar scroll effect
-  window.addEventListener('scroll', () => {
-    const nav = document.querySelector('.navbar');
-    if (nav) {
-      if (window.scrollY > 50) nav.classList.add('scrolled');
-      else nav.classList.remove('scrolled');
-    }
-  });
-
-  // Close modals on outside click
-  const lightbox = document.getElementById('lightbox');
-  if (lightbox) {
-    lightbox.addEventListener('click', (e) => {
-      if (e.target.id === 'lightbox') closeLightbox();
-    });
-  }
-<<<<<<< HEAD
-});
-=======
-});
->>>>>>> b66ac6d (update the ui)
->>>>>>> 84d3d5b

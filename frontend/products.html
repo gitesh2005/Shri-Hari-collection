@@ -25,62 +25,31 @@
       <li id="nav-logout" style="display:none">
         <a href="#" id="logout-btn">Logout</a>
       </li>
-<<<<<<< HEAD
-     </ul>
+    </ul>
 
-     <!-- Icons -->
-     <div style="display:flex;align-items:center;gap:16px;">
-       <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme" style="
-         width:40px;height:40px;border-radius:50%;background:var(--warm-off);border:none;
-         font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;
-         transition:all .3s ease;
-       ">🌙</button>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme" style="
+        width:40px;height:40px;border-radius:50%;background:var(--warm-off);border:none;
+        font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;
+        transition:all .3s ease;
+      ">🌙</button>
 
-       <button onclick="openCartDrawer()" aria-label="Cart" style="
-         position:relative;background:none;border:none;font-size:1.3rem;cursor:pointer;
-       ">🛒
-         <span class="icon-badge" id="cart-badge" style="
-           position:absolute;top:-4px;right:-6px;background:var(--rust);color:white;
-           font-size:.65rem;padding:2px 6px;border-radius:10px;min-width:16px;text-align:center;
-           display:none;
-         ">0</span>
-       </button>
+      <button onclick="openCartDrawer()" aria-label="Cart" style="
+        position:relative;background:none;border:none;font-size:1.3rem;cursor:pointer;
+      ">🛒
+        <span class="icon-badge" id="cart-badge" style="
+          position:absolute;top:-4px;right:-6px;background:var(--rust);color:white;
+          font-size:.65rem;padding:2px 6px;border-radius:10px;min-width:16px;text-align:center;
+          display:none;
+        ">0</span>
+      </button>
 
-       <button class="nav-hamburger" aria-label="Menu">
-         <span></span><span></span><span></span>
-       </button>
-     </div>
-   </div>
- </nav>
-=======
-<<<<<<< HEAD
-</ul>
-
-      <!-- Icons -->
-      <div style="display:flex;align-items:center;gap:16px;">
-        <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme" style="
-          width:40px;height:40px;border-radius:50%;background:var(--warm-off);border:none;
-          font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;
-          transition:all .3s ease;
-        ">🌙</button>
-
-        <button onclick="openCartDrawer()" aria-label="Cart" style="
-          position:relative;background:none;border:none;font-size:1.3rem;cursor:pointer;
-        ">🛒
-          <span class="icon-badge" id="cart-badge" style="
-            position:absolute;top:-4px;right:-6px;background:var(--rust);color:white;
-            font-size:.65rem;padding:2px 6px;border-radius:10px;min-width:16px;text-align:center;
-            display:none;
-          ">0</span>
-        </button>
-
-        <button class="nav-hamburger" aria-label="Menu">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
+      <button class="nav-hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-  </nav>
->>>>>>> 84d3d5b
+  </div>
+</nav>
 
 <!-- ── Page Banner ────────────────────────────────────────────── -->
 <div class="page-banner">
@@ -94,22 +63,18 @@
 <section class="section">
   <div class="container">
 
-    <!-- Enhanced Filter Bar -->
     <div class="filter-bar">
-      <!-- Category Filters -->
       <div style="display:flex;gap:8px;flex-wrap:wrap;">
         <button class="filter-btn active" data-cat="">All</button>
         <button class="filter-btn" data-cat="Kurti">Kurtis</button>
         <button class="filter-btn" data-cat="Suits">Suits</button>
       </div>
 
-      <!-- Search -->
       <div class="search-bar">
         <span class="search-icon">🔍</span>
         <input type="search" id="search-input" placeholder="Search products…" />
       </div>
 
-      <!-- Sort -->
       <select id="sort-select" class="sort-select">
         <option value="newest">Newest First</option>
         <option value="price-asc">Price: Low → High</option>
@@ -117,7 +82,6 @@
         <option value="name">Name A–Z</option>
       </select>
 
-      <!-- View Toggle -->
       <div style="display:flex;gap:8px;">
         <button class="view-btn active" onclick="setView('grid')" style="
           padding:10px;border:1.5px solid var(--sand);border-radius:8px;background:var(--white);cursor:pointer;
@@ -130,10 +94,8 @@
 
     <p id="result-count" style="font-size:.87rem;color:var(--midtone);margin-bottom:24px;"></p>
 
-    <!-- Products Grid -->
     <div id="products-grid" class="products-grid"></div>
 
-    <!-- Load More / Infinite Scroll -->
     <div id="load-more-container" style="text-align:center;margin-top:48px;display:none;">
       <button id="load-more-btn" class="btn btn-outline btn-lg" onclick="loadMore()">
         Load More Products
@@ -141,31 +103,10 @@
       <div id="loading-more" class="spinner" style="display:none;margin:24px auto;"></div>
     </div>
 
-    <!-- Pagination -->
     <div id="pagination" class="pagination" style="display:none;"></div>
   </div>
 </section>
 
-<<<<<<< HEAD
-<!-- ── Mobile Bottom Navigation ────────────────────────────────── -->
-<div class="mobile-bottom-nav" id="mobile-nav">
-  <a href="/" class="bottom-nav-item" onclick="this.classList.add('active')">
-    <span>🏠</span> Home
-  </a>
-  <a href="/products.html" class="bottom-nav-item active">
-    <span>🛍️</span> Shop
-  </a>
-  <a href="javascript:void(0)" onclick="openCartDrawer()" class="bottom-nav-item">
-    <span>🛒</span> Cart
-    <span class="icon-badge" id="mobile-cart-badge" style="display:none;position:absolute;top:-4px;right:8px;font-size:.65rem;">0</span>
-  </a>
-  <a href="/wishlist.html" class="bottom-nav-item">
-    <span>❤️</span> Wishlist
-  </a>
-  <a href="javascript:void(0)" onclick="openAccountMenu()" class="bottom-nav-item">
-    <span>👤</span> Account
-  </a>
-=======
 <footer>
   <div class="footer-inner">
     <div class="footer-logo">Hari</div>
@@ -178,253 +119,9 @@
   <div class="footer-bottom">
     <p>© 2026 Hari. All rights reserved.</p>
   </div>
-  </footer>
+</footer>
 
-  <!-- Cart Drawer -->
-  <div id="cart-overlay" onclick="closeCartDrawer()" style="
-    position:fixed;inset:0;background:rgba(44,36,22,.5);z-index:2999;
-    opacity:0;pointer-events:none;transition:opacity .3s ease;
-  "></div>
-  <div id="cart-drawer" style="
-    position:fixed;top:0;right:0;bottom:0;width:380px;background:var(--white);
-    box-shadow:-10px 0 40px rgba(0,0,0,.15);z-index:3000;
-    transform:translateX(100%);transition:transform .4s cubic-bezier(.4,0,.2,1);
-    display:flex;flex-direction:column;
-  ">
-    <div class="cart-header" style="padding:20px;border-bottom:1px solid var(--warm-off);display:flex;align-items:center;justify-content:space-between;">
-      <h3 style="font-family:var(--font-display);font-size:1.3rem;margin:0;">Cart <span id="cart-count">(0)</span></h3>
-      <button onclick="closeCartDrawer()" style="width:36px;height:36px;border-radius:50%;background:var(--warm-off);border:none;font-size:1.1rem;cursor:pointer;">✕</button>
-    </div>
-    <div id="cart-items" style="flex:1;overflow-y:auto;padding:16px;"></div>
-    <div style="padding:16px;border-top:1px solid var(--warm-off);background:var(--warm-off);">
-      <div style="display:flex;justify-content:space-between;margin-bottom:12px;font-size:.9rem;">
-        <span>Total:</span>
-        <strong id="cart-total" style="font-size:1.1rem;color:var(--copper);">₹0</strong>
-      </div>
-      <button id="checkout-btn" onclick="alert('Checkout coming soon!')" style="
-        width:100%;padding:12px;background:var(--charcoal);color:var(--cream);
-        border:none;border-radius:var(--radius-sm);font-size:.95rem;font-weight:600;
-        cursor:pointer;transition:background .3s ease;
-      ">Proceed to Checkout</button>
-    </div>
-  </div>
-
-  <!-- Mobile Bottom Nav -->
-  <div class="mobile-bottom-nav" style="display:none;">
-    <a href="/" class="bottom-nav-item" style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:.75rem;color:var(--midtone);text-decoration:none;padding:6px 16px;">
-      <span style="font-size:1.4rem;">🏠</span>Home
-    </a>
-    <a href="/products.html" class="bottom-nav-item active" style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:.75rem;color:var(--copper);text-decoration:none;padding:6px 16px;">
-      <span style="font-size:1.4rem;">🛍️</span>Shop
-    </a>
-    <a href="javascript:void(0)" onclick="openCartDrawer()" style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:.75rem;color:var(--midtone);text-decoration:none;padding:6px 16px;position:relative;">
-      <span style="font-size:1.4rem;">🛒</span>Cart
-      <span id="mobile-cart-badge" style="position:absolute;top:-4px;right:8px;background:var(--rust);color:white;font-size:.65rem;padding:2px 6px;border-radius:10px;display:none;">0</span>
-    </a>
-    <a href="/wishlist.html" class="bottom-nav-item" style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:.75rem;color:var(--midtone);text-decoration:none;padding:6px 16px;">
-      <span style="font-size:1.4rem;">❤️</span>Wishlist
-    </a>
-    <a href="/login.html" class="bottom-nav-item" style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:.75rem;color:var(--midtone);text-decoration:none;padding:6px 16px;">
-      <span style="font-size:1.4rem;">👤</span>Account
-    </a>
-  </div>
-
-  <style>
-    @media (max-width: 768px) {
-      .mobile-bottom-nav { display: flex !important; }
-    }
-  </style>
-
-<!-- ✅ LIGHTBOX HTML -->
-<div id="lightbox">
-  <button onclick="closeLightbox()">✕</button>
-  <img id="lightbox-img" src="" />
->>>>>>> b66ac6d (update the ui)
-</div>
-
-<script>
-<<<<<<< HEAD
-// Initialize theme on load
-initTheme();
-
-// Update cart badge
-function updateBadge() {
-  const badge = document.getElementById('cart-badge');
-  const mobileBadge = document.getElementById('mobile-cart-badge');
-  if (badge) {
-    const count = getCartCount();
-    badge.textContent = count;
-    badge.style.display = count > 0 ? 'block' : 'none';
-  }
-  if (mobileBadge) {
-    const count = getCartCount();
-    mobileBadge.textContent = count;
-    mobileBadge.style.display = count > 0 ? 'block' : 'none';
-  }
-}
-
-// Load and render products
-let allProducts = [];
-let currentPage = 1;
-let currentCategory = '';
-let currentSearch = '';
-let currentSort = 'newest';
-const LIMIT = 12;
-
-async function loadProducts(reset = true) {
-  const grid = document.getElementById('products-grid');
-  if (reset) grid.innerHTML = skeletonCards(LIMIT);
-
-  try {
-    const params = new URLSearchParams({
-      page: currentPage,
-      limit: 200, // Load more for client-side filtering
-      category: currentCategory || undefined,
-      search: currentSearch || undefined,
-      sort: currentSort
-    });
-
-    const data = await apiFetch(`/products?${params}`);
-    allProducts = data.data || [];
-    renderProducts();
-    updateResultCount();
-  } catch (err) {
-    grid.innerHTML = `<p style="text-align:center;padding:40px;color:var(--midtone)">Failed to load products.</p>`;
-  }
-}
-
-function renderProducts() {
-  const grid = document.getElementById('products-grid');
-  grid.innerHTML = allProducts.map(p => `
-    <div class="product-card fade-in-up">
-      <div class="product-card-img">
-        <img src="${p.imageUrl}" alt="${p.name}" loading="lazy"
-             onclick="openLightbox('${p.imageUrl}')" />
-        <span class="product-badge">${p.category}</span>
-        <div class="zoom-hint" style="position:absolute;bottom:10px;right:10px;width:34px;height:34px;border-radius:50%;background:rgba(44,36,22,.65);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.9rem;opacity:0;transform:scale(.8);transition:.2s;pointer-events:none;">🔍</div>
-
-        <!-- Wishlist Button -->
-        <button class="wishlist-btn ${isInWishlist(p._id) ? 'active' : ''}"
-                data-id="${p._id}"
-                onclick="toggleWishlistCard(this, ${JSON.stringify(p).replace(/"/g, '&quot;')})"
-                style="position:absolute;top:14px;right:14px;width:36px;height:36px;background:rgba(255,255,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:var(--charcoal);cursor:pointer;z-index:2;box-shadow:0 2px 10px rgba(0,0,0,.15);transition:all .3s ease;">
-          ${isInWishlist(p._id) ? '❤️' : '🤍'}
-        </button>
-      </div>
-
-      <div class="product-card-body">
-        <p class="product-card-category">${p.category}</p>
-        <h3 class="product-card-name">${p.name}</h3>
-        <p class="product-card-desc">${p.description}</p>
-        <div class="product-card-footer">
-          <span class="product-price">${formatPrice(p.price)}</span>
-          <button class="btn btn-primary btn-sm" onclick="addToCart(${JSON.stringify(p).replace(/"/g, '&quot;')}, 1)">Add to Cart</button>
-        </div>
-      </div>
-    </div>
-  `).join('');
-
-  updateBadge();
-}
-
-function toggleWishlistCard(btn, product) {
-  const added = toggleWishlist(product);
-  btn.textContent = added ? '❤️' : '🤍';
-  btn.classList.toggle('active', added);
-}
-
-function updateResultCount() {
-  const shown = allProducts.length;
-  const el = document.getElementById('result-count');
-  el.textContent = `Showing ${shown} product${shown !== 1 ? 's' : ''}`;
-}
-
-/* Filter buttons */
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', function() {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    this.classList.add('active');
-    currentCategory = this.getAttribute('data-cat');
-    currentPage = 1;
-    loadProducts(true);
-  });
-});
-
-/* Search */
-document.getElementById('search-input').addEventListener('input', debounce((e) => {
-  currentSearch = e.target.value.trim();
-  currentPage = 1;
-  loadProducts(true);
-}, 500));
-
-/* Sort */
-document.getElementById('sort-select').addEventListener('change', (e) => {
-  currentSort = e.target.value;
-  currentPage = 1;
-  loadProducts(true);
-});
-
-/* Lightbox (already defined) */
-function openLightbox(src) {
-  document.getElementById('lightbox-img').src = src;
-  document.getElementById('lightbox').classList.add('open');
-}
-function closeLightbox() {
-  document.getElementById('lightbox').classList.remove('open');
-}
-
-/* Mobile nav toggle */
-const hamburger = document.querySelector('.nav-hamburger');
-if (hamburger) {
-  hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    document.querySelector('.nav-links').classList.toggle('open');
-  });
-}
-
-// Show mobile nav on small screens
-if (window.innerWidth <= 768) {
-  const mobileNav = document.querySelector('.mobile-bottom-nav');
-  if (mobileNav) mobileNav.style.display = 'flex';
-}
-
-=======
-<<<<<<< HEAD
-// Mobile nav active state
-document.addEventListener('DOMContentLoaded', () => {
-  const path = window.location.pathname.replace(/\/$/, '') || '/';
-  document.querySelectorAll('.bottom-nav-item').forEach(item => {
-    const href = item.getAttribute('href');
-    if (href && new URL(href, window.location.origin).pathname.replace(/\/$/, '') === path) {
-      item.classList.add('active');
-    }
-  });
-});
-
-// Watch cart changes
-const originalSetCart = setCart;
-setCart = function(items) {
-  originalSetCart(items);
-  const badge = document.getElementById('mobile-cart-badge');
-=======
-// Initialize theme on load
-initTheme();
-
-// Update cart badge
-function updateBadge() {
-  const badge = document.getElementById('cart-badge');
-  const mobileBadge = document.getElementById('mobile-cart-badge');
->>>>>>> b66ac6d (update the ui)
-  if (badge) {
-    const count = getCartCount();
-    badge.textContent = count;
-    badge.style.display = count > 0 ? 'block' : 'none';
-  }
-<<<<<<< HEAD
-};
-</script>
-
-<!-- ── Cart Drawer (reuse) ────────────────────────────────────── -->
+<!-- ── Cart Drawer ────────────────────────────────────────────── -->
 <div class="cart-overlay" id="cart-overlay" onclick="closeCartDrawer()"></div>
 <div class="cart-drawer" id="cart-drawer">
   <div class="cart-header">
@@ -441,8 +138,8 @@ function updateBadge() {
   </div>
 </div>
 
-<!-- ── Quick View Modal (reuse) ────────────────────────────────── -->
-<div class="modal-overlay" id="quick-view-modal" onclick="if(event.target===this)closeQuickView()">
+<!-- ── Quick View Modal ───────────────────────────────────────── -->
+<div class="modal-overlay" id="quick-view-modal" onclick="if(event.target===this) closeQuickView()">
   <div class="modal">
     <div class="modal-head">
       <h2 id="qv-title">Product Name</h2>
@@ -465,19 +162,19 @@ function updateBadge() {
             Select Size
           </label>
           <div class="size-selector">
-            <button class="size-option active" onclick="setSize(this)">XS</button>
-            <button class="size-option" onclick="setSize(this)">S</button>
-            <button class="size-option" onclick="setSize(this)">M</button>
-            <button class="size-option" onclick="setSize(this)">L</button>
-            <button class="size-option" onclick="setSize(this)">XL</button>
+            <button class="size-option active" onclick="setSizeOption(this)">XS</button>
+            <button class="size-option" onclick="setSizeOption(this)">S</button>
+            <button class="size-option" onclick="setSizeOption(this)">M</button>
+            <button class="size-option" onclick="setSizeOption(this)">L</button>
+            <button class="size-option" onclick="setSizeOption(this)">XL</button>
           </div>
         </div>
 
         <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;">
           <div class="quantity-selector">
-            <button class="qty-btn" onclick="adjustQty(-1)">−</button>
+            <button class="qty-btn" onclick="adjustQuickQty(-1)">−</button>
             <input type="number" id="qv-qty" class="qty-input" value="1" min="1" readonly>
-            <button class="qty-btn" onclick="adjustQty(1)">+</button>
+            <button class="qty-btn" onclick="adjustQuickQty(1)">+</button>
           </div>
           <button class="btn btn-primary btn-lg" onclick="addFromQuickView()" style="flex:1;margin-left:20px;">
             Add to Cart
@@ -488,8 +185,8 @@ function updateBadge() {
   </div>
 </div>
 
-<!-- ── Lightbox ────────────────────────────────────────────────── -->
-<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+<!-- ── Lightbox ───────────────────────────────────────────────── -->
+<div id="lightbox" class="lightbox" onclick="closeLightbox()">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
   <img id="lightbox-img" src="" alt="Full size" />
 </div>
@@ -497,44 +194,63 @@ function updateBadge() {
 <!-- ── Toast ──────────────────────────────────────────────────── -->
 <div id="toast"></div>
 
-<!-- ═══════════════════════════════════════════════════════════════════
-     SCRIPTS
-     ═══════════════════════════════════════════════════════════════════ -->
+<!-- ── Mobile Bottom Navigation ───────────────────────────────── -->
+<div class="mobile-bottom-nav" id="mobile-nav" style="display:none;">
+  <a href="/" class="bottom-nav-item">
+    <span>🏠</span> Home
+  </a>
+  <a href="/products.html" class="bottom-nav-item active">
+    <span>🛍️</span> Shop
+  </a>
+  <a href="javascript:void(0)" onclick="openCartDrawer()" class="bottom-nav-item">
+    <span>🛒</span> Cart
+    <span class="icon-badge" id="mobile-cart-badge" style="display:none;position:absolute;top:-4px;right:8px;font-size:.65rem;">0</span>
+  </a>
+  <a href="/wishlist.html" class="bottom-nav-item">
+    <span>❤️</span> Wishlist
+  </a>
+  <a href="javascript:void(0)" onclick="openAccountMenu()" class="bottom-nav-item">
+    <span>👤</span> Account
+  </a>
+</div>
+
 <script src="/js/shared.js"></script>
 <script>
+initTheme();
+
 let allProducts = [];
 let filteredProducts = [];
-let currentPage = 1;
 let currentCategory = '';
 let currentSearch = '';
 let currentSort = 'newest';
 let currentView = 'grid';
 let displayedCount = 0;
 const PAGE_SIZE = 12;
+let quickViewProduct = null;
+let quickViewSize = 'XS';
 
-/* ═══════════════════════════════════════════════════════════════════
-   INITIAL LOAD
-   ═══════════════════════════════════════════════════════════════════ */
-document.addEventListener('DOMContentLoaded', () => {
-  loadProducts();
-  setupFilters();
-  setupSearch();
-  setupSort();
-  setupViewToggle();
+function updateBadge() {
+  const count = getCartCount();
 
-  // Intersection Observer for infinite scroll
-  const observer = new IntersectionObserver((entries) => {
-    if (entries[0].isIntersecting && displayedCount < filteredProducts.length) {
-      loadMore();
-    }
-  }, { rootMargin: '200px' });
+  const badge = document.getElementById('cart-badge');
+  const mobileBadge = document.getElementById('mobile-cart-badge');
+  const cartCount = document.getElementById('cart-count');
 
-  observer.observe(document.getElementById('load-more-container'));
-});
+  if (badge) {
+    badge.textContent = count;
+    badge.style.display = count > 0 ? 'block' : 'none';
+  }
 
-/* ═══════════════════════════════════════════════════════════════════
-   FETCH PRODUCTS
-   ═══════════════════════════════════════════════════════════════════ */
+  if (mobileBadge) {
+    mobileBadge.textContent = count;
+    mobileBadge.style.display = count > 0 ? 'block' : 'none';
+  }
+
+  if (cartCount) {
+    cartCount.textContent = `(${count})`;
+  }
+}
+
 async function loadProducts(reset = true) {
   const grid = document.getElementById('products-grid');
   if (reset) {
@@ -543,236 +259,252 @@ async function loadProducts(reset = true) {
   }
 
   try {
-    const params = new URLSearchParams({
-      page: 1,
-      limit: 200,
-      category: currentCategory || undefined,
-      search: currentSearch || undefined,
-      sort: currentSort
-    });
-
-    const data = await apiFetch(`/products?${params}`);
+    const data = await apiFetch('/products?limit=200');
     allProducts = data.data || [];
-
     applyFilters();
   } catch (err) {
-    showToast('Failed to load products', 'error');
+    grid.innerHTML = `<p style="text-align:center;padding:40px;color:var(--midtone)">Failed to load products.</p>`;
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   RENDER PRODUCTS
-   ═══════════════════════════════════════════════════════════════════ */
 function applyFilters() {
-  // Filter
   filteredProducts = allProducts.filter(p => {
     const matchCat = !currentCategory || p.category === currentCategory;
-    const matchSearch = !currentSearch ||
-      p.name.toLowerCase().includes(currentSearch.toLowerCase()) ||
-      p.description.toLowerCase().includes(currentSearch.toLowerCase());
+    const text = `${p.name || ''} ${p.description || ''}`.toLowerCase();
+    const matchSearch = !currentSearch || text.includes(currentSearch.toLowerCase());
     return matchCat && matchSearch;
   });
 
-  // Sort
   filteredProducts.sort((a, b) => {
     switch (currentSort) {
-      case 'price-asc': return a.price - b.price;
-      case 'price-desc': return b.price - a.price;
-      case 'name': return a.name.localeCompare(b.name);
-      default: return new Date(b.createdAt) - new Date(a.createdAt);
+      case 'price-asc':
+        return Number(a.price) - Number(b.price);
+      case 'price-desc':
+        return Number(b.price) - Number(a.price);
+      case 'name':
+        return (a.name || '').localeCompare(b.name || '');
+      default:
+        return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
     }
   });
 
-  displayedCount = 0;
-  renderProducts();
+  displayedCount = Math.min(PAGE_SIZE, filteredProducts.length);
+  renderProducts(true);
   updateResultCount();
   updateLoadMoreButton();
-  updatePagination();
 }
 
-function renderProducts() {
+function renderProducts(reset = false) {
   const grid = document.getElementById('products-grid');
-  const toShow = filteredProducts.slice(0, displayedCount);
-  const remainder = filteredProducts.slice(displayedCount);
 
-  if (displayedCount === 0) {
-    grid.innerHTML = '';
+  if (!filteredProducts.length) {
+    grid.innerHTML = `<p style="text-align:center;padding:40px;color:var(--midtone)">No products found.</p>`;
+    updateLoadMoreButton();
+    return;
   }
 
-  const newHTML = remainder.map(p => createProductCard(p)).join('');
-  grid.insertAdjacentHTML('beforeend', newHTML);
+  const toShow = filteredProducts.slice(0, displayedCount);
+  grid.className = currentView === 'grid' ? 'products-grid' : 'products-list';
 
-  displayedCount = filteredProducts.length;
-  initProductCards();
-  updateCartCount();
-}
+  grid.innerHTML = toShow.map((p, index) => {
+    const safeProduct = encodeURIComponent(JSON.stringify(p));
+    const inWishlist = isInWishlist(p._id);
 
-function createProductCard(p) {
-  const inWishlist = isInWishlist(p._id);
-  const cardClass = currentView === 'grid' ? 'product-card' : 'product-card-list';
+    return `
+      <div class="${currentView === 'grid' ? 'product-card' : 'product-card-list'} fade-in-up">
+        <div class="product-card-img">
+          <img src="${p.imageUrl}" alt="${escHtml(p.name || 'Product')}" loading="lazy"
+               onclick="openLightbox('${p.imageUrl}')" />
+          <span class="product-badge">${escHtml(p.category || 'Product')}</span>
 
-  return `
-    <div class="${cardClass} fade-in-up" data-id="${p._id}">
-      <div class="product-card-img">
-        <img src="${p.imageUrl}" alt="${p.name}" loading="lazy"
-             onclick="openLightbox('${p.imageUrl}')" />
-        <span class="product-badge ${p.new ? 'new' : ''}">${p.category}</span>
+          <button class="wishlist-btn ${inWishlist ? 'active' : ''}"
+                  onclick="toggleWishlistCard(this, '${safeProduct}')"
+                  data-id="${p._id}"
+                  style="position:absolute;top:14px;right:14px;width:36px;height:36px;background:rgba(255,255,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:var(--charcoal);cursor:pointer;z-index:2;box-shadow:0 2px 10px rgba(0,0,0,.15);transition:all .3s ease;">
+            ${inWishlist ? '❤️' : '🤍'}
+          </button>
+        </div>
 
-        <button class="wishlist-btn ${inWishlist ? 'active' : ''}"
-                onclick="toggleWishlistBtn(this, '${p._id}')"
-                data-id="${p._id}">${inWishlist ? '❤️' : '🤍'}</button>
-
-        <button class="quick-view-btn" onclick='openQuickView(${JSON.stringify(p).replace(/"/g, '&quot;')})'>
-          Quick View
-        </button>
-      </div>
-
-      <div class="product-card-body">
-        <p class="product-card-category">${p.category}</p>
-        <h3 class="product-card-name">${p.name}</h3>
-        <div class="product-card-desc">${p.description || ''}</div>
-        <div class="product-card-footer">
-          <span class="product-price">${formatPrice(p.price)}</span>
-          <button class="add-cart-btn"
-                  onclick="addToCart(${JSON.stringify(p).replace(/"/g, '&quot;')}, 1)"
-                  aria-label="Add to cart">+</button>
+        <div class="product-card-body">
+          <p class="product-card-category">${escHtml(p.category || 'Product')}</p>
+          <h3 class="product-card-name">${escHtml(p.name || 'Untitled')}</h3>
+          <p class="product-card-desc">${escHtml(p.description || '')}</p>
+          <div class="product-card-footer">
+            <span class="product-price">${formatPrice(p.price || 0)}</span>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <button class="btn btn-outline btn-sm" onclick="openQuickViewFromEncoded('${safeProduct}')">Quick View</button>
+              <button class="btn btn-primary btn-sm" onclick="addEncodedToCart('${safeProduct}', 1)">Add to Cart</button>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  `;
+    `;
+  }).join('');
+
+  updateBadge();
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   INFINITE SCROLL / LOAD MORE
-   ═══════════════════════════════════════════════════════════════════ */
 function loadMore() {
   const btn = document.getElementById('load-more-btn');
   const loader = document.getElementById('loading-more');
 
-  if (!btn || displayedCount >= filteredProducts.length) return;
+  if (displayedCount >= filteredProducts.length) return;
 
   btn.style.display = 'none';
-  loader.style.display = 'inline-block';
+  loader.style.display = 'block';
 
   setTimeout(() => {
+    displayedCount = Math.min(displayedCount + PAGE_SIZE, filteredProducts.length);
     renderProducts();
-    loader.style.display = 'none';
-    btn.style.display = 'inline-flex';
+    updateResultCount();
     updateLoadMoreButton();
-  }, 600);
+    loader.style.display = 'none';
+  }, 300);
 }
 
 function updateLoadMoreButton() {
   const container = document.getElementById('load-more-container');
   const btn = document.getElementById('load-more-btn');
 
-  if (filteredProducts.length > PAGE_SIZE) {
+  if (filteredProducts.length > PAGE_SIZE && displayedCount < filteredProducts.length) {
     container.style.display = 'block';
-    btn.style.display = displayedCount >= filteredProducts.length ? 'none' : 'inline-flex';
-    btn.textContent = displayedCount >= filteredProducts.length ? 'All Products Loaded' : 'Load More Products';
+    btn.style.display = 'inline-flex';
   } else {
     container.style.display = 'none';
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   PAGINATION (optional, hide if using infinite scroll)
-   ═══════════════════════════════════════════════════════════════════ */
-function updatePagination() {
-  const totalPages = Math.ceil(filteredProducts.length / PAGE_SIZE);
-  const container = document.getElementById('pagination');
-
-  if (totalPages <= 1) {
-    container.style.display = 'none';
-    return;
-  }
-
-  container.style.display = 'flex';
-  container.innerHTML = '';
-
-  for (let i = 1; i <= totalPages; i++) {
-    const btn = document.createElement('button');
-    btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
-    btn.textContent = i;
-    btn.onclick = () => {
-      currentPage = i;
-      displayedCount = PAGE_SIZE * i;
-      renderProducts();
-      updatePagination();
-    };
-    container.appendChild(btn);
-  }
-}
-
-/* ═══════════════════════════════════════════════════════════════════
-   FILTER & SEARCH HANDLERS
-   ═══════════════════════════════════════════════════════════════════ */
-function setupFilters() {
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentCategory = btn.getAttribute('data-cat');
-      loadProducts(true);
-    });
-  });
-}
-
-function setupSearch() {
-  const input = document.getElementById('search-input');
-  input.addEventListener('input', debounce((e) => {
-    currentSearch = e.target.value.trim();
-    loadProducts(true);
-  }, 500));
-}
-
-function setupSort() {
-  document.getElementById('sort-select').addEventListener('change', (e) => {
-    currentSort = e.target.value;
-    loadProducts(true);
-  });
-}
-
-function setupViewToggle() {
-  document.querySelectorAll('.view-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentView = btn.getAttribute('data-view');
-      document.getElementById('products-grid').className =
-        currentView === 'grid' ? 'products-grid' : 'products-list';
-    });
-  });
-}
-
-/* ═══════════════════════════════════════════════════════════════════
-   UI UPDATES
-   ═══════════════════════════════════════════════════════════════════ */
 function updateResultCount() {
   const el = document.getElementById('result-count');
-  el.textContent = `Showing ${displayedCount} of ${filteredProducts.length} products`;
+  el.textContent = `Showing ${Math.min(displayedCount, filteredProducts.length)} of ${filteredProducts.length} products`;
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   SHARED FUNCTIONS (from shared.js)
-   ═══════════════════════════════════════════════════════════════════ */
-function setSize(btn) {
+function toggleWishlistCard(btn, encodedProduct) {
+  const product = JSON.parse(decodeURIComponent(encodedProduct));
+  const added = toggleWishlist(product);
+  btn.textContent = added ? '❤️' : '🤍';
+  btn.classList.toggle('active', added);
+}
+
+function addEncodedToCart(encodedProduct, qty) {
+  const product = JSON.parse(decodeURIComponent(encodedProduct));
+  addToCart(product, qty);
+  updateBadge();
+}
+
+function setView(view) {
+  currentView = view;
+  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.view-btn[data-view="${view}"]`).classList.add('active');
+  renderProducts();
+}
+
+function openQuickViewFromEncoded(encodedProduct) {
+  const product = JSON.parse(decodeURIComponent(encodedProduct));
+  openQuickView(product);
+}
+
+function openQuickView(product) {
+  const modal = document.getElementById('quick-view-modal');
+  if (!modal) return;
+
+  quickViewProduct = product;
+  quickViewSize = 'XS';
+
+  document.getElementById('qv-image').src = product.imageUrl;
+  document.getElementById('qv-category').textContent = product.category || '';
+  document.getElementById('qv-title').textContent = product.name || 'Product';
+  document.getElementById('qv-price').textContent = formatPrice(product.price || 0);
+  document.getElementById('qv-desc').textContent = product.description || '';
+
+  document.querySelectorAll('.size-option').forEach((btn, i) => {
+    btn.classList.toggle('active', i === 0);
+  });
+  document.getElementById('qv-qty').value = 1;
+
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeQuickView() {
+  const modal = document.getElementById('quick-view-modal');
+  if (modal) {
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  quickViewProduct = null;
+}
+
+function setSizeOption(btn) {
   btn.parentElement.querySelectorAll('.size-option').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
+  quickViewSize = btn.textContent.trim();
 }
 
-function adjustQty(delta) {
+function adjustQuickQty(delta) {
   const input = document.getElementById('qv-qty');
-  let val = parseInt(input.value) + delta;
+  let val = parseInt(input.value || '1', 10) + delta;
   if (val < 1) val = 1;
   input.value = val;
 }
 
-// Everything else (apiFetch, showToast, formatPrice, initScrollAnimations, etc.) comes from shared.js
+function addFromQuickView() {
+  if (!quickViewProduct) return;
+  const qty = parseInt(document.getElementById('qv-qty').value || '1', 10);
+  addToCart(quickViewProduct, qty, quickViewSize);
+  updateBadge();
+}
 
->>>>>>> 84d3d5b
-// Initial load
-loadProducts();
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    currentCategory = this.getAttribute('data-cat') || '';
+    applyFilters();
+  });
+});
+
+document.getElementById('search-input').addEventListener('input', debounce((e) => {
+  currentSearch = e.target.value.trim();
+  applyFilters();
+}, 300));
+
+document.getElementById('sort-select').addEventListener('change', (e) => {
+  currentSort = e.target.value;
+  applyFilters();
+});
+
+const hamburger = document.querySelector('.nav-hamburger');
+if (hamburger) {
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    document.querySelector('.nav-links').classList.toggle('open');
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadProducts();
+  updateBadge();
+
+  if (window.innerWidth <= 768) {
+    const mobileNav = document.getElementById('mobile-nav');
+    if (mobileNav) mobileNav.style.display = 'flex';
+  }
+
+  const path = window.location.pathname.replace(/\/$/, '') || '/';
+  document.querySelectorAll('.bottom-nav-item').forEach(item => {
+    const href = item.getAttribute('href');
+    if (href && new URL(href, window.location.origin).pathname.replace(/\/$/, '') === path) {
+      item.classList.add('active');
+    }
+  });
+});
+
+const originalSetCartProducts = setCart;
+setCart = function(items) {
+  originalSetCartProducts(items);
+  updateBadge();
+};
 </script>
 
 </body>

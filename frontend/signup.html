@@ -196,14 +196,11 @@
 
 <script src="/js/shared.js"></script>
 <script>
-<<<<<<< HEAD
-if (getToken() && getUser()) { window.location.href = '/'; }
-initTheme();
-=======
-<<<<<<< HEAD
 if (getToken() && getUser()) {
   window.location.href = '/';
 }
+
+initTheme();
 
 function togglePassword() {
   const pass = document.getElementById('password');
@@ -214,24 +211,44 @@ document.getElementById('signup-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   clearErrors();
 
-  const name     = document.getElementById('name').value.trim();
-  const email    = document.getElementById('email').value.trim();
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value;
-  const confirm  = document.getElementById('confirm-password').value;
+  const confirm = document.getElementById('confirm-password').value;
 
   let valid = true;
 
-  if (!name) { showError('name', 'Name is required'); valid = false; }
-  else if (name.length < 2) { showError('name', 'Name too short'); valid = false; }
+  if (!name) {
+    showError('name', 'Name is required');
+    valid = false;
+  } else if (name.length < 2) {
+    showError('name', 'Name too short');
+    valid = false;
+  }
 
-  if (!email) { showError('email', 'Email is required'); valid = false; }
-  else if (!/^\S+@\S+\.\S+$/.test(email)) { showError('email', 'Invalid email format'); valid = false; }
+  if (!email) {
+    showError('email', 'Email is required');
+    valid = false;
+  } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+    showError('email', 'Invalid email format');
+    valid = false;
+  }
 
-  if (!password) { showError('password', 'Password is required'); valid = false; }
-  else if (password.length < 6) { showError('password', 'Password must be 6+ characters'); valid = false; }
+  if (!password) {
+    showError('password', 'Password is required');
+    valid = false;
+  } else if (password.length < 6) {
+    showError('password', 'Password must be 6+ characters');
+    valid = false;
+  }
 
-  if (!confirm) { showError('confirm-password', 'Please confirm password'); valid = false; }
-  else if (password !== confirm) { showError('confirm-password', 'Passwords do not match'); valid = false; }
+  if (!confirm) {
+    showError('confirm-password', 'Please confirm password');
+    valid = false;
+  } else if (password !== confirm) {
+    showError('confirm-password', 'Passwords do not match');
+    valid = false;
+  }
 
   if (!valid) return;
 
@@ -248,7 +265,9 @@ document.getElementById('signup-form').addEventListener('submit', async (e) => {
     setAuth(data.token, data.user);
     showToast('Account created successfully! 🎉', 'success');
 
-    setTimeout(() => { window.location.href = '/'; }, 1000);
+    setTimeout(() => {
+      window.location.href = '/';
+    }, 1000);
 
   } catch (err) {
     showToast(err.message, 'error');
@@ -258,16 +277,21 @@ document.getElementById('signup-form').addEventListener('submit', async (e) => {
 });
 
 function showError(field, msg) {
-  const el = document.getElementById(field);
+  const input = document.getElementById(field);
+  const group = input ? input.closest('.form-group') : null;
   const err = document.getElementById(`${field}-error`);
-  el.classList.add('error');
+
+  if (group) group.classList.add('error');
   if (err) err.textContent = msg;
 }
+
 function clearErrors() {
   ['name','email','password','confirm-password'].forEach(f => {
-    const el = document.getElementById(f);
-    if (el) el.classList.remove('error');
+    const input = document.getElementById(f);
+    const group = input ? input.closest('.form-group') : null;
     const err = document.getElementById(`${f}-error`);
+
+    if (group) group.classList.remove('error');
     if (err) err.textContent = '';
   });
 }
@@ -307,11 +331,6 @@ function openAccountMenu() {
 if (window.innerWidth <= 768) {
   document.getElementById('mobile-nav').style.display = 'flex';
 }
-=======
-if (getToken() && getUser()) { window.location.href = '/'; }
-initTheme();
->>>>>>> b66ac6d (update the ui)
->>>>>>> 84d3d5b
 </script>
 
 </body>
