@@ -8,6 +8,100 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    /* ── Footer Fix ────────────────────────────────────────────── */
+    footer {
+      background: var(--charcoal);
+      color: var(--cream);
+      padding: 40px 24px 20px;
+      margin-top: auto;
+    }
+    .footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(250,246,241,.15);
+    }
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--cream);
+    }
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+    .footer-links a {
+      color: rgba(250,246,241,.7);
+      font-size: .9rem;
+      transition: color .3s ease;
+    }
+    .footer-links a:hover { color: var(--copper); }
+    .footer-bottom {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding-top: 20px;
+      text-align: center;
+      font-size: .82rem;
+      color: rgba(250,246,241,.4);
+    }
+
+    /* ── Page Banner ───────────────────────────────────────────── */
+    .page-banner {
+      background: linear-gradient(135deg, var(--charcoal) 0%, var(--copper-dk) 100%);
+      color: var(--cream);
+      padding: 60px 24px;
+      text-align: center;
+    }
+    .page-banner h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+    .page-banner p {
+      font-size: 1rem;
+      color: rgba(250,246,241,.75);
+    }
+
+    /* ── List View ─────────────────────────────────────────────── */
+    .products-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .product-card-list {
+      display: flex;
+      gap: 24px;
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: all .3s ease;
+    }
+    .product-card-list:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+    .product-card-list .product-card-img {
+      width: 180px;
+      flex-shrink: 0;
+      aspect-ratio: auto;
+    }
+    .product-card-list .product-card-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  </style>
 </head>
 <body>
 
@@ -107,6 +201,7 @@
   </div>
 </section>
 
+<!-- ── Footer ─────────────────────────────────────────────────── -->
 <footer>
   <div class="footer-inner">
     <div class="footer-logo">Hari</div>
@@ -231,7 +326,6 @@ let quickViewSize = 'XS';
 
 function updateBadge() {
   const count = getCartCount();
-
   const badge = document.getElementById('cart-badge');
   const mobileBadge = document.getElementById('mobile-cart-badge');
   const cartCount = document.getElementById('cart-count');
@@ -240,12 +334,10 @@ function updateBadge() {
     badge.textContent = count;
     badge.style.display = count > 0 ? 'block' : 'none';
   }
-
   if (mobileBadge) {
     mobileBadge.textContent = count;
     mobileBadge.style.display = count > 0 ? 'block' : 'none';
   }
-
   if (cartCount) {
     cartCount.textContent = `(${count})`;
   }
@@ -277,14 +369,10 @@ function applyFilters() {
 
   filteredProducts.sort((a, b) => {
     switch (currentSort) {
-      case 'price-asc':
-        return Number(a.price) - Number(b.price);
-      case 'price-desc':
-        return Number(b.price) - Number(a.price);
-      case 'name':
-        return (a.name || '').localeCompare(b.name || '');
-      default:
-        return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+      case 'price-asc':  return Number(a.price) - Number(b.price);
+      case 'price-desc': return Number(b.price) - Number(a.price);
+      case 'name':       return (a.name || '').localeCompare(b.name || '');
+      default:           return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
     }
   });
 
@@ -306,12 +394,13 @@ function renderProducts(reset = false) {
   const toShow = filteredProducts.slice(0, displayedCount);
   grid.className = currentView === 'grid' ? 'products-grid' : 'products-list';
 
-  grid.innerHTML = toShow.map((p, index) => {
+  /* ── FIX: Added "visible" class so products are always shown ── */
+  grid.innerHTML = toShow.map((p) => {
     const safeProduct = encodeURIComponent(JSON.stringify(p));
     const inWishlist = isInWishlist(p._id);
 
     return `
-      <div class="${currentView === 'grid' ? 'product-card' : 'product-card-list'} fade-in-up">
+      <div class="${currentView === 'grid' ? 'product-card' : 'product-card-list'} fade-in-up visible">
         <div class="product-card-img">
           <img src="${p.imageUrl}" alt="${escHtml(p.name || 'Product')}" loading="lazy"
                onclick="openLightbox('${p.imageUrl}')" />
@@ -500,9 +589,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-const originalSetCartProducts = setCart;
+const originalSetCart = setCart;
 setCart = function(items) {
-  originalSetCartProducts(items);
+  originalSetCart(items);
   updateBadge();
 };
 </script>

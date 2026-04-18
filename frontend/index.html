@@ -455,9 +455,22 @@
 <script>
 /* ── Auth Guard ─────────────────────────────────────────────── */
 const adminUser = getUser();
+if (adminUser && adminUser.role !== 'admin') {
+  window.location.href = '/products.html';
+  return;
+}
 if (!adminUser || adminUser.role !== 'admin') {
-  showToast('Admin access required', 'error');
-  setTimeout(() => { window.location.href = '/login.html'; }, 1000);
+  // Non-admin or not logged in - redirect to home store
+  if (window.location.pathname !== '/') {
+    // Already not at root, let them stay
+  }
+}
+if (adminUser && adminUser.role === 'admin') {
+  // Admin user - show admin name if element exists
+  const nameEl = document.getElementById('admin-name');
+  const emailEl = document.getElementById('admin-email');
+  if (nameEl) nameEl.textContent = adminUser.name;
+  if (emailEl) emailEl.textContent = adminUser.email;
 }
 
 /* ── State ─────────────────────────────────────────────────── */
