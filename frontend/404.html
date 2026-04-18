@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page Not Found – Hari Collection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .not-found-page {
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+      padding: 40px 20px; background: var(--cream);
+    }
+    .not-found-content max-width: 560px; }
+    .not-found-emoji {
+      font-size: 8rem; margin-bottom: 24px;
+      animation: float 3s ease-in-out infinite;
+      display: inline-block;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+    .not-found-title {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 8vw, 5rem);
+      font-weight: 600; color: var(--charcoal);
+      line-height: 1; margin-bottom: 16px;
+      letter-spacing: -2px;
+    }
+    .not-found-subtitle {
+      font-size: 1.1rem; color: var(--midtone);
+      margin-bottom: 36px;
+      max-width: 420px; margin-left: auto; margin-right: auto;
+    }
+    .not-found-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .suggestions {
+      margin-top: 40px; padding-top: 32px;
+      border-top: 1px solid var(--sand);
+    }
+    .suggestions h3 {
+      font-family: var(--font-display);
+      font-size: 1.2rem; color: var(--charcoal);
+      margin-bottom: 16px;
+    }
+    .suggestion-links { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .suggestion-link {
+      padding: 10px 20px; border-radius: var(--radius-sm);
+      background: var(--white); color: var(--charcoal);
+      font-size: .9rem; font-weight: 500;
+      text-decoration: none;
+      border: 1px solid var(--sand);
+      transition: all .3s ease;
+    }
+    .suggestion-link:hover {
+      border-color: var(--copper); color: var(--copper);
+      transform: translateY(-2px);
+    }
+    .back-btn {
+      margin-top: 40px; font-size: .9rem; color: var(--midtone);
+    }
+    .back-btn a { color: var(--copper); font-weight: 600; }
+  </style>
+</head>
+<body class="not-found-page">
+
+  <div class="not-found-content fade-in-up">
+    <div class="not-found-emoji">🦚</div>
+    <h1 class="not-found-title">404</h1>
+    <p class="not-found-subtitle">
+      Oops! The page you're looking for seems to have wandered off into our heritage fabric collection.
+    </p>
+    <div class="not-found-actions">
+      <a href="/" class="btn btn-primary btn-lg">Go Home</a>
+      <a href="/products.html" class="btn btn-outline btn-lg">Browse Products</a>
+    </div>
+
+    <div class="suggestions">
+      <h3>Or explore something beautiful</h3>
+      <div class="suggestion-links">
+        <a href="/products.html?category=Kurti" class="suggestion-link">✨ Kurtis</a>
+        <a href="/products.html?category=Suits" class="suggestion-link">✨ Suits</a>
+        <a href="/products.html?tag=new" class="suggestion-link">✨ New Arrivals</a>
+      </div>
+    </div>
+
+    <p class="back-btn"><a href="javascript:history.back()">← Go back to previous page</a></p>
+  </div>
+
+  <script src="/js/shared.js"></script>
+  <script>
+    // Ensure shared.js loads properly
+    document.addEventListener('DOMContentLoaded', () => {
+      initHamburger();
+      setActiveNav();
+      initTheme();
+    });
+  </script>
+
+</body>
+</html>
