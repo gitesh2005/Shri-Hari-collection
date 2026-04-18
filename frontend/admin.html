@@ -459,10 +459,6 @@ if (!adminUser || adminUser.role !== 'admin') {
   showToast('Admin access required', 'error');
   setTimeout(() => { window.location.href = '/login.html'; }, 1000);
 }
-if (adminUser) {
-  document.getElementById('admin-name').textContent = adminUser.name;
-  document.getElementById('admin-email').textContent = adminUser.email;
-}
 
 /* ── State ─────────────────────────────────────────────────── */
 let allProducts = [];
