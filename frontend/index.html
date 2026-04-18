@@ -453,29 +453,21 @@
 
 <script src="/js/shared.js"></script>
 <script>
-/* ── Auth Guard ─────────────────────────────────────────────── */
-const adminUser = getUser();
-if (adminUser && adminUser.role !== 'admin') {
-  window.location.href = '/products.html';
-  return;
-}
-if (!adminUser || adminUser.role !== 'admin') {
-  // Non-admin or not logged in - redirect to home store
-  if (window.location.pathname !== '/') {
-    // Already not at root, let them stay
-  }
-}
-if (adminUser && adminUser.role === 'admin') {
-  // Admin user - show admin name if element exists
-  const nameEl = document.getElementById('admin-name');
-  const emailEl = document.getElementById('admin-email');
-  if (nameEl) nameEl.textContent = adminUser.name;
-  if (emailEl) emailEl.textContent = adminUser.email;
+/* ── Home Page Init ─────────────────────────────────────────── */
+const user = getUser();
+if (user && user.role === 'admin') {
+  document.getElementById('nav-admin') && (document.getElementById('nav-admin').style.display = 'list-item');
 }
 
 /* ── State ─────────────────────────────────────────────────── */
 let allProducts = [];
-let editingId = null;
+let currentPage = 1;
+let currentCategory = '';
+let currentSearch = '';
+let currentSort = 'newest';
+const PAGE_SIZE = 12;
+let displayedCount = 0;
+let filteredProducts = [];
 
 /* ── Tab Switching ─────────────────────────────────────────── */
 function showTab(tab) {

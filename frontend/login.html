@@ -171,7 +171,10 @@
 <script src="/js/shared.js"></script>
 <script>
 initTheme();
-if (getToken() && getUser()) { window.location.href = '/'; }
+const user = getUser();
+if (getToken() && user) { 
+  window.location.href = user.role === 'admin' ? '/admin.html' : '/';
+}
 
 function togglePass() {
   const input = document.getElementById('password');
