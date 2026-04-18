@@ -345,16 +345,17 @@ function updateBadge() {
 async function loadProducts(reset = true) {
   const grid = document.getElementById('products-grid');
   if (reset) {
-    grid.innerHTML = skeletonCards(PAGE_SIZE);
+    grid.innerHTML = '<p style="text-align:center;padding:40px;">Loading products...</p>';
     displayedCount = 0;
   }
 
   try {
-    const data = await apiFetch('/products?limit=200');
+    const response = await fetch('https://shri-hari-collection.onrender.com/api/products');
+    const data = await response.json();
     allProducts = data.data || [];
     applyFilters();
   } catch (err) {
-    grid.innerHTML = `<p style="text-align:center;padding:40px;color:var(--midtone)">Failed to load products.</p>`;
+    grid.innerHTML = `<p style="text-align:center;padding:40px;color:var(--midtone)">Failed to load products: ${err.message}</p>`;
   }
 }
 
