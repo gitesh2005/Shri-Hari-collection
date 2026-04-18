@@ -305,7 +305,9 @@ function initLogout() {
     e.preventDefault();
     clearAuth();
     showToast('Logged out successfully', 'info');
-    setTimeout(() => (window.location.href = '/login.html'), 800);
+    setTimeout(() => {
+      window.location.href = '/login.html';
+    }, 800);
   });
 }
 

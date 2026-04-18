@@ -453,11 +453,8 @@
 
 <script src="/js/shared.js"></script>
 <script>
-/* ── Home Page Init ─────────────────────────────────────────── */
-const user = getUser();
-if (user && user.role === 'admin') {
-  document.getElementById('nav-admin') && (document.getElementById('nav-admin').style.display = 'list-item');
-}
+/* ── Home Page - Redirect to products ─────────────────────────── */
+window.location.href = '/products.html';
 
 /* ── State ─────────────────────────────────────────────────── */
 let allProducts = [];
