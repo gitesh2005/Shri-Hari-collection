@@ -317,6 +317,12 @@ let allProducts = [];
 let filteredProducts = [];
 let currentCategory = '';
 let currentSearch = '';
+// Require login - redirect to login if not authenticated
+const user = getUser();
+if (!user) {
+  window.location.href = '/login.html';
+}
+
 let currentSort = 'newest';
 let currentView = 'grid';
 let displayedCount = 0;
@@ -325,7 +331,6 @@ let quickViewProduct = null;
 let quickViewSize = 'XS';
 
 // Show admin link only for admin user
-const user = getUser();
 if (user && user.role === 'admin') {
   document.getElementById('nav-admin').style.display = 'list-item';
 }
