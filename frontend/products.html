@@ -311,16 +311,11 @@
 
 <script src="/js/shared.js"></script>
 <script>
-initTheme();
-
-let allProducts = [];
-let filteredProducts = [];
-let currentCategory = '';
-let currentSearch = '';
-// Require login - redirect to login if not authenticated
-const user = getUser();
-if (!user) {
+// Check login immediately - redirect if not authenticated
+if (!getUser()) {
   window.location.href = '/login.html';
+} else {
+  // User is logged in
 }
 
 let currentSort = 'newest';
@@ -605,6 +600,9 @@ setCart = function(items) {
   originalSetCart(items);
   updateBadge();
 };
+
+// Initialize logout button
+initLogout();
 </script>
 
 </body>

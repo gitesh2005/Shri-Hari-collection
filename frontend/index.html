@@ -3,448 +3,115 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Dashboard – Hari Collection</title>
+  <title>Hari Collection - Handcrafted Ethnic Wear</title>
+  <meta name="description" content="Discover handcrafted Kurtis and Suits at Hari Collection" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="/css/style.css" />
   <style>
-    .admin-layout {
-      display: grid; grid-template-columns: 260px 1fr;
-      min-height: calc(100vh - 72px);
+    .home-hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: linear-gradient(135deg, var(--charcoal) 0%, var(--copper-dk) 100%);
+      padding: 40px 20px;
     }
-    .admin-sidebar {
-      background: var(--charcoal); color: var(--cream);
-      padding: 32px 20px;
-      position: sticky; top: 72px; height: calc(100vh - 72px);
-      overflow-y: auto;
+    .home-content {
+      max-width: 700px;
     }
-    .sidebar-section-label {
-      font-size: .68rem; font-weight: 700;
-      letter-spacing: .18em; text-transform: uppercase;
-      color: rgba(250,246,241,.35);
-      padding: 0 12px; margin: 24px 0 10px;
-    }
-    .sidebar-section-label:first-child { margin-top: 0; }
-    .sidebar-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 11px 14px; border-radius: 10px;
-      font-size: .9rem; font-weight: 500;
-      color: rgba(250,246,241,.7);
-      transition: all .3s ease; cursor: pointer; margin-bottom: 4px;
-      border: none; background: none; width: 100%; text-align: left;
-    }
-    .sidebar-item:hover { background: rgba(255,255,255,.08); color: var(--cream); }
-    .sidebar-item.active { background: var(--copper); color: var(--white); }
-    .sidebar-badge {
-      margin-left: auto;
-      background: var(--copper); color: white;
-      font-size: .72rem; padding: 2px 8px;
-      border-radius: 12px; font-weight: 600;
-    }
-    .sidebar-item.active .sidebar-badge { background: rgba(255,255,255,.25); }
-
-    .admin-main {
-      padding: 36px 40px; background: var(--warm-off);
-    }
-    .admin-header {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 32px;
-    }
-    .admin-header h1 {
+    .home-logo {
       font-family: var(--font-display);
-      font-size: 1.9rem; font-weight: 500; color: var(--charcoal);
+      font-size: 5rem;
+      font-weight: 700;
+      color: var(--cream);
+      margin: 0;
+      letter-spacing: 0.05em;
     }
-    .admin-header p { font-size: .9rem; color: var(--midtone); margin-top: 2px; }
-
-    /* Stats Cards */
-    .stats-row {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px; margin-bottom: 36px;
+    .home-tagline {
+      font-size: 1.3rem;
+      color: var(--cream);
+      opacity: 0.85;
+      margin: 20px 0 40px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
     }
-    .stat-card {
-      background: var(--white);
-      border-radius: var(--radius-lg);
-      padding: 24px;
-      box-shadow: var(--shadow-sm);
-      transition: all .3s ease;
-      position: relative; overflow: hidden;
+    .home-desc {
+      font-size: 1.1rem;
+      color: var(--cream);
+      opacity: 0.75;
+      line-height: 1.8;
+      margin-bottom: 40px;
     }
-    .stat-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
-      background: linear-gradient(90deg, var(--copper), var(--rust));
-      opacity: 0; transition: opacity .3s ease;
+    .home-btn {
+      display: inline-block;
+      padding: 16px 48px;
+      background: var(--copper);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      transition: all 0.3s ease;
+      border: 2px solid var(--copper);
     }
-    .stat-card:hover::before { opacity: 1; }
-    .stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
-    .stat-card-icon {
-      width: 48px; height: 48px; border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 14px; font-size: 1.4rem;
+    .home-btn:hover {
+      background: transparent;
+      color: var(--cream);
+      transform: translateY(-3px);
     }
-    .stat-card-icon.copper { background: rgba(184,115,51,.12); }
-    .stat-card-icon.rust   { background: rgba(192,83,58,.12); }
-    .stat-card-icon.green  { background: rgba(92,184,92,.12); }
-    .stat-value {
-      font-family: var(--font-display);
-      font-size: 2.2rem; font-weight: 600; color: var(--charcoal);
+    .home-features {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 60px;
+      flex-wrap: wrap;
     }
-    .stat-label { font-size: .82rem; color: var(--midtone); margin-top: 4px; }
-    .stat-change {
-      font-size: .75rem; margin-top: 8px; display: flex; align-items: center; gap: 4px;
+    .home-feature {
+      color: var(--cream);
+      opacity: 0.7;
+      font-size: 0.95rem;
     }
-    .stat-change.positive { color: #5cb85c; }
-    .stat-change.negative { color: var(--rust); }
-
-    /* Panel */
-    .panel {
-      background: var(--white);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-sm);
-      overflow: hidden;
-    }
-    .panel-head {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 22px 28px;
-      border-bottom: 1px solid var(--warm-off);
-      background: var(--white); position: sticky; top: 0; z-index: 10;
-    }
-    .panel-head h2 {
-      font-family: var(--font-display);
-      font-size: 1.25rem; font-weight: 500;
-      color: var(--charcoal);
-    }
-    .panel-body { padding: 28px; }
-
-    /* Table */
-    .admin-table {
-      width: 100%; border-collapse: collapse;
-    }
-    .admin-table th {
-      text-align: left; padding: 12px 16px;
-      font-size: .78rem; font-weight: 700;
-      letter-spacing: .1em; text-transform: uppercase;
-      color: var(--midtone);
-      border-bottom: 1px solid var(--warm-off);
-    }
-    .admin-table td {
-      padding: 16px 16px;
-      border-bottom: 1px solid var(--warm-off);
-      font-size: .9rem; color: var(--charcoal);
-      vertical-align: middle;
-    }
-    .admin-table tr:last-child td { border-bottom: none; }
-    .admin-table tr:hover td { background: var(--cream); }
-    .admin-table img {
-      width: 50px; height: 60px; object-fit: cover;
-      border-radius: 8px; background: var(--warm-off);
-    }
-    .table-actions { display: flex; gap: 8px; }
-    .btn-icon {
-      width: 34px; height: 34px;
-      display: inline-flex; align-items: center; justify-content: center;
-      border-radius: 8px; border: 1.5px solid;
-      font-size: .8rem; transition: all .3s ease;
-      background: transparent; cursor: pointer;
-    }
-    .btn-icon.edit { color: var(--copper); border-color: rgba(184,115,51,.3); }
-    .btn-icon.edit:hover { background: rgba(184,115,51,.1); }
-    .btn-icon.del  { color: var(--rust); border-color: rgba(192,83,58,.3); }
-    .btn-icon.del:hover  { background: rgba(192,83,58,.1); }
-    .category-pill {
-      display: inline-block; padding: 4px 12px; border-radius: 20px;
-      font-size: .77rem; font-weight: 600;
-      background: var(--warm-off); color: var(--midtone);
-    }
-    .category-pill.kurti { background: rgba(184,115,51,.12); color: var(--copper-dk); }
-    .category-pill.suits { background: rgba(44,36,22,.08); color: var(--charcoal); }
-
-    /* Chart container */
-    .chart-container {
-      height: 250px; display: flex;
-      align-items: flex-end; justify-content: space-around;
-      padding: 20px 0;
-    }
-    .chart-bar {
-      width: 40px; background: linear-gradient(to top, var(--copper), var(--copper-dk));
-      border-radius: 6px 6px 0 0;
-      position: relative; transition: all .3s ease;
-      animation: growUp 1s ease-out;
-    }
-    .chart-bar:hover { transform: scale(1.05); filter: brightness(1.1); }
-    .chart-bar span {
-      position: absolute; bottom: -28px; left: 50%;
-      transform: translateX(-50%); font-size: .75rem; color: var(--midtone);
-      white-space: nowrap;
-    }
-    @keyframes growUp {
-      from { height: 0; }
-    }
-
-    /* Mobile */
     @media (max-width: 768px) {
-      .admin-layout { grid-template-columns: 1fr; }
-      .admin-sidebar { position: static; height: auto; display: none; }
-      .admin-sidebar.open { display: block; }
-      .admin-main { padding: 24px 20px; }
+      .home-logo { font-size: 3rem; }
+      .home-tagline { font-size: 1rem; }
+      .home-features { gap: 20px; flex-direction: column; }
     }
   </style>
 </head>
 <body>
 
+<!-- Navbar -->
 <nav class="navbar">
   <div class="nav-inner">
     <a href="/" class="nav-logo">Hari</a>
-    <ul class="nav-links" style="display:flex;">
+    <ul class="nav-links">
       <li><a href="/">Home</a></li>
       <li><a href="/products.html">Products</a></li>
-      <li><a href="/admin.html" class="active">Dashboard</a></li>
-      <li id="nav-login" style="display:none"><a href="/login.html">Login</a></li>
-      <li id="nav-signup" style="display:none"><a href="/signup.html" class="btn-primary">Sign Up</a></li>
-      <li id="nav-logout"><a href="#" id="logout-btn">Logout</a></li>
+      <li id="nav-login"><a href="/login.html">Login</a></li>
     </ul>
-    <div style="display:flex;align-items:center;gap:12px;">
-      <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme" style="
-        width:38px;height:38px;border-radius:50%;background:var(--warm-off);border:none;
-        font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;
-      ">🌙</button>
-      <button class="nav-hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
-    </div>
+    <button class="nav-hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
   </div>
 </nav>
 
-<div class="admin-layout">
-  <!-- Sidebar -->
-  <aside class="admin-sidebar" id="sidebar">
-    <p class="sidebar-section-label">Menu</p>
-    <button class="sidebar-item active" id="sb-overview" onclick="showTab('overview')">
-      <span>📊</span> Overview
-    </button>
-    <button class="sidebar-item" id="sb-products" onclick="showTab('products')">
-      <span>🛍</span> Products
-      <span class="sidebar-badge" id="sidebar-count">0</span>
-    </button>
-    <button class="sidebar-item" id="sb-add" onclick="openAddModal()">
-      <span>➕</span> Add Product
-    </button>
-    <p class="sidebar-section-label">Store</p>
-    <a href="/products.html" class="sidebar-item"><span>👁</span> View Store</a>
-    <button class="sidebar-item" onclick="document.getElementById('logout-btn').click()">
-      <span>🚪</span> Logout
-    </button>
-  </aside>
-
-  <!-- Main Content -->
-  <main class="admin-main">
-    <div id="tab-overview">
-      <div class="admin-header">
-        <div>
-          <h1>Dashboard</h1>
-          <p>Welcome back! Here's what's happening.</p>
-        </div>
-        <button class="btn btn-primary btn-sm" onclick="openAddModal()">+ Add Product</button>
-      </div>
-
-      <!-- Stats Row -->
-      <div class="stats-row">
-        <div class="stat-card">
-          <div class="stat-card-icon copper">🛍</div>
-          <p class="stat-value" id="stat-total">0</p>
-          <p class="stat-label">Total Products</p>
-          <div class="stat-change positive">↑ 12% from last month</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-card-icon rust">👘</div>
-          <p class="stat-value" id="stat-kurti">0</p>
-          <p class="stat-label">Kurtis</p>
-          <div class="stat-change positive">↑ 8%</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-card-icon green">🥻</div>
-          <p class="stat-value" id="stat-suits">0</p>
-          <p class="stat-label">Suits</p>
-          <div class="stat-change positive">↑ 15%</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-card-icon" style="background:rgba(184,115,51,.12)">💰</div>
-          <p class="stat-value" id="stat-revenue">₹0</p>
-          <p class="stat-label">Est. Revenue</p>
-          <div class="stat-change positive">↑ 23%</div>
-        </div>
-      </div>
-
-      <!-- Charts Section -->
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:24px;margin-bottom:36px;">
-        <div class="panel">
-          <div class="panel-head"><h2>Category Distribution</h2></div>
-          <div class="panel-body">
-            <div class="chart-container" id="category-chart"></div>
-          </div>
-        </div>
-
-        <div class="panel">
-          <div class="panel-head"><h2>Recent Activity</h2></div>
-          <div class="panel-body">
-            <ul id="activity-feed" style="display:flex;flex-direction:column;gap:14px;">
-              <li style="display:flex;gap:12px;align-items:center;font-size:.9rem;color:var(--midtone)">
-                <span style="background:var(--copper);color:white;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem">N</span>
-                <span>New product added: Floral Kurti</span>
-              </li>
-              <li style="display:flex;gap:12px;align-items:center;font-size:.9rem;color:var(--midtone)">
-                <span style="background:var(--green);color:white;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem">S</span>
-                <span>Sale completed: 3 orders</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <!-- Recent Products Table -->
-      <div class="panel">
-        <div class="panel-head">
-          <h2>Recent Products</h2>
-          <button class="btn btn-dark btn-sm" onclick="showTab('products')">View All</button>
-        </div>
-        <div class="panel-body" style="padding:0;overflow-x:auto;">
-          <table class="admin-table" id="recent-table">
-            <thead>
-              <tr>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Category</th>
-                <th>Price</th>
-                <th>Added</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="recent-tbody">
-              <tr><td colspan="6" style="text-align:center;padding:32px;color:var(--midtone);">Loading…</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- Products Tab -->
-    <div id="tab-products" style="display:none;">
-      <div class="admin-header">
-        <div>
-          <h1>All Products</h1>
-          <p id="products-sub">Manage your catalogue</p>
-        </div>
-        <button class="btn btn-primary btn-sm" onclick="openAddModal()">+ Add Product</button>
-      </div>
-
-      <div class="search-bar" style="max-width:380px;margin-bottom:24px;">
-        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
-        </svg>
-        <input type="search" id="admin-search" placeholder="Search products…" />
-      </div>
-
-      <div class="panel">
-        <div class="panel-body" style="padding:0;overflow-x:auto;">
-          <table class="admin-table" id="all-table">
-            <thead>
-              <tr>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Category</th>
-                <th>Price</th>
-                <th>Added</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="all-tbody">
-              <tr><td colspan="6" style="text-align:center;padding:32px;color:var(--midtone);">Loading…</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </main>
-</div>
-
-<!-- ── ADD/EDIT MODAL ──────────────────────────────────────────── -->
-<div class="modal-overlay" id="product-modal">
-  <div class="modal">
-    <div class="modal-head">
-      <h2 id="modal-title">Add Product</h2>
-      <button class="modal-close" onclick="closeModal()">✕</button>
-    </div>
-    <div class="modal-body">
-      <form id="product-form" novalidate enctype="multipart/form-data">
-        <input type="hidden" id="edit-id" />
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-          <div class="form-group" style="grid-column:1/-1;">
-            <label for="prod-name">Product Name *</label>
-            <input type="text" id="prod-name" placeholder="e.g. Floral Block Print Kurti" />
-            <p class="field-error" id="prod-name-error"></p>
-          </div>
-          <div class="form-group">
-            <label for="prod-price">Price (₹) *</label>
-            <input type="number" id="prod-price" placeholder="e.g. 1299" min="0" step="1" />
-            <p class="field-error" id="prod-price-error"></p>
-          </div>
-          <div class="form-group">
-            <label for="prod-category">Category *</label>
-            <select id="prod-category">
-              <option value="">— Select category —</option>
-              <option value="Kurti">Kurti</option>
-              <option value="Suits">Suits</option>
-            </select>
-            <p class="field-error" id="prod-category-error"></p>
-          </div>
-          <div class="form-group" style="grid-column:1/-1;">
-            <label for="prod-desc">Description *</label>
-            <textarea id="prod-desc" placeholder="Describe material, fit, occasion…"></textarea>
-            <p class="field-error" id="prod-desc-error"></p>
-          </div>
-
-          <!-- Image Upload -->
-          <div class="form-group" style="grid-column:1/-1;">
-            <label>Product Image * <span style="font-weight:400;color:var(--light-txt);font-size:.78rem;">(JPG/PNG/WebP, max 2 MB)</span></label>
-            <div id="image-preview-wrap" style="margin-bottom:12px;display:none;">
-              <img id="image-preview" src="" alt="Preview" style="height:220px;object-fit:cover;border-radius:var(--radius);" />
-              <button type="button" class="preview-remove" onclick="removeImage()" title="Remove image" style="position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;border:none;background:rgba(44,36,22,.7);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;">✕</button>
-            </div>
-            <div class="image-upload-zone" id="upload-zone"
-                 onclick="document.getElementById('prod-image').click()"
-                 ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)"
-                 ondrop="handleDrop(event)">
-              <svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                  d="M3 16v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3M16 8l-4-4-4 4M12 4v12"/>
-              </svg>
-              <p><strong>Click to upload</strong> or drag & drop</p>
-              <small>Supports JPG, PNG, WebP — Maximum 2 MB</small>
-              <input type="file" id="prod-image" name="image"
-                     accept="image/jpeg,image/jpg,image/png,image/webp" />
-            </div>
-            <p class="field-error" id="prod-image-error"></p>
-          </div>
-        </div>
-      </form>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
-      <button class="btn btn-primary" id="save-btn" onclick="saveProduct()">
-        Save Product
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- ── DELETE CONFIRM ──────────────────────────────────────────── -->
-<div class="confirm-overlay" id="confirm-overlay">
-  <div class="confirm-box">
-    <div class="confirm-icon">🗑️</div>
-    <h3>Delete Product?</h3>
-    <p>This will permanently remove the product.</p>
-    <div class="confirm-actions">
-      <button class="btn btn-ghost" onclick="closeConfirm()">Cancel</button>
-      <button class="btn btn-danger" id="confirm-del-btn">Delete</button>
+<!-- Hero Section -->
+<div class="home-hero">
+  <div class="home-content">
+    <h1 class="home-logo">Hari Collection</h1>
+    <p class="home-tagline">Handcrafted Ethnic Wear</p>
+    <p class="home-desc">
+      Discover the timeless elegance of handcrafted Kurtis and Suits. 
+      Each piece is meticulously designed with traditional craftsmanship 
+      and modern aesthetics to bring you the perfect blend of comfort and style.
+    </p>
+    <a href="/products.html" class="home-btn">Explore Collection</a>
+    <div class="home-features">
+      <span class="home-feature">✨ Handcrafted</span>
+      <span class="home-feature">🎨 Unique Designs</span>
+      <span class="home-feature">👗 Comfortable Fit</span>
     </div>
   </div>
 </div>
@@ -453,362 +120,9 @@
 
 <script src="/js/shared.js"></script>
 <script>
-/* ── Home Page - Redirect to products ─────────────────────────── */
-window.location.href = '/products.html';
-
-/* ── State ─────────────────────────────────────────────────── */
-let allProducts = [];
-let currentPage = 1;
-let currentCategory = '';
-let currentSearch = '';
-let currentSort = 'newest';
-const PAGE_SIZE = 12;
-let displayedCount = 0;
-let filteredProducts = [];
-
-/* ── Tab Switching ─────────────────────────────────────────── */
-function showTab(tab) {
-  document.getElementById('tab-overview').style.display = tab === 'overview' ? 'block' : 'none';
-  document.getElementById('tab-products').style.display = tab === 'products' ? 'block' : 'none';
-  ['overview','products'].forEach(t => {
-    document.getElementById(`sb-${t}`).classList.toggle('active', t === tab);
-  });
-  if (tab === 'products') renderAllTable(allProducts);
-}
-
-/* ── Load Products ─────────────────────────────────────────── */
-async function loadProducts() {
-  try {
-    const data = await apiFetch('/products?limit=200');
-    allProducts = data.data || [];
-
-    const kurtis = allProducts.filter(p => p.category === 'Kurti').length;
-    const suits  = allProducts.filter(p => p.category === 'Suits').length;
-    document.getElementById('stat-total').textContent  = allProducts.length;
-    document.getElementById('stat-kurti').textContent  = kurtis;
-    document.getElementById('stat-suits').textContent  = suits;
-    document.getElementById('sidebar-count').textContent = allProducts.length;
-    document.getElementById('products-sub').textContent = `${allProducts.length} products`;
-    updateRevenueChart(allProducts);
-    renderRecentTable(allProducts.slice(0, 5));
-    renderAllTable(allProducts);
-  } catch (err) {
-    showToast('Failed to load products: ' + err.message, 'error');
-  }
-}
-
-/* ── Render Tables ─────────────────────────────────────────── */
-function renderRecentTable(products) {
-  const tbody = document.getElementById('recent-tbody');
-  if (!products.length) {
-    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:32px;color:var(--midtone);">No products yet.</td></tr>`;
-    return;
-  }
-  tbody.innerHTML = products.map(p => `
-    <tr>
-      <td data-label="Image"><img src="${p.imageUrl}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/50x60?text=?'"/></td>
-      <td data-label="Name" style="font-weight:500;">${p.name}</td>
-      <td data-label="Category"><span class="category-pill ${p.category.toLowerCase()}">${p.category}</span></td>
-      <td data-label="Price" style="font-weight:600;">${formatPrice(p.price)}</td>
-      <td data-label="Actions">
-        <div class="table-actions">
-          <button class="btn-icon edit" title="Edit" onclick="openEditModal('${p._id}')">✏️</button>
-          <button class="btn-icon del" title="Delete" onclick="confirmDelete('${p._id}', '${escHtml(p.name)}')">🗑️</button>
-        </div>
-      </td>
-    </tr>
-  `).join('');
-}
-
-function renderAllTable(products) {
-  const tbody = document.getElementById('all-tbody');
-  if (!products.length) {
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--midtone);">No products found.</td></tr>`;
-    return;
-  }
-  tbody.innerHTML = products.map(p => `
-    <tr>
-      <td data-label="Image"><img src="${p.imageUrl}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/50x60?text=?'"/></td>
-      <td data-label="Name" style="font-weight:500;max-width:180px;">${p.name}</td>
-      <td data-label="Category"><span class="category-pill ${p.category.toLowerCase()}">${p.category}</span></td>
-      <td data-label="Price" style="font-weight:600;">${formatPrice(p.price)}</td>
-      <td data-label="Added" style="color:var(--midtone);font-size:.83rem;">
-        ${new Date(p.createdAt).toLocaleDateString('en-IN', {day:'2-digit',month:'short',year:'numeric'})}
-      </td>
-      <td data-label="Actions">
-        <div class="table-actions">
-          <button class="btn-icon edit" title="Edit" onclick="openEditModal('${p._id}')">✏️</button>
-          <button class="btn-icon del" title="Delete" onclick="confirmDelete('${p._id}', '${escHtml(p.name)}')">🗑️</button>
-        </div>
-      </td>
-    </tr>
-  `).join('');
-}
-
-/* ── Admin Search ───────────────────────────────────────────── */
-document.getElementById('admin-search').addEventListener('input', (e) => {
-  const q = e.target.value.toLowerCase();
-  const filtered = allProducts.filter(p =>
-    p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q)
-  );
-  renderAllTable(filtered);
-});
-
-/* ── Charts ─────────────────────────────────────────────────── */
-function updateRevenueChart(products) {
-  const chartContainer = document.getElementById('category-chart');
-  const kurtis = products.filter(p => p.category === 'Kurti').length;
-  const suits  = products.filter(p => p.category === 'Suits').length;
-  const total  = products.length || 1;
-  const kurtiH = (kurtis / total) * 200;
-  const suitsH  = (suits  / total) * 200;
-
-  chartContainer.innerHTML = `
-    <div class="chart-bar" style="height:${kurtiH}px;" title="Kurtis: ${kurtis}">
-      <span>Kurtis</span>
-    </div>
-    <div class="chart-bar" style="height:${suitsH}px;" title="Suits: ${suits}">
-      <span>Suits</span>
-    </div>
-  `;
-}
-
-/* ── MODAL (Add/Edit) ───────────────────────────────────────── */
-function openAddModal() {
-  editingId = null;
-  document.getElementById('modal-title').textContent = 'Add New Product';
-  document.getElementById('save-btn').textContent    = 'Save Product';
-  resetForm();
-  document.getElementById('product-modal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-async function openEditModal(id) {
-  editingId = id;
-  document.getElementById('modal-title').textContent = 'Edit Product';
-  document.getElementById('save-btn').textContent    = 'Update Product';
-  resetForm();
-
-  const product = allProducts.find(p => p._id === id);
-  if (!product) return;
-
-  document.getElementById('edit-id').value       = product._id;
-  document.getElementById('prod-name').value     = product.name;
-  document.getElementById('prod-price').value    = product.price;
-  document.getElementById('prod-category').value = product.category;
-  document.getElementById('prod-desc').value     = product.description;
-
-  document.getElementById('image-preview').src = product.imageUrl;
-  document.getElementById('image-preview-wrap').style.display = 'block';
-  document.getElementById('upload-zone').style.display = 'none';
-
-  document.getElementById('product-modal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeModal() {
-  document.getElementById('product-modal').classList.remove('open');
-  document.body.style.overflow = '';
-  resetForm();
-  editingId = null;
-}
-
-function resetForm() {
-  document.getElementById('product-form').reset();
-  document.getElementById('edit-id').value = '';
-  removeImage();
-  clearModalErrors();
-}
-
-/* ── Image Upload ───────────────────────────────────────────── */
-document.getElementById('prod-image').addEventListener('change', (e) => {
-  handleFile(e.target.files[0]);
-});
-
-function handleDragOver(e) {
-  e.preventDefault();
-  document.getElementById('upload-zone').classList.add('drag-over');
-}
-function handleDragLeave() {
-  document.getElementById('upload-zone').classList.remove('drag-over');
-}
-function handleDrop(e) {
-  e.preventDefault();
-  document.getElementById('upload-zone').classList.remove('drag-over');
-  const file = e.dataTransfer.files[0];
-  if (file) {
-    const dt = new DataTransfer();
-    dt.items.add(file);
-    document.getElementById('prod-image').files = dt.files;
-    handleFile(file);
-  }
-}
-
-function handleFile(file) {
-  if (!file) return;
-  const allowed = ['image/jpeg','image/jpg','image/png','image/webp'];
-  if (!allowed.includes(file.type)) {
-    showToast('Only JPG, PNG, WebP allowed', 'error');
-    return;
-  }
-  if (file.size > 2 * 1024 * 1024) {
-    showToast('File must be under 2 MB', 'error');
-    return;
-  }
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    document.getElementById('image-preview').src = e.target.result;
-    document.getElementById('image-preview-wrap').style.display = 'block';
-    document.getElementById('upload-zone').style.display = 'none';
-    document.getElementById('prod-image-error').textContent = '';
-  };
-  reader.readAsDataURL(file);
-}
-
-function removeImage() {
-  document.getElementById('prod-image').value = '';
-  document.getElementById('image-preview').src = '';
-  document.getElementById('image-preview-wrap').style.display = 'none';
-  document.getElementById('upload-zone').style.display = 'block';
-}
-
-/* ── Save Product ───────────────────────────────────────────── */
-async function saveProduct() {
-  clearModalErrors();
-
-  const name      = document.getElementById('prod-name').value.trim();
-  const price     = document.getElementById('prod-price').value;
-  const category  = document.getElementById('prod-category').value;
-  const desc      = document.getElementById('prod-desc').value.trim();
-  const fileInput = document.getElementById('prod-image');
-  const hasFile   = fileInput.files && fileInput.files.length > 0;
-
-  let valid = true;
-  if (!name) { showModalErr('prod-name', 'Product name required'); valid = false; }
-  if (!price || price <= 0) { showModalErr('prod-price', 'Enter valid price'); valid = false; }
-  if (!category) { showModalErr('prod-category', 'Select category'); valid = false; }
-  if (!desc) { showModalErr('prod-desc', 'Description required'); valid = false; }
-  if (!editingId && !hasFile) {
-    showModalErr('prod-image', 'Please select an image');
-    valid = false;
-  }
-  if (!valid) return;
-
-  const btn = document.getElementById('save-btn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> Saving…';
-
-  try {
-    const fd = new FormData();
-    fd.append('name', name);
-    fd.append('price', price);
-    fd.append('category', category);
-    fd.append('description', desc);
-    if (hasFile) fd.append('image', fileInput.files[0]);
-
-    if (editingId) {
-      await apiFetch(`/products/${editingId}`, { method: 'PUT', body: fd, auth: true });
-      showToast('Product updated ✓', 'success');
-    } else {
-      await apiFetch('/products', { method: 'POST', body: fd, auth: true });
-      showToast('Product added ✓', 'success');
-    }
-
-    closeModal();
-    await loadProducts();
-  } catch (err) {
-    showToast(err.message, 'error');
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = editingId ? 'Update Product' : 'Save Product';
-  }
-}
-
-/* ── Delete Confirm ─────────────────────────────────────────── */
-let pendingDeleteId = null;
-function confirmDelete(id, name) {
-  pendingDeleteId = id;
-  document.querySelector('.confirm-box p').textContent =
-    `"${name}" will be permanently deleted.`;
-  document.getElementById('confirm-overlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeConfirm() {
-  pendingDeleteId = null;
-  document.getElementById('confirm-overlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
-document.getElementById('confirm-del-btn').addEventListener('click', async () => {
-  if (!pendingDeleteId) return;
-  const btn = document.getElementById('confirm-del-btn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span>';
-  try {
-    await apiFetch(`/products/${pendingDeleteId}`, { method: 'DELETE', auth: true });
-    showToast('Deleted ✓', 'success');
-    closeConfirm();
-    await loadProducts();
-  } catch (err) {
-    showToast(err.message, 'error');
-  } finally {
-    btn.disabled = false;
-    btn.textContent = 'Delete';
-  }
-});
-
-/* ── Helpers ────────────────────────────────────────── */
-function showModalErr(id, msg) {
-  const el = document.getElementById(id);
-  const err = document.getElementById(`${id}-error`);
-  el.classList.add('error');
-  if (err) err.textContent = msg;
-}
-function clearModalErrors() {
-  ['prod-name','prod-price','prod-category','prod-desc','prod-image'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.classList.remove('error');
-    const err = document.getElementById(`${id}-error`);
-    if (err) err.textContent = '';
-  });
-}
-function escHtml(str) {
-  return str.replace(/['"&<>]/g, c => ({ "'": '&#39;', '"': '&quot;', '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
-}
-
-// Init
-loadProducts();
 initTheme();
-
-// Mobile nav helper
-function openAccountMenu() {
-  const user = getUser();
-  if (user) {
-    if (user.role === 'admin') window.location.href = '/admin.html';
-    else window.location.href = '/';
-  } else {
-    window.location.href = '/login.html';
-  }
-}
-
-// Toggle mobile sidebar
-const hamburger = document.querySelector('.nav-hamburger');
-if (hamburger) {
-  hamburger.addEventListener('click', () => {
-    document.getElementById('sidebar').classList.toggle('open');
-  });
-}
-
-// Close sidebar when clicking a link on mobile
-document.querySelectorAll('.sidebar-item').forEach(item => {
-  item.addEventListener('click', () => {
-    if (window.innerWidth <= 768) {
-      document.getElementById('sidebar').classList.remove('open');
-    }
-  });
-});
+initHamburger();
 </script>
 
-<!-- ── Mobile Bottom Navigation ────────────────────────────────── (Hidden in admin) -->
-<style>@media (max-width:768px){.mobile-bottom-nav{display:none!important;}}</style>
 </body>
 </html>
